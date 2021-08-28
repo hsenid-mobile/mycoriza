@@ -1,4 +1,4 @@
-# @mycoriza/runtime
+# mycoriza-runtime
 
 > Runtime of mycoriza react-network integration layer.
 
@@ -7,22 +7,7 @@
 ## Install
 
 ```bash
-npm install --save @mycoriza/runtime
-```
-
-## Usage
-
-```tsx
-import React, { Component } from 'react'
-
-import MyComponent from '@mycoriza/runtime'
-import '@mycoriza/runtime/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+npm install --save mycoriza-runtime
 ```
 
 ## License
