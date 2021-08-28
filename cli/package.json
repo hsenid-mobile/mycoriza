@@ -1,5 +1,5 @@
 {
-  "name": "@mycoriza/cli",
+  "name": "mycoriza-cli",
   "version": "0.0.1",
   "description": "A simple and zero-opinion typescript starter template for building cross-platform command line applications.",
   "author": "Tiran Wijesekara",
