@@ -62,6 +62,7 @@
   ],
   "dependencies": {
     "@types/string-format": "^2.0.0",
+    "release": "^6.3.0",
     "string-format": "^2.0.0"
   }
 }
