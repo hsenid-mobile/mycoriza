@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Runtime of mycoriza react-network integration layer.",
   "author": "tiranuom",
+  "private": false,
   "license": "MIT",
   "repository": "tiranuom/mycoriza",
   "main": "dist/index.js",
