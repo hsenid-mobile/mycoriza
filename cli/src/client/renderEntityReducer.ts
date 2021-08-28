@@ -8,7 +8,7 @@ import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV3.HttpMethods;
 
 const template = `
-import { NetworkState, NetworkStateFamily, networkStateReducer, {{method}}, reset, resolveFamily } from "@mycoriza/runtime";
+import { NetworkState, NetworkStateFamily, networkStateReducer, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
 {{#each imports}}

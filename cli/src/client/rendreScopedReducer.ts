@@ -7,7 +7,7 @@ import {extractReturnType} from "./util";
 import OperationObject = OpenAPIV3.OperationObject;
 
 const template = `
-import {NetworkStateFamily} from "@mycoriza/runtime";
+import {NetworkStateFamily} from "mycoriza-runtime";
 import {combineReducers} from "redux";
 {{#each imports}}
 import { {{this}} } from '../../models/{{this}}';

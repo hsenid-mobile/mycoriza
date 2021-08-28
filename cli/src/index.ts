@@ -110,11 +110,11 @@ export async function doEnhance() {
     default: './src/index.tsx'
   } as any);
 
-  ui.updateBottomBar(chalk`{blue Installing @mycoriza/runtime}`)
-  execSync(packageManager === 'npm' ? 'npm i @mycoriza/runtime' : 'yarn add @mycoriza/runtime',)
+  ui.updateBottomBar(chalk`{blue Installing mycoriza-runtime}`)
+  execSync(packageManager === 'npm' ? 'npm i mycoriza-runtime' : 'yarn add mycoriza-runtime',)
 
-  ui.updateBottomBar(chalk`{blue Installing @mycoriza/cli, typedoc and rimraf}`)
-  execSync(packageManager === 'npm' ? 'npm i -D @mycoriza/cli typedoc rimraf' : 'yarn add -D @mycoriza/cli typedoc rimraf')
+  ui.updateBottomBar(chalk`{blue Installing mycoriza-cli, typedoc and rimraf}`)
+  execSync(packageManager === 'npm' ? 'npm i -D mycoriza-cli typedoc rimraf' : 'yarn add -D mycoriza-cli typedoc rimraf')
 
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Add dependencies}`)
   ui.updateBottomBar(chalk`{blue Adding configurations to package json}`)
@@ -124,7 +124,7 @@ export async function doEnhance() {
     storePath: storePath,
     apiPath: apiPath
   }
-  json.scripts.updateApi = `./node_modules/@mycoriza/cli/dist/cli.js generate:api && ${packageManager === 'npm' ? 'npm run updateDocs' : 'yarn updateDocs'}`
+  json.scripts.updateApi = `./node_modules/mycoriza-cli/dist/cli.js generate:api && ${packageManager === 'npm' ? 'npm run updateDocs' : 'yarn updateDocs'}`
   json.scripts.updateDocs = `${packageManager === 'npm' ? 'npm run rimraf ./docs' : 'yarn rimraf ./docs'} && ./node_modules/typedoc/bin/typedoc ${apiPath}`
   fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
