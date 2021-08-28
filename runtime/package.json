@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Runtime of mycoriza react-network integration layer.",
   "author": "tiranuom",
+  "private": false,
   "license": "MIT",
   "repository": "tiranuom/mycoriza",
   "main": "dist/index.js",
@@ -10,6 +11,9 @@
   "source": "src/index.tsx",
   "engines": {
     "node": ">=10"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
