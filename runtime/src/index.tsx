@@ -167,12 +167,6 @@ export interface NetworkResetAction<T> extends NetworkAction<T> {
   readonly type: string
 }
 
-// export function reset<T>(domain: string): NetworkResetAction<T> {
-//   return {
-//     type: `${domain}_RESET`
-//   }
-// }
-
 export function isResetAction<T>(action: NetworkAction<T>, domain: string): action is NetworkResetAction<any> {
   return action.type == `${domain}_RESET`
 }
