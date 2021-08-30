@@ -399,10 +399,13 @@ interface PromiseCallback<T> {
   reject(e: any): void
 }
 
+type MycorizaHookResultType<T,  F extends (...args: any) => void> = [NetworkState<T>, F, () => void]
+
 /**
  * Converts promise function from network state hook
  * @param data result of a network hook
  * @example
+ * ```
  * function MyComponent() {
  *   const fetchData = useAsPromise(useDataAsNetworkState());
  *
@@ -414,8 +417,9 @@ interface PromiseCallback<T> {
  *     })
  *   }, [])
  * }
+ * ```
  */
-export function useAsPromise<T, F extends (...args: any) => void>(data: [NetworkState<T>, F, () => void]): (...args: Parameters<F>) => Promise<T> {
+export function useAsPromise<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>): (...args: Parameters<F>) => Promise<T> {
 
   let [state, fun] = data
 
@@ -439,6 +443,7 @@ export function useAsPromise<T, F extends (...args: any) => void>(data: [Network
  * Converts promise generator function to network state result.
  * @param f promise generator function
  * @example
+ * ```
  * function MyComponent() {
  *   const [state, execute] = useAsNetworkState(() => new Promise((resolve, reject) => { ... })
  *
@@ -450,8 +455,9 @@ export function useAsPromise<T, F extends (...args: any) => void>(data: [Network
  *     }
  *   }, [state.state])
  * }
+ * ```
  */
-export function useAsNetworkState<T>(f: (...args: any) => Promise<T>): [NetworkState<T>, (...args: Parameters<typeof f>) => void, () => void] {
+export function useAsNetworkState<T>(f: (...args: any) => Promise<T>): MycorizaHookResultType<T, (...args: Parameters<typeof f>) => void> {
   let [state, setState] = useState<NetworkState<T>>({ state: "init"});
 
   return [
@@ -470,4 +476,62 @@ export function useAsNetworkState<T>(f: (...args: any) => Promise<T>): [NetworkS
     }),
     () => {}
   ]
+}
+
+/**
+ * Get rids of the intermediate pending states for a smooth transition support.
+ *
+ * @param data Mycoriza hook result.
+ * @example
+ * ```
+ * function MyComponent() {
+ *   const [state, execute] = useWithoutPending(useDataAsNetworkState())
+ *
+ *   useEffect(() => {
+ *     if(isSuccess(state)) {
+ *       //do on success
+ *     } else if (isError(state)) {
+ *       //do on error
+ *     }
+ *   }, [state.state])
+ * }
+ * ```
+ */
+export function useWithoutPending<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>): [NetworkState<T>, F, () => void] {
+  let [value, setValue] = useState<NetworkState<T>>(data[0]);
+
+  useEffect(() => {
+    if (!isPending(data[0])) {
+      setValue(data[0])
+    }
+  }, [data[0].state])
+
+  return [value, data[1], data[2]]
+}
+
+/**
+ * Executes the fetch call upon component load. Highly recommend using `useEager` instead if manual `useEffect` in favor of future optimizations.
+ * @param data Mycoriza hook result.
+ * @param params parameters for the network function.
+ * @example
+ * ```
+ * function MyComponent() {
+ *   //Assuming the network request param format is `{ id: string }`
+ *   const [state, execute] = useEager(useDataAsNetworkState(), {id: ""})
+ *
+ *   useEffect(() => {
+ *     if(isSuccess(state)) {
+ *       //do on success
+ *     } else if (isError(state)) {
+ *       //do on error
+ *     }
+ *   }, [state.state])
+ * }
+ * ```
+ */
+export function useEager<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, ...params: Parameters<F>): MycorizaHookResultType<T, F> {
+  useEffect(() => {
+    data[1](params)
+  }, [])
+  return data;
 }
