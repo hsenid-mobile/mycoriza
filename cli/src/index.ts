@@ -11,6 +11,8 @@ import {execSync} from "child_process";
 import {get} from "node-emoji";
 import {generateStarterSetup} from "./setup/generateStarterSetup";
 import {updateEntryPoint} from "./client/renderEntryPoint";
+import { detectPackageManagers, PackageManager } from '@lerepo/detect-package-manager'
+import {PackageManagerName} from "@lerepo/detect-package-manager/src/package-manager";
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
@@ -96,12 +98,6 @@ export async function doEnhance() {
     default: './src/api'
   });
 
-  let {packageManager} = await inquirer.prompt({
-    type: "list",
-    name: 'What is the package manager in use?',
-    choices: ["npm", "yarn"]
-  });
-
   let {path} = await inquirer.prompt({
     type: 'fuzzypath' as any,
     name: 'path',
@@ -111,10 +107,10 @@ export async function doEnhance() {
   } as any);
 
   ui.updateBottomBar(chalk`{blue Installing mycoriza-runtime}`)
-  execSync(packageManager === 'npm' ? 'npm i mycoriza-runtime' : 'yarn add mycoriza-runtime',)
+  execSync(await installPackage('mycoriza-runtime'))
 
   ui.updateBottomBar(chalk`{blue Installing mycoriza-cli, typedoc and rimraf}`)
-  execSync(packageManager === 'npm' ? 'npm i -D mycoriza-cli typedoc rimraf' : 'yarn add -D mycoriza-cli typedoc rimraf')
+  execSync(await installPackageDev('typedoc', 'rimraf'))
 
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Add dependencies}`)
   ui.updateBottomBar(chalk`{blue Adding configurations to package json}`)
@@ -124,8 +120,8 @@ export async function doEnhance() {
     storePath: storePath,
     apiPath: apiPath
   }
-  json.scripts.updateApi = `./node_modules/mycoriza-cli/dist/cli.js generate:api && ${packageManager === 'npm' ? 'npm run updateDocs' : 'yarn updateDocs'}`
-  json.scripts.updateDocs = `${packageManager === 'npm' ? 'npm run rimraf ./docs' : 'yarn rimraf ./docs'} && ./node_modules/typedoc/bin/typedoc ${apiPath}`
+  json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand('updateDocs')}`
+  json.scripts.updateDocs = `${await runCommand('rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc ${apiPath}`
   fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
 
@@ -149,8 +145,45 @@ export async function doEnhance() {
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Update entry point}`)
 
   ui.updateBottomBar(chalk`{blue generating documentation}`)
-  execSync(packageManager === 'npm' ? 'npm run updateDocs' : 'yarn updateDocs')
+  execSync(await runCommand('updateDocs'))
   ui.log.write(chalk`{green ${get('heavy_check_mark')} Generate docs}`)
 
   ui.updateBottomBar(chalk`{green completed}`)
 }
+
+async function installPackage(...packages: string[]) {
+  let {name}: PackageManager = await detectPackageManagers({});
+  switch (name as PackageManagerName) {
+    case "pnpm":
+      return `pnpm add ${packages.join(' ')}`
+    case "npm":
+      return `npm i ${packages.join(' ')}`
+    case "yarn":
+      return `yarn add ${packages.join(' ')}`
+  }
+}
+
+async function installPackageDev(...packages: string[]) {
+  let {name}: PackageManager = await detectPackageManagers({});
+  switch (name as PackageManagerName) {
+    case "pnpm":
+      return `pnpm add -D ${packages.join(' ')}`
+    case "npm":
+      return `npm i -D ${packages.join(' ')}`
+    case "yarn":
+      return `yarn add -D ${packages.join(' ')}`
+  }
+}
+
+async function runCommand(command: string) {
+  let {name}: PackageManager = await detectPackageManagers({});
+  switch (name as PackageManagerName) {
+    case "pnpm":
+      return `pnpm run ${command}`
+    case "npm":
+      return `npm run ${command}`
+    case "yarn":
+      return `yarn ${command}`
+  }
+}
+
