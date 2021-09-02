@@ -38,15 +38,16 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@lerepo/detect-package-manager": "^0.1.1",
     "@types/handlebars": "^4.1.0",
     "@types/inquirer": "^7.3.3",
     "@types/inquirer-fuzzy-path": "^2.3.1",
     "@types/node-emoji": "^1.8.1",
     "@types/rimraf": "^3.0.2",
+    "bottom-bar": "^1.0.2",
     "camelcase": "^6.2.0",
     "chalk": "^4.1.2",
     "commander": "^8.0.0",
+    "detect-package-manager": "^1.1.0",
     "handlebars": "^4.7.7",
     "inquirer": "^8.1.2",
     "inquirer-fuzzy-path": "^2.3.0",

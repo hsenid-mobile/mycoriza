@@ -11,28 +11,37 @@ import {execSync} from "child_process";
 import {get} from "node-emoji";
 import {generateStarterSetup} from "./setup/generateStarterSetup";
 import {updateEntryPoint} from "./client/renderEntryPoint";
-import { detectPackageManagers, PackageManager } from '@lerepo/detect-package-manager'
-import {PackageManagerName} from "@lerepo/detect-package-manager/src/package-manager";
+import detectPackageManagers from 'detect-package-manager';
+import BottomBar from "bottom-bar";
+import {Writable} from 'stream'
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
-const ui = new inquirer.ui.BottomBar()
+const ui = new BottomBar({
+  format: "{value}"
+})
 
-export async function generateApi() {
+export async function generateApi(complete: boolean = true) {
 
   let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
   let mycoriza = json.mycoriza;
 
   if (!mycoriza) {
-    ui.updateBottomBar(chalk`{red Could not find the configuration. Have you initialized mycoriza?}`)
+    ui.update(chalk`{red Could not find the configuration. Have you initialized mycoriza?}`)
     return null;
   }
 
+  ui.log(chalk`{green ${get('heavy_check_mark')} Detect mycoriza configuration}`)
+
   let data = await getOpenApiSpec(mycoriza.specUrl);
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Fetch specification}`)
 
   let output = mycoriza.apiPath;
 
   rimraf.sync(output)
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Remove api directory}`)
 
   await generate({
     input: data,
@@ -43,7 +52,13 @@ export async function generateApi() {
     useUnionTypes: true
   })
 
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
   generateHooks(data, output)
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
+  if (complete) {
+    ui.destroy()
+  }
 }
 
 async function getUrlAndData() {
@@ -54,19 +69,29 @@ async function getUrlAndData() {
   });
 
   try {
-    ui.updateBottomBar(chalk`{blue Fetching OPENAPI config}`)
+    ui.update(chalk`{blue Fetching OPENAPI config}`)
     let data: OpenAPIV3.Document<any> = await getOpenApiSpec(urlInput.specUrl);
     return {
       url: urlInput.specUrl,
       data
     }
   } catch (e) {
-    ui.updateBottomBar(chalk.red("Could not fetch data for the given input. Please try again."))
+    ui.update(chalk.red("Could not fetch data for the given input. Please try again."))
     return getUrlAndData();
   }
 }
 
 export async function doEnhance() {
+  let _json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
+  let mycoriza = _json.mycoriza;
+
+  if (!!mycoriza) {
+    ui.log(chalk`{red Mycoriza is already initiated. Running this command again will break the existing configurations}`)
+    ui.destroy()
+    return;
+  }
+
+
   let {data, url} = await getUrlAndData();
 
   let serverUrl = data.servers?.[0]?.url;
@@ -106,14 +131,18 @@ export async function doEnhance() {
     default: './src/index.tsx'
   } as any);
 
-  ui.updateBottomBar(chalk`{blue Installing mycoriza-runtime}`)
-  execSync(await installPackage('mycoriza-runtime'))
+  ui.update(chalk`{blue Installing mycoriza-runtime}`)
+  execSync(await installPackage('mycoriza-runtime'), {
+    stdio: "ignore"
+  })
 
-  ui.updateBottomBar(chalk`{blue Installing mycoriza-cli, typedoc and rimraf}`)
-  execSync(await installPackageDev('typedoc', 'rimraf'))
+  ui.update(chalk`{blue Installing mycoriza-cli, typedoc and rimraf}`)
+  execSync(await installPackageDev('typedoc', 'rimraf'), {
+    stdio: "ignore"
+  })
 
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Add dependencies}`)
-  ui.updateBottomBar(chalk`{blue Adding configurations to package json}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Add dependencies}`)
+  ui.update(chalk`{blue Adding configurations to package json}`)
   let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
   json.mycoriza = {
     specUrl: url,
@@ -123,37 +152,40 @@ export async function doEnhance() {
   json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand('updateDocs')}`
   json.scripts.updateDocs = `${await runCommand('rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc ${apiPath}`
   fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
 
-  ui.updateBottomBar(chalk`{blue Generating store setup}`)
+  ui.update(chalk`{blue Generating store setup}`)
   generateStarterSetup({
     setupDir: storePath,
     output: apiPath,
     devUrl: devBaseUrl,
     prodUrl: prodBaseUrl
   })
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Setup redux}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Setup redux}`)
 
-  ui.updateBottomBar(chalk`{blue Generating API}`)
-  await generateApi()
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Generate API}`)
+  ui.update(chalk`{blue Generating API}`)
+  await generateApi(false)
 
-  ui.updateBottomBar(chalk`{blue }`)
+  ui.update(chalk`{blue }`)
 
-  ui.updateBottomBar(chalk`{blue Updating ${path} with redux store}`)
+  ui.update(chalk`{blue Updating ${path} with redux store}`)
   updateEntryPoint(path, storePath)
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Update entry point}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Update entry point}`)
 
-  ui.updateBottomBar(chalk`{blue generating documentation}`)
-  execSync(await runCommand('updateDocs'))
-  ui.log.write(chalk`{green ${get('heavy_check_mark')} Generate docs}`)
+  ui.update(chalk`{blue generating documentation}`)
+  execSync(await runCommand('updateDocs'), {
+    stdio: "ignore"
+  })
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generate docs}`)
 
-  ui.updateBottomBar(chalk`{green completed}`)
+  ui.update(chalk`{green completed}`)
+
+  ui.destroy()
 }
 
 async function installPackage(...packages: string[]) {
-  let {name}: PackageManager = await detectPackageManagers({});
-  switch (name as PackageManagerName) {
+  let name = await detectPackageManagers();
+  switch (name) {
     case "pnpm":
       return `pnpm add ${packages.join(' ')}`
     case "npm":
@@ -164,8 +196,8 @@ async function installPackage(...packages: string[]) {
 }
 
 async function installPackageDev(...packages: string[]) {
-  let {name}: PackageManager = await detectPackageManagers({});
-  switch (name as PackageManagerName) {
+  let name = await detectPackageManagers();
+  switch (name) {
     case "pnpm":
       return `pnpm add -D ${packages.join(' ')}`
     case "npm":
@@ -176,8 +208,8 @@ async function installPackageDev(...packages: string[]) {
 }
 
 async function runCommand(command: string) {
-  let {name}: PackageManager = await detectPackageManagers({});
-  switch (name as PackageManagerName) {
+  let name = await detectPackageManagers();
+  switch (name) {
     case "pnpm":
       return `pnpm run ${command}`
     case "npm":

@@ -15,12 +15,16 @@ program
     .version(pkg.version)
     .command('generate:api')
     .usage('[options]')
-    .action(generateApi);
+    .action(() => {
+        generateApi()
+    });
 
 program
     .version(pkg.version)
     .command("enhance")
     .usage("[options]")
-    .action(doEnhance)
+    .action(() => {
+        doEnhance()
+    })
 
 program.parse(process.argv).opts()

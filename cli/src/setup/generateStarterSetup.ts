@@ -17,7 +17,7 @@ const backendConnectorMiddleware = axiosMiddleware(
     axiosInstance
 )
 
-export type RootState = MycorizaState<{}>
+export interface RootState {}
 
 const rootState = mycorizaState({})
 
