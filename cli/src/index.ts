@@ -11,9 +11,10 @@ import {execSync} from "child_process";
 import {get} from "node-emoji";
 import {generateStarterSetup} from "./setup/generateStarterSetup";
 import {updateEntryPoint} from "./client/renderEntryPoint";
-import detectPackageManagers from 'detect-package-manager';
 import BottomBar from "bottom-bar";
-import {Writable} from 'stream'
+import {addTypedocConfig} from "./client/addTypedocConfig";
+import {dots} from 'cli-spinners'
+import {addTypedocReadme} from "./client/addTypedocReadme";
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
@@ -59,6 +60,8 @@ export async function generateApi(complete: boolean = true) {
   if (complete) {
     ui.destroy()
   }
+
+  addTypedocReadme(data, mycoriza)
 }
 
 async function getUrlAndData() {
@@ -71,6 +74,7 @@ async function getUrlAndData() {
   try {
     ui.update(chalk`{blue Fetching OPENAPI config}`)
     let data: OpenAPIV3.Document<any> = await getOpenApiSpec(urlInput.specUrl);
+    ui.update(``)
     return {
       url: urlInput.specUrl,
       data
@@ -90,7 +94,6 @@ export async function doEnhance() {
     ui.destroy()
     return;
   }
-
 
   let {data, url} = await getUrlAndData();
 
@@ -131,13 +134,20 @@ export async function doEnhance() {
     default: './src/index.tsx'
   } as any);
 
-  ui.update(chalk`{blue Installing mycoriza-runtime}`)
-  execSync(await installPackage('mycoriza-runtime'), {
+  let {packageManager} = await inquirer.prompt({
+    type: "list",
+    name: "packageManager",
+    message: 'What is the package manager in use?',
+    choices: ["npm", "yarn", "pnpm"]
+  });
+
+  ui.update(chalk`{blue Installing mycoriza-runtime, redux and redux-axios-middleware}`, dots)
+  execSync(await installPackage(packageManager, 'mycoriza-runtime', 'redux-axios-middleware', 'redux'), {
     stdio: "ignore"
   })
 
-  ui.update(chalk`{blue Installing mycoriza-cli, typedoc and rimraf}`)
-  execSync(await installPackageDev('typedoc', 'rimraf'), {
+  ui.update(chalk`{blue Installing mycoriza-cli, typedoc, typedoc-plugin-merge-modules and rimraf }`, dots)
+  execSync(await installPackageDev(packageManager, 'typedoc', 'rimraf', 'typedoc-plugin-merge-modules'), {
     stdio: "ignore"
   })
 
@@ -149,10 +159,13 @@ export async function doEnhance() {
     storePath: storePath,
     apiPath: apiPath
   }
-  json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand('updateDocs')}`
-  json.scripts.updateDocs = `${await runCommand('rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc ${apiPath}`
+  json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand(packageManager, 'updateDocs')}`
+  json.scripts.updateDocs = `${await runCommand(packageManager, 'rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ${apiPath}`
   fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
   ui.log(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generating typedoc config}`)
+  addTypedocConfig(data)
 
   ui.update(chalk`{blue Generating store setup}`)
   generateStarterSetup({
@@ -173,7 +186,7 @@ export async function doEnhance() {
   ui.log(chalk`{green ${get('heavy_check_mark')} Update entry point}`)
 
   ui.update(chalk`{blue generating documentation}`)
-  execSync(await runCommand('updateDocs'), {
+  execSync(await runCommand(packageManager, 'updateDocs'), {
     stdio: "ignore"
   })
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate docs}`)
@@ -183,9 +196,8 @@ export async function doEnhance() {
   ui.destroy()
 }
 
-async function installPackage(...packages: string[]) {
-  let name = await detectPackageManagers();
-  switch (name) {
+async function installPackage(packageManager: string, ...packages: string[]) {
+  switch (packageManager) {
     case "pnpm":
       return `pnpm add ${packages.join(' ')}`
     case "npm":
@@ -195,9 +207,8 @@ async function installPackage(...packages: string[]) {
   }
 }
 
-async function installPackageDev(...packages: string[]) {
-  let name = await detectPackageManagers();
-  switch (name) {
+async function installPackageDev(packageManager: string,...packages: string[]) {
+  switch (packageManager) {
     case "pnpm":
       return `pnpm add -D ${packages.join(' ')}`
     case "npm":
@@ -207,9 +218,8 @@ async function installPackageDev(...packages: string[]) {
   }
 }
 
-async function runCommand(command: string) {
-  let name = await detectPackageManagers();
-  switch (name) {
+async function runCommand(packageManager: string, command: string) {
+  switch (packageManager) {
     case "pnpm":
       return `pnpm run ${command}`
     case "npm":

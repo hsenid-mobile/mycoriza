@@ -8,6 +8,9 @@ import {combineReducers, ReducersMapObject} from 'redux'
 import { {{typeName}}State, {{directory}}Reducers } from './{{directory}}';
 {{/each}}
 
+/**
+ * @ignore
+ */
 export type MycorizaState<T> = {
 {{#each states}}
     {{directory}}: {{typeName}}State
@@ -15,6 +18,7 @@ export type MycorizaState<T> = {
 } & T
 
 /**
+ * @ignore
  * Generates a mycoriza generated state empowered redux state. 
  * 
  * Apart from the provided reduces, following reducers are injected.

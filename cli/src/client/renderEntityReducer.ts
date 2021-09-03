@@ -8,6 +8,9 @@ import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV3.HttpMethods;
 
 const template = `
+/**
+ * @module {{capitalizedDirName}}
+ */
 import { NetworkState, NetworkStateFamily, networkStateReducer, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
@@ -15,12 +18,18 @@ import {MycorizaState} from "../index";
 import { {{this}} } from '../../models/{{this}}';
 {{/each}}
 
+/**
+ * @ignore
+ */
 export const domain = "@mycoriza/{{dirName}}/{{simpleName}}"
 
+/**
+ * @ignore
+ */
 export const {{simpleName}}Reducer = networkStateReducer<{{returnType}}>(domain)
 
 {{#if parameters}}
-export interface {{capitalizedName}}_Params {
+export type {{capitalizedName}}_Params = {
     {{#each parameters.props}}
         /**
          * {{description}}
@@ -139,9 +148,11 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         importTypes: parameterInfo.importTypes
     } : undefined
 
+    let imports = new Set([shouldImport && typeName, requestBodyType?.shouldImport && requestBodyType?.typeName].filter(a => !!a).map(a => a.replace('[]', '')));
     let content = Handlebars.compile(template)({
         method: op.method.toUpperCase(),
         dirName: directory,
+        capitalizedDirName: camelcase(directory, {pascalCase: true}),
         simpleName: simpleName,
         capitalizedName: camelcase(operation.operationId, {pascalCase: true}),
         returnType: typeName,
@@ -165,7 +176,7 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
             requestBodyType && `${camelcase(requestBodyType.typeName)}`,
             parameterInfo && `params`
         ].filter(a => !!a),
-        imports: new Set([shouldImport && typeName, requestBodyType?.shouldImport && requestBodyType?.typeName].filter(a => !!a).map(a => a.replace('[]', '')))
+        imports: imports
     });
 
     if (fs.existsSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`)) {

@@ -7,6 +7,9 @@ import {extractReturnType} from "./util";
 import OperationObject = OpenAPIV3.OperationObject;
 
 const template = `
+/**
+ * @ignore
+ */
 import {NetworkStateFamily} from "mycoriza-runtime";
 import {combineReducers} from "redux";
 {{#each imports}}
@@ -16,6 +19,9 @@ import { {{this}} } from '../../models/{{this}}';
 import { {{simpleName}}Reducer } from './{{simpleName}}';
 {{/each}}
 
+/**
+ * @ignore
+ */
 export interface {{typeName}}State {
     {{#each ops}}
     {{simpleName}}: NetworkStateFamily<{{typeName}}>
@@ -23,6 +29,7 @@ export interface {{typeName}}State {
 }
 
 /**
+ * @ignore
  * Combined reducer for the {{typeName}} scope
  *
  * Following scopes are available. Related hooks are available alongside the reducers.

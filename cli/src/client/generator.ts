@@ -103,6 +103,20 @@ export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: strin
         return entities.map(op => renderEntityReducer(op, outputDir, key, openApi))
     });
 
+    addModuleToModels(outputDir)
+
     updateIndex(imports, outputDir)
+}
+
+function addModuleToModels(outputDir: string) {
+    let files = fs.readdirSync(`${outputDir}/models`);
+    files.filter(a => a.endsWith('.ts')).forEach(fileName => {
+        let file = `${outputDir}/models/${fileName}`;
+        fs.writeFileSync(file, `/**
+ * @module types
+ */
+ ${fs.readFileSync(file)}
+        `)
+    })
 }
 
