@@ -49,7 +49,7 @@ export type {{capitalizedName}}_Params = {
  *
  * @param {string} entityKey  unique id to manage different entities as network states.
  * @example
- * ${"```"}
+ * ${"```"}typescript
  * ...
  * function {{capitalizedName}}Example() {
  *     const [{{simpleName}}State, {{simpleName}}, clean{{capitalizedName}}State] = use{{capitalizedName}}()
@@ -85,9 +85,9 @@ export function use{{capitalizedName}}(entityKey: string = "default"): [NetworkS
     /**
      * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
      *
-        {{#if requestBody}}
-         * @param { {{requestBody.typeName}} } {{requestBody.simpleName}} {{requestBody.description}}
-        {{/if}}
+     {{#if requestBody}}
+     * @param { {{requestBody.typeName}} } {{requestBody.simpleName}} {{requestBody.description}}
+     {{/if}}
      */
     function execute({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
         {{#if parameters}}
