@@ -6,7 +6,6 @@ import {HookInfo, renderEntityReducer} from "./renderEntityReducer";
 import fs from "fs";
 import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV2.HttpMethods;
-import {updateIndex} from "./updateIndex";
 
 /*
 function isReference(valueOrRef: any): valueOrRef is Reference {
@@ -69,7 +68,7 @@ function groupBy<T>(xs: T[], f: (T) => string): { [k: string]: T[]} {
     }, {});
 }
 
-export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string) {
+export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string, baseUrl: string, prodUrl: string) {
 
     const operations: OperationOb[] = []
 
@@ -92,7 +91,7 @@ export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: strin
     })
     let grouped = groupBy(operations, (t: OperationOb) => t.operation.tags[0] ?? '');
 
-    renderRootReducer(Object.keys(grouped), outputDir)
+    renderRootReducer(Object.keys(grouped), outputDir, baseUrl, prodUrl)
 
     if (!fs.existsSync(`${outputDir}/reducers`)) {
         fs.mkdirSync(`${outputDir}/reducers`)
@@ -105,7 +104,7 @@ export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: strin
 
     addModuleToModels(outputDir)
 
-    updateIndex(imports, outputDir)
+    // updateIndex(imports, outputDir)
 }
 
 function addModuleToModels(outputDir: string) {

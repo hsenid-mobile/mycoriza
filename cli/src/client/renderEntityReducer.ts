@@ -21,12 +21,7 @@ import { {{this}} } from '../../models/{{this}}';
 /**
  * @ignore
  */
-export const domain = "@mycoriza/{{dirName}}/{{simpleName}}"
-
-/**
- * @ignore
- */
-export const {{simpleName}}Reducer = networkStateReducer<{{returnType}}>(domain)
+const domain = "@mycoriza/{{dirName}}/{{simpleName}}"
 
 {{#if parameters}}
 export type {{capitalizedName}}_Params = {
@@ -37,8 +32,8 @@ export type {{capitalizedName}}_Params = {
         {{name}}{{#unless mandatory}}?{{/unless}}: {{type}}
     {{/each}}
 }
-{{/if}}
 
+{{/if}}
 /**
     {{#if description}}
  * {{description}}

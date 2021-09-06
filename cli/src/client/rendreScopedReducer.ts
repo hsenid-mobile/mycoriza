@@ -10,13 +10,10 @@ const template = `
 /**
  * @ignore
  */
-import {NetworkStateFamily} from "mycoriza-runtime";
+import {NetworkStateFamily, networkStateReducer} from "mycoriza-runtime";
 import {combineReducers} from "redux";
 {{#each imports}}
 import { {{this}} } from '../../models/{{this}}';
-{{/each}}
-{{#each ops}}
-import { {{simpleName}}Reducer } from './{{simpleName}}';
 {{/each}}
 
 /**
@@ -33,14 +30,10 @@ export interface {{typeName}}State {
  * Combined reducer for the {{typeName}} scope
  *
  * Following scopes are available. Related hooks are available alongside the reducers.
- * 
-{{#each ops}}
- * {@link {{simpleName}}Reducer}
-{{/each}}
  */
 export const {{directory}}Reducers = combineReducers<{{typeName}}State>({
 {{#each ops}}
-    {{simpleName}}: {{simpleName}}Reducer,
+    {{simpleName}}: networkStateReducer<{{typeName}}>("{{domain}}"),
 {{/each}}
 })
 `
@@ -56,7 +49,8 @@ export function renderScopedReducer(operations: OperationOb[], outputDir: string
         return ({
             typeName,
             simpleName: camelcase(operation.operationId),
-            shouldImport
+            shouldImport,
+            domain: `@mycoriza/${camelcase(key)}/${camelcase(operation.operationId)}`
         });
     }).filter(a => !!a);
 

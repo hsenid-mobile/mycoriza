@@ -36,14 +36,23 @@ export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
             ...reducers
         } as any)
 }
+
+/**
+ * @ignore
+ */
+export function baseUrl() {
+    return process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodBaseUrl}}')
+}
 `
 
-export function renderRootReducer(types: string[], outputDir: string): string {
+export function renderRootReducer(types: string[], outputDir: string, baseUrl: string, prodUrl: string): string {
 
     let content = Handlebars.compile(template)({
         states: types.map(a => ({
             typeName: camelcase(a, {pascalCase: true}),
-            directory: camelcase(a)
+            directory: camelcase(a),
+            baseUrl: baseUrl,
+            prodUrl: prodUrl
         }))
     });
 

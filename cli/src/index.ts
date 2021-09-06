@@ -25,18 +25,52 @@ const ui = new BottomBar({
 export async function generateApi(complete: boolean = true) {
 
   let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
+  json.mycoriza = json.mycoriza ?? {}
   let mycoriza = json.mycoriza;
 
-  if (!mycoriza) {
-    ui.update(chalk`{red Could not find the configuration. Have you initialized mycoriza?}`)
-    return null;
+  ui.log(chalk`{green ${get('heavy_check_mark')} Detect mycoriza configuration}`)
+  let _data: any;
+  if (!mycoriza.specUrl) {
+    let {data, url} = await getUrlAndData();
+    _data = data
+    mycoriza.specUrl = url
+  } else {
+    _data = await getOpenApiSpec(mycoriza.specUrl);
   }
 
-  ui.log(chalk`{green ${get('heavy_check_mark')} Detect mycoriza configuration}`)
-
-  let data = await getOpenApiSpec(mycoriza.specUrl);
-
   ui.log(chalk`{green ${get('heavy_check_mark')} Fetch specification}`)
+
+  if (!mycoriza.apiPath) {
+    let {apiPath} = await inquirer.prompt({
+      type: "input",
+      name: 'apiPath',
+      message: "Where should the api be configured?",
+      default: './src/api'
+    });
+    mycoriza.apiPath = apiPath
+  }
+
+  if (mycoriza.devUrl === undefined) {
+    let serverUrl = _data.servers?.[0]?.url;
+    let {devBaseUrl} = await inquirer.prompt({
+      type: "input",
+      name: 'devBaseUrl',
+      message: 'What is the development base url?',
+      default: serverUrl
+    });
+
+    mycoriza.devUrl = devBaseUrl
+  }
+  if (mycoriza.prodUrl === undefined) {
+    let {prodBaseUrl} = await inquirer.prompt({
+      type: "input",
+      name: 'prodBaseUrl',
+      message: 'What is the production base url?'
+    });
+    mycoriza.prodUrl = prodBaseUrl
+  }
+
+  fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
 
   let output = mycoriza.apiPath;
 
@@ -45,7 +79,7 @@ export async function generateApi(complete: boolean = true) {
   ui.log(chalk`{green ${get('heavy_check_mark')} Remove api directory}`)
 
   await generate({
-    input: data,
+    input: _data,
     output: output,
     exportCore: false,
     exportSchemas: false,
@@ -54,14 +88,15 @@ export async function generateApi(complete: boolean = true) {
   })
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
-  generateHooks(data, output)
+  generateHooks(_data, output, mycoriza.devUrl, mycoriza.prodUrl)
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
   if (complete) {
     ui.destroy()
   }
 
-  addTypedocReadme(data, mycoriza)
+  addTypedocConfig(_data)
+  addTypedocReadme(_data, mycoriza)
 }
 
 async function getUrlAndData() {
@@ -157,7 +192,9 @@ export async function doEnhance() {
   json.mycoriza = {
     specUrl: url,
     storePath: storePath,
-    apiPath: apiPath
+    apiPath: apiPath,
+    devUrl: devBaseUrl,
+    prodUrl: prodBaseUrl
   }
   json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand(packageManager, 'updateDocs')}`
   json.scripts.updateDocs = `${await runCommand(packageManager, 'rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ${apiPath}`
