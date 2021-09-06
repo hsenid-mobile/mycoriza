@@ -5,11 +5,28 @@
 >
 > -- <cite>J. Dighton, in Encyclopedia of Microbiology (Third Edition), 2009</cite>
 
-# Mycoriza
+# Mycoriza ![React](https://img.shields.io/badge/react-16.8%2B-blue) ![Typescript](https://img.shields.io/badge/typescript-4.4%2B-blue) ![Swagger](https://img.shields.io/badge/swagger-3%2B-blue) 
 
-Mycoriza is a javascript library / code generator for integrating _Rest API_ to react applications.
+Mycoriza is a `javascript library / code generator` for integrating _Rest API_ to react applications.
 
-* Standardized
-* Developer friendly
-* Robust
+* **Painless**: Mycoriza makes the Rest API integration ridiculously easy by providing a toolset to generate more 
+react-ish, _well documented_ network layer boilerplate. This helps the developers to spend there valuable time on more important problems 
+than network integration. 
 
+* **Explicit**: In react applications, classic way of handling the asynchronous behavior is often confusing and requires more 
+effort in maintaining. Mycoriza incorporates more explicit approach by modeling the promises as states, and provides
+the necessary tools to mine information in typesafe manner.
+
+* **Safe**: Mycoriza ensures the type-safety through strong `typescript` support and integration-safety through easy 
+and typesafe API generation.
+
+### Getting Started
+
+A new Mycoriza project can be created easily using `create-react-app`.
+
+```shell
+npx create-react-app --template mycoriza
+```
+
+### Guides
+//TODO
