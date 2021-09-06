@@ -24,7 +24,7 @@
     },
     "scripts": {
       "updateApi": "node /home/tiran/projects/hms/mycoriza/cli/bin/cli.js generate:api && yarn updateDocs",
-      "updateDocs": "yarn rimraf ./docs && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ./src/api"
+      "updateDocs": "yarn rimraf ./docs/api && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ./src/api"
     }
   }
 }

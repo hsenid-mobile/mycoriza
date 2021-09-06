@@ -9,9 +9,10 @@ const template = `
   "mergeModulesRenameDefaults": true,
   "excludeNotDocumented": false,
   "excludeExternals": false,
-  "readme": "./API_INFO.md",
+  "readme": "./docs/API_INFO.md",
   "pretty": true,
-  "name": "{{title}} ({{version}})"
+  "name": "{{title}} ({{version}})",
+  "out": "./docs/api"
 }
 
 `

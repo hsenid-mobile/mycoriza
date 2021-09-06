@@ -22,6 +22,9 @@ const ui = new BottomBar({
   format: "{value}"
 })
 
+const storePath = './src/store';
+const apiPath = './src/api';
+
 export async function generateApi(complete: boolean = true) {
 
   let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
@@ -39,16 +42,6 @@ export async function generateApi(complete: boolean = true) {
   }
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Fetch specification}`)
-
-  if (!mycoriza.apiPath) {
-    let {apiPath} = await inquirer.prompt({
-      type: "input",
-      name: 'apiPath',
-      message: "Where should the api be configured?",
-      default: './src/api'
-    });
-    mycoriza.apiPath = apiPath
-  }
 
   if (mycoriza.devUrl === undefined) {
     let serverUrl = _data.servers?.[0]?.url;
@@ -72,7 +65,7 @@ export async function generateApi(complete: boolean = true) {
 
   fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
 
-  let output = mycoriza.apiPath;
+  let output = apiPath;
 
   rimraf.sync(output)
 
@@ -145,20 +138,6 @@ export async function doEnhance() {
     type: "input",
     name: 'prodBaseUrl',
     message: 'What is the production base url?'
-  });
-
-  let {storePath} = await inquirer.prompt({
-    type: "input",
-    name: 'storePath',
-    message: "Where should the store be configured?",
-    default: './src/store'
-  });
-
-  let {apiPath} = await inquirer.prompt({
-    type: "input",
-    name: 'apiPath',
-    message: "Where should the api be configured?",
-    default: './src/api'
   });
 
   let {path} = await inquirer.prompt({

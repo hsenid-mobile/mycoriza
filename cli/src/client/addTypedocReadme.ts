@@ -57,8 +57,12 @@ export function addTypedocReadme(openApi: OpenAPIV3.Document<any>, mycoriza: any
         url: mycoriza.specUrl
     });
 
-    if (fs.existsSync("./API_INFO.md")) {
-        fs.unlinkSync("./API_INFO.md")
+    if (!fs.existsSync("./docs")) {
+        fs.mkdirSync("./docs")
     }
-    fs.writeFileSync("./API_INFO.md", content)
+
+    if (fs.existsSync("./docs/API_INFO.md")) {
+        fs.unlinkSync("./docs/API_INFO.md")
+    }
+    fs.writeFileSync("./docs/API_INFO.md", content)
 }
