@@ -160,11 +160,11 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         } : undefined,
         parameters: parameters?.props?.length ? parameters : undefined,
         executionParamsWithType: [
-            requestBodyType && `${camelcase(requestBodyType.typeName)}: ${requestBodyType.typeName}`,
+            requestBodyType && `${camelcase(requestBodyType.typeName).replace("[]", "")}: ${requestBodyType.typeName}`,
             parameters?.props?.length && `params: ${camelcase(operation.operationId, {pascalCase: true})}_Params`
         ].filter(a => !!a),
         executionParams: [
-            requestBodyType ? `${camelcase(requestBodyType.typeName)}` : ([HttpMethods.PUT, HttpMethods.POST].includes(op.method) ? "{}" : undefined),
+            requestBodyType ? `${camelcase(requestBodyType.typeName).replace("[]", "")}` : ([HttpMethods.PUT, HttpMethods.POST].includes(op.method) ? "{}" : undefined),
             parameters?.props?.length && `parameters`
         ].filter(a => !!a),
         executionParamsForSample: [

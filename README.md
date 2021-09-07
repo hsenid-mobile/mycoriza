@@ -1,7 +1,7 @@
 > _**Mycorrhizae** are a **symbiotic association between plant roots and fungi**.
-> Their major role is to enhance nutrient and water uptake by the host plant
-> by exploiting a larger volume of soil than roots alone can do. Mycorrhizae
-> come in a number of forms, dependent upon both host plant and fungal taxonomy._
+ Their major role is to enhance nutrient and water uptake by the host plant
+ by exploiting a larger volume of soil than roots alone can do. Mycorrhizae
+ come in a number of forms, dependent upon both host plant and fungal taxonomy._
 >
 > -- <cite>J. Dighton, in Encyclopedia of Microbiology (Third Edition), 2009</cite>
 
@@ -20,13 +20,21 @@ the necessary tools to mine information in typesafe manner.
 * **Safe**: Mycoriza ensures the type-safety through strong `typescript` support and integration-safety through easy 
 and typesafe API generation.
 
-### Getting Started
+## Getting Started
 
 A new Mycoriza project can be created easily using `create-react-app`.
 
 ```shell
-npx create-react-app --template mycoriza
+npx create-react-app <project-name> --template mycoriza
 ```
 
-### Guides
+To generate the network layer, go to project directory and run following command.
+
+```shell
+cd <project-name> & npm run updateApi
+```
+
+Necessary configurations will be requested during the first code generation. 
+
+## Guides
 //TODO

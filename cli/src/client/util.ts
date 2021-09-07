@@ -49,14 +49,14 @@ export function extractReturnType(operation: OpenAPIV3.OperationObject<any>): Ty
         } else {
             return {
                 shouldImport: false,
-                typeName: schema.items.type + '[]',
+                typeName: transformTypes(schema.items.type) + '[]',
                 description
             }
         }
     }
     return {
         shouldImport: false,
-        typeName: schema.type,
+        typeName: transformTypes(schema.type),
         description
     };
 }
@@ -91,14 +91,14 @@ export function extractRequestBodyType(operation: OpenAPIV3.OperationObject<any>
         } else {
             return {
                 shouldImport: false,
-                typeName: schema.items.type + '[]',
+                typeName: transformTypes(schema.items.type) + '[]',
                 description
             }
         }
     }
     return {
         shouldImport: false,
-        typeName: schema.type,
+        typeName: transformTypes(schema.type),
         description
     };
 }
@@ -152,7 +152,7 @@ export function extractParameters(openApi: any,operation: OpenAPIV3.OperationObj
                         description: parameterObject.description,
                         mandatory: false
                     }
-                    if (reference.shouldImport) importTypes.push(reference.typeName)
+                    if (reference.shouldImport) importTypes.push(transformTypes(reference.typeName))
                 }
                 break;
             case "path":
@@ -162,7 +162,7 @@ export function extractParameters(openApi: any,operation: OpenAPIV3.OperationObj
                         description: parameterObject.description,
                         mandatory: true
                     }
-                    if (reference.shouldImport) importTypes.push(reference.typeName)
+                    if (reference.shouldImport) importTypes.push(transformTypes(reference.typeName))
                 }
                 break;
         }
@@ -191,13 +191,21 @@ function getReference(schema: ReferenceObject | SchemaObject): TypeRef | undefin
         } else {
             return {
                 shouldImport: false,
-                typeName: schema.items.type + "[]"
+                typeName: transformTypes(schema.items.type) + "[]"
             }
         }
     } else {
         return {
             shouldImport: false,
-            typeName: schema.type
+            typeName: transformTypes(schema.type)
         }
     }
+}
+
+const TYPE_MAPPING = {
+    "integer": "number"
+}
+
+function transformTypes(tpe: string): string {
+    return TYPE_MAPPING[tpe] ?? tpe;
 }

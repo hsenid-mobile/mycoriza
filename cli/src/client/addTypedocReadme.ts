@@ -51,7 +51,7 @@ export function addTypedocReadme(openApi: OpenAPIV3.Document<any>, mycoriza: any
         title: openApi.info.title,
         version: openApi.info.version,
         logoUrl: openApi.info["x-logo"]?.url,
-        server: openApi.servers[0]?.url,
+        server: openApi.servers?.[0]?.url,
         user: userName(),
         date: format(new Date(), "do LLLL, yyyy, hh:mm aaa"),
         url: mycoriza.specUrl

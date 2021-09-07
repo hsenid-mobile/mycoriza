@@ -76,7 +76,7 @@ export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: strin
         for (let httpMethodsKey in HttpMethods) {
             let httpMethod = HttpMethods[httpMethodsKey];
 
-            if ([HttpMethods.GET, HttpMethods.POST, HttpMethods.PUT, HttpMethods.POST].includes(httpMethod)) {
+            if ([HttpMethods.GET, HttpMethods.POST, HttpMethods.PUT, HttpMethods.DELETE].includes(httpMethod)) {
                 let contentElement = content[httpMethod] as (OperationObject<any> | undefined);
                 if (contentElement) {
                     let operation = contentElement as OperationObject<any>;

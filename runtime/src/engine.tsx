@@ -199,7 +199,6 @@ function _networkStateReducer<T>(
       };
       return newState;
     } else if (isFailAction(action, domain)) {
-      console.log(action.error)
       let newState: ErrorState<T> = {
         state: "error",
         error: action.error.data,
