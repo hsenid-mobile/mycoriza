@@ -7,4 +7,7 @@ Pending --> Success: Request Complete
 Pending --> Error: Request Failed
 Success --> Init: Reset
 Error --> Init: Reset
+Success --> Pending: Initiate Request
+Error --> Pending: Initiate Request
+Pending --> Init: Reset
 @enduml

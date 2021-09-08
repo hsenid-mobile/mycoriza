@@ -36,7 +36,7 @@ export interface Params {
 
 function createUrl(url: string, params: Params): string {
   let queryString: string | undefined = !!params.query ? Object.entries(params.query).map(([key,value]) => `${key}=${encodeURIComponent(value)}`).join('&') : undefined
-  return `${format(url, params.path ?? {})}${queryString ? `?${queryString}` : ""}`
+  return `${format(url, params.path ?? {})}${queryString ? `?${encodeURIComponent(queryString)}` : ""}`
 }
 
 export function isPendingAction<T>(

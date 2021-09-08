@@ -7,23 +7,7 @@ components, promises makes confusions. Mycoriza prefer states to promise, as han
 ## Network State
 Mycoriza introduces a new generic type `NetworkState<T>`. It follows predefined state flow as follows.
 
-```text
-                 ┌──────┐
-   ┌─────────────► Init ◄────────────┐
-   │             └▲────┬┘            │
-   │              │    │             │
-   │           Reset  Execute        │
- Reset            │    │           Reset
-   │           ┌──┴────┴──┐          │
-   │      ┌────► Pending  ◄────┐     │
-   │      │    └──┬────┬──┘    │     │
-   │   Execute    │    │    Execute  │
-   │      │       │    │       │     │
-   │      │ OnSuccess OnError  │     │
-   │ ┌────┴──┐    │    │    ┌──┴───┐ │
-   └─┤Success◄────┘    └────►Error ├─┘
-     └───────┘              └──────┘   
-```
+![Network State diagram](https://kroki.io/ditaa/svg/eNq9kj0OAiEQhfs5xVxgwwU2dhZ2RltigxOzDSbAGos5vDHIMvxtKR2Pj5nh8QAAu0tNv6WhI07TgRFPdgmIPGdVwiyq6QQoIfIARrw1yg783fHxTWYNtAdfyFPgYeXtuLz6quDIDYbJpg0nV8LAM9n7Yh_ZQF3BjOldwsAkcQNXnpRz_xW-rsaQ9_FrnHu6Bm6tqio3AeSt6izCpItExl6pRzd12I0lwAcHqpJr)
 
 * **Init**: This state means that the network call is not yet initiated. 
 * **Pending**: Upon initiating the call, the `NetworkState` moves to `Pending` state. Loaders can be rendered within this state
