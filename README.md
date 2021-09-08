@@ -18,7 +18,7 @@ effort in maintaining. Mycoriza incorporates more explicit approach by modeling 
 the necessary tools to mine information in typesafe manner.
 
 * **Safe**: Mycoriza ensures the type-safety through strong `typescript` support and integration-safety through easy 
-and typesafe API generation.
+and typesafe API client generation.
 
 ## Getting Started
 

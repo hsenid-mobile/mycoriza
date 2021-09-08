@@ -1,0 +1,10 @@
+@startuml
+skinparam linetype polyline
+skinparam linetype ortho
+state Init
+Init --> Pending: Initiate request
+Pending --> Success: Request Complete
+Pending --> Error: Request Failed
+Success --> Init: Reset
+Error --> Init: Reset
+@enduml
