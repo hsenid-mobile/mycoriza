@@ -28,7 +28,7 @@ The libraries like `redux` and `axios` have already mastered there usecase well.
 and builds upon them. Under the hood, Mycoriza uses `redux` for state management and `axios` for the rest API 
 integration.
 
-## Simple
+## Simple and Expressive
 
 _Simple code provides fewer defects and pleasant development experience._   
 

@@ -79,19 +79,22 @@ export function isFailAction<T>(
  *
  *
  * <pre>
-   *               ┌────┐
-   *   ┌───────────►Init◄──────────┐
-   *   │           └▲──┬┘          │
-   *   │       Reset│  │Execute    │
-   * Reset          │  │         Reset
-   *   │          ┌─┴──▼──┐        │
-   *   │      ┌───┤Pending├──┐     │
-   *   │      │   └───────┘  │     │
-   *   │    OnSuccess    OnError   │
-   *   │      │              │     │
-   *   │  ┌───▼───┐       ┌──▼──┐  │
-   *   └──┤Success│       │Error├──┘
-   *      └───────┘       └─────┘
+ *                 ┌──────┐
+ *   ┌─────────────► Init ◄────────────┐
+ *   │             └▲────┬┘            │
+ *   │              │    │             │
+ *   │           Reset  Execute        │
+ * Reset            │    │           Reset
+ *   │           ┌──┴────┴──┐          │
+ *   │      ┌────► Pending  ◄────┐     │
+ *   │      │    └──┬────┬──┘    │     │
+ *   │   Execute    │    │    Execute  │
+ *   │      │       │    │       │     │
+ *   │      │ OnSuccess OnError  │     │
+ *   │ ┌────┴──┐    │    │    ┌──┴───┐ │
+ *   └─┤Success◄────┘    └────►Error ├─┘
+ *     └───────┘              └──────┘
+ *
  * </pre>
  */
 // @ts-ignore

@@ -37,4 +37,7 @@ cd <project-name> & npm run updateApi
 Necessary configurations will be requested during the first code generation. 
 
 ## Guides
-//TODO
+
+* [Core Concepts](./docs/concepts.md)
+* [A Word About Netowrk State](./docs/network-states.md)
+* [Patterns and Best Practices](./docs/patterns-and-best-practices.md)
