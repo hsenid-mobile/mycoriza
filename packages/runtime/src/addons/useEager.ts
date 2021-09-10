@@ -23,7 +23,7 @@ import {MycorizaHookResultType} from "./types";
  */
 export function useEager<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, ...params: Parameters<F>): MycorizaHookResultType<T, F> {
   useEffect(() => {
-    data[1](...params)
+    data[1].apply(null, params)
   }, [])
   return data;
 }

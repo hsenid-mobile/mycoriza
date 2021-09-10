@@ -20,7 +20,7 @@ export function useDebounce<T, F extends (...args: any) => void>(data: MycorizaH
 
   useEffect(() => {
     if (debouncedParams) {
-      data[1](...debouncedParams)
+      data[1].apply(null, debouncedParams)
     }
   }, [debouncedParams])
 
