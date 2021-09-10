@@ -41,7 +41,7 @@ export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
  * @ignore
  */
 export function baseUrl() {
-    return process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodBaseUrl}}')
+    return process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodUrl}}')
 }
 `
 
@@ -51,9 +51,9 @@ export function renderRootReducer(types: string[], outputDir: string, baseUrl: s
         states: types.map(a => ({
             typeName: camelcase(a, {pascalCase: true}),
             directory: camelcase(a),
-            baseUrl: baseUrl,
-            prodUrl: prodUrl
-        }))
+        })),
+        baseUrl: baseUrl,
+        prodUrl: prodUrl
     });
 
     if (fs.existsSync(`${outputDir}/reducers/reducer.ts`)) {
