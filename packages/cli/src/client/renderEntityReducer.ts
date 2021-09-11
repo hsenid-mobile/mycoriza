@@ -11,7 +11,7 @@ const template = `
 /**
  * @module {{capitalizedDirName}}
  */
-import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime/dist/engine";
+import { NetworkStateFamily, MycorizaHookResultType, MycorizaHookPropsType, {{method}}, reset, resolveFamily, resolveProps, useExtensions } from "mycoriza-runtime/dist/engine";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
 {{#each imports}}
@@ -42,7 +42,6 @@ export type {{capitalizedName}}_Params = {
  * Returns a stateful value confirms to NetworkState, a function to issue network requests and clean up function.
  * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
  *
- * @param {string} entityKey  unique id to manage different entities as network states.
  * @example
  * ${"```"}typescript
  * ...
@@ -73,9 +72,12 @@ export type {{capitalizedName}}_Params = {
  *     }
  * }
  * ${"```"}
+ * @param props properties to customize hook behavior.
  */
-export function use{{capitalizedName}}(entityKey: string = "default"): MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
+export function use{{capitalizedName}}(props: Partial<MycorizaHookPropsType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void>> | string = "default"): 
+    MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
     let dispatch = useDispatch();
+    let {extensions, entityKey} = resolveProps(props)
 
     /**
      * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
@@ -90,7 +92,7 @@ export function use{{capitalizedName}}(entityKey: string = "default"): MycorizaH
             {{#if parameters.query.length}}
             query: {
                 {{#each parameters.query}}
-                    ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
+                ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
                 {{/each}}
             },
             {{/if}}
@@ -102,16 +104,16 @@ export function use{{capitalizedName}}(entityKey: string = "default"): MycorizaH
                 },
             {{/if}}
         }
+        
         {{/if}}
-
         dispatch({{method}}(domain, entityKey, "{{url}}", {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
     }
 
-    return [
+    return useExtensions([
         resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{dirName}}.{{simpleName}})),
         execute,
         () => dispatch(reset(domain, entityKey))
-    ]
+    ], extensions)
 }
 `
 

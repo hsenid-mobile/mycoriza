@@ -395,4 +395,39 @@ export function resolveFamily<T>(familyKey: string, state: NetworkStateFamily<T>
   return state[familyKey] || initState()
 }
 
+export type MycorizaHookPropsType<T,  F extends (...args: any) => void> = {
+  entityKey: string,
+  extend: MycorizaExtension<T, F>[]
+}
+
+export function resolveProps<T,  F extends (...args: any) => void>(props?: Partial<MycorizaHookPropsType<T, F>> | string): MycorizaHookPropsType<T, F> {
+  if (!props) {
+    return {
+      entityKey: 'default',
+      extend: []
+    }
+  } else if (typeof props === "string") {
+    return {
+      entityKey: props,
+      extend: []
+    }
+  } else return {
+    entityKey: props.entityKey ?? 'default',
+    extend: props.extend ?? []
+  };
+}
+
 export type MycorizaHookResultType<T,  F extends (...args: any) => void> = [NetworkState<T>, F, () => void]
+
+export type MycorizaExtension<T,  F extends (...args: any) => void> = {
+  useExtendedLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F>
+}
+
+export function useExtensions<T,  F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, extensions: MycorizaExtension<T, F>[]): MycorizaHookResultType<T, F>{
+  return extensions.reduce((a, b) => ({
+    useExtendedLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+      return b.useExtendedLogic(a.useExtendedLogic(entry))
+    }
+  })).useExtendedLogic(data)
+}
+

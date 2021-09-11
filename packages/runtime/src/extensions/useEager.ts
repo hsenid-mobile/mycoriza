@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {MycorizaHookResultType} from "../engine";
+import {MycorizaExtension, MycorizaHookResultType} from "../engine";
 
 /**
  * Executes the fetch call upon component load. Highly recommend using `useEager` instead if manual `useEffect` in favor of future optimizations.
@@ -26,4 +26,15 @@ export function useEager<T, F extends (...args: any) => void>(data: MycorizaHook
     data[1].apply(null, params)
   }, [])
   return data;
+}
+
+export function eager<T, F extends (...args: any) => void>(...params: Parameters<F>): MycorizaExtension<T, F> {
+  return {
+    useExtendedLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+      useEffect(() => {
+        fetch.apply(null, params)
+      }, [])
+      return [state, fetch, cleanup]
+    }
+  }
 }
