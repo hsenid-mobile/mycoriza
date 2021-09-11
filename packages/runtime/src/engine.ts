@@ -394,3 +394,5 @@ export function networkStateReducer<T>(domain: string): Reducer<NetworkStateFami
 export function resolveFamily<T>(familyKey: string, state: NetworkStateFamily<T>): NetworkState<T> {
   return state[familyKey] || initState()
 }
+
+export type MycorizaHookResultType<T,  F extends (...args: any) => void> = [NetworkState<T>, F, () => void]

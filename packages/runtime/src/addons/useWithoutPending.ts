@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import {isInit, isPending, NetworkState} from "../engine";
-import {MycorizaHookResultType} from "./types";
+import {isInit, isPending, MycorizaHookResultType, NetworkState} from "../engine";
 
 /**
  * Get rids of the intermediate pending states for a smooth transition support.

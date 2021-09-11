@@ -11,7 +11,7 @@ const template = `
 /**
  * @module {{capitalizedDirName}}
  */
-import { NetworkState, NetworkStateFamily, networkStateReducer, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
+import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime/dist/engine";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
 {{#each imports}}
@@ -74,7 +74,7 @@ export type {{capitalizedName}}_Params = {
  * }
  * ${"```"}
  */
-export function use{{capitalizedName}}(entityKey: string = "default"): [NetworkState<{{returnType}}>,({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void, () => void] {
+export function use{{capitalizedName}}(entityKey: string = "default"): MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
     let dispatch = useDispatch();
 
     /**

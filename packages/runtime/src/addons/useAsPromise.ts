@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import {isError, isSuccess} from "../engine";
-import {MycorizaHookResultType} from "./types";
+import {isError, isSuccess, MycorizaHookResultType} from "../engine";
 
 interface PromiseCallback<T> {
   resolve(t: T): void

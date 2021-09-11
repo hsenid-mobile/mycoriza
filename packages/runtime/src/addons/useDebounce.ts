@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {MycorizaHookResultType} from "./types";
+import {MycorizaHookResultType} from "../engine";
 
 /**
  *

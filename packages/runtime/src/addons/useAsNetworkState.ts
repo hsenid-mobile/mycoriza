@@ -1,6 +1,5 @@
 import {useState} from "react";
-import {ErrorState, NetworkState, SuccessState} from "../engine";
-import {MycorizaHookResultType} from "./types";
+import {ErrorState, MycorizaHookResultType, NetworkState, SuccessState} from "../engine";
 
 /**
  * Converts promise generator function to network state result.

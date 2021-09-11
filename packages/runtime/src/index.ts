@@ -17,6 +17,7 @@ export type {
   PathParams,
   PendingState,
   QueryParams,
+  MycorizaHookResultType,
 } from './engine'
 
 export {
@@ -27,10 +28,13 @@ export {
   reset,
   resolveFamily,
   networkStateReducer,
-  error
+  error,
+  POST,
+  GET,
+  PUT,
+  DELETE
 } from './engine'
 
-export type { MycorizaHookResultType } from './addons/types'
 export { useAsNetworkState } from './addons/useAsNetworkState'
 export { useDebounce } from './addons/useDebounce'
 export { useAsPromise } from './addons/useAsPromise'

@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {MycorizaHookResultType} from "./types";
+import {MycorizaHookResultType} from "../engine";
 
 /**
  * Executes the fetch call upon component load. Highly recommend using `useEager` instead if manual `useEffect` in favor of future optimizations.
