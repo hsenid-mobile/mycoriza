@@ -18,6 +18,10 @@ export type {
   PendingState,
   QueryParams,
   MycorizaHookResultType,
+  MycorizaAspect,
+  MycorizaHookPropsContent,
+  MycorizaPropsType,
+  MycorizaHookType
 } from './engine'
 
 export {
@@ -29,14 +33,17 @@ export {
   resolveFamily,
   networkStateReducer,
   error,
+  useAspects,
+  resolveProps,
   POST,
   GET,
   PUT,
   DELETE
 } from './engine'
 
-export { useAsNetworkState } from './addons/useAsNetworkState'
-export { useDebounce } from './addons/useDebounce'
-export { useAsPromise } from './addons/useAsPromise'
-export { useEager } from './addons/useEager'
-export { useWithoutPending } from './addons/useWithoutPending'
+export { useAsNetworkState } from './extensions/useAsNetworkState'
+export { debounce } from './extensions/debounce'
+export { useAsPromise } from './extensions/useAsPromise'
+export { fetchOnLoad } from './extensions/fetchOnLoad'
+export { cacheTerminalResult } from './extensions/cacheTerminalResult'
+export { cleanUpOnUnload } from './extensions/cleanUpOnUnload'

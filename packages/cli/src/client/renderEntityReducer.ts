@@ -11,7 +11,7 @@ const template = `
 /**
  * @module {{capitalizedDirName}}
  */
-import { NetworkStateFamily, MycorizaHookResultType, MycorizaHookPropsType, {{method}}, reset, resolveFamily, resolveProps, useExtensions } from "mycoriza-runtime/dist/engine";
+import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily, resolveProps } from "mycoriza-runtime";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
 {{#each imports}}
@@ -72,12 +72,11 @@ export type {{capitalizedName}}_Params = {
  *     }
  * }
  * ${"```"}
- * @param props properties to customize hook behavior.
+ * @param entityKey Unique key it isolate each response.
  */
-export function use{{capitalizedName}}(props: Partial<MycorizaHookPropsType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void>> | string = "default"): 
+export function use{{capitalizedName}}(entityKey: string = "default"): 
     MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
     let dispatch = useDispatch();
-    let {extensions, entityKey} = resolveProps(props)
 
     /**
      * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
@@ -109,11 +108,11 @@ export function use{{capitalizedName}}(props: Partial<MycorizaHookPropsType<{{re
         dispatch({{method}}(domain, entityKey, "{{url}}", {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
     }
 
-    return useExtensions([
+    return [
         resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{dirName}}.{{simpleName}})),
         execute,
         () => dispatch(reset(domain, entityKey))
-    ], extensions)
+    ]
 }
 `
 

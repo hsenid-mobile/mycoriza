@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {MycorizaExtension, MycorizaHookResultType} from "../engine";
+import {MycorizaAspect, MycorizaHookResultType} from "../engine";
 
 /**
  *
@@ -31,9 +31,9 @@ export function useDebounce<T, F extends (...args: any) => void>(data: MycorizaH
   ]
 }
 
-export function debounce<T, F extends (...args: any) => void>(delay: number): MycorizaExtension<T, F> {
+export function debounce<T, F extends (...args: any) => void>(delay: number): MycorizaAspect<T, F> {
   return {
-    useExtendedLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+    useLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
       let [params, setParams] = useState<Parameters<F>>();
       let [debouncedParams, setDebouncedParams] = useState<Parameters<F>>();
 

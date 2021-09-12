@@ -1,5 +1,4 @@
-import {MycorizaHookResultType} from "./types";
-import {NetworkState} from "../engine";
+import {MycorizaHookResultType, NetworkState} from "../engine";
 import {useState} from "react";
 
 export function useMockHook(): MycorizaHookResultType<string, (s: NetworkState<string>) => void> {

@@ -40,8 +40,8 @@ function createUrl(url: string, params: Params): string {
 }
 
 export function isPendingAction<T>(
-  action: NetworkAction<T>,
-  domain: string
+    action: NetworkAction<T>,
+    domain: string
 ): action is NetworkPendingAction<T> {
   return action.type === domain;
 }
@@ -54,8 +54,8 @@ export interface NetworkSuccessAction<T> extends NetworkAction<T> {
 }
 
 export function isSuccessAction<T>(
-  action: NetworkAction<T>,
-  domain: string
+    action: NetworkAction<T>,
+    domain: string
 ): action is NetworkSuccessAction<T> {
   return action.type === `${domain}_SUCCESS`;
 }
@@ -68,8 +68,8 @@ export interface NetworkFailAction<T> extends NetworkAction<T> {
 }
 
 export function isFailAction<T>(
-  action: NetworkAction<T>,
-  domain: string
+    action: NetworkAction<T>,
+    domain: string
 ): action is NetworkFailAction<T> {
   return action.type === `${domain}_FAIL`;
 }
@@ -204,7 +204,7 @@ function _networkStateReducer<T>(
     } else if (isFailAction(action, domain)) {
       let newState: ErrorState<T> = {
         state: "error",
-        error: action.error.data,
+        error: action.error,
         statusCode: (action.error as any)?.response?.status?.toString()
       };
       return newState;
@@ -395,12 +395,12 @@ export function resolveFamily<T>(familyKey: string, state: NetworkStateFamily<T>
   return state[familyKey] || initState()
 }
 
-export type MycorizaHookPropsType<T,  F extends (...args: any) => void> = {
+export type MycorizaHookPropsContent<T,  F extends (...args: any) => void> = {
   entityKey: string,
-  extend: MycorizaExtension<T, F>[]
+  extend: MycorizaAspect<T, F>[]
 }
 
-export function resolveProps<T,  F extends (...args: any) => void>(props?: Partial<MycorizaHookPropsType<T, F>> | string): MycorizaHookPropsType<T, F> {
+export function resolveProps<T,  F extends (...args: any) => void>(props?: MycorizaPropsType<T, F>): MycorizaHookPropsContent<T, F> {
   if (!props) {
     return {
       entityKey: 'default',
@@ -419,15 +419,19 @@ export function resolveProps<T,  F extends (...args: any) => void>(props?: Parti
 
 export type MycorizaHookResultType<T,  F extends (...args: any) => void> = [NetworkState<T>, F, () => void]
 
-export type MycorizaExtension<T,  F extends (...args: any) => void> = {
-  useExtendedLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F>
+export type MycorizaAspect<T,  F extends (...args: any) => void> = {
+  useLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F>
 }
 
-export function useExtensions<T,  F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, extensions: MycorizaExtension<T, F>[]): MycorizaHookResultType<T, F>{
+export function useAspects<T,  F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, ...extensions: MycorizaAspect<T, F>[]): MycorizaHookResultType<T, F>{
   return extensions.reduce((a, b) => ({
-    useExtendedLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
-      return b.useExtendedLogic(a.useExtendedLogic(entry))
+    useLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+      return b.useLogic(a.useLogic(entry))
     }
-  })).useExtendedLogic(data)
+  })).useLogic(data)
 }
 
+export type MycorizaPropsType<T, F extends (...args: any) => void> = Partial<MycorizaHookPropsContent<T, F>> | string;
+
+export type MycorizaHookType<T,  F extends (...args: any) => void> =
+    (props: MycorizaPropsType<T, F>) => MycorizaHookResultType<T, F>

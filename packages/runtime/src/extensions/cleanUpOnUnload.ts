@@ -1,4 +1,4 @@
-import {MycorizaExtension, MycorizaHookResultType} from "../engine";
+import {MycorizaAspect, MycorizaHookResultType} from "../engine";
 import {useEffect} from "react";
 
 /**
@@ -15,9 +15,9 @@ export function useCleanup<T, F extends (...args: any) => void>(data: MycorizaHo
 /**
  *
  */
-export function cleanUpOnUnload<T, F extends (...args: any) => void>(): MycorizaExtension<T, F> {
+export function cleanUpOnUnload<T, F extends (...args: any) => void>(): MycorizaAspect<T, F> {
   return {
-    useExtendedLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+    useLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
       useEffect(() => {
         return cleanup
       }, [])

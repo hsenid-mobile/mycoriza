@@ -1,6 +1,6 @@
 import {renderHook, act} from "@testing-library/react-hooks";
 import {useMockHook} from "./context.test";
-import {useDebounce} from "./useDebounce";
+import {useDebounce} from "./debounce";
 import {isSuccess, SuccessState} from "../engine";
 
 describe("useDebounce", () => {

@@ -1,11 +1,11 @@
 import {act, renderHook} from '@testing-library/react-hooks'
-import {useWithoutPending} from "./useWithoutPending";
+import {useCacheTerminalResult} from "./cacheTerminalResult";
 import {useMockHook} from "./context.test";
 
 describe("useWithoutPending", () => {
   it('should not render pending state if at least one terminated call is present', async function () {
 
-    let {result} = renderHook(() => useWithoutPending(useMockHook()));
+    let {result} = renderHook(() => useCacheTerminalResult(useMockHook()));
 
     expect(result.current[0].state).toBe("init")
 

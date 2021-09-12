@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {isInit, isPending, MycorizaExtension, MycorizaHookResultType, NetworkState} from "../engine";
+import {isInit, isPending, MycorizaAspect, MycorizaHookResultType, NetworkState} from "../engine";
 
 /**
  * Get rids of the intermediate pending states for a smooth transition support.
@@ -20,7 +20,7 @@ import {isInit, isPending, MycorizaExtension, MycorizaHookResultType, NetworkSta
  * }
  * ```
  */
-export function useWithoutPending<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+export function useCacheTerminalResult<T, F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
   let [value, setValue] = useState<NetworkState<T>>({state: "init"});
 
   useEffect(() => {
@@ -35,9 +35,9 @@ export function useWithoutPending<T, F extends (...args: any) => void>(data: Myc
   return [value ?? {state: "init"}, data[1], data[2]]
 }
 
-export function cached<T, F extends (...args: any) => void>(): MycorizaExtension<T, F> {
+export function cacheTerminalResult<T, F extends (...args: any) => void>(): MycorizaAspect<T, F> {
   return {
-    useExtendedLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
+    useLogic([state, fetch, cleanup]: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
       let [value, setValue] = useState<NetworkState<T>>({state: "init"});
 
       useEffect(() => {

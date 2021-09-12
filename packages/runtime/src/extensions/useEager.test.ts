@@ -1,5 +1,5 @@
 import {renderHook} from "@testing-library/react-hooks";
-import {useEager} from "./useEager";
+import {useEager} from "./fetchOnLoad";
 import {useMockHook, useMockHook2} from "./context.test";
 
 describe("useEager", () => {
