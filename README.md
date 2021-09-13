@@ -7,7 +7,7 @@
 
 # Mycoriza ![React](https://img.shields.io/badge/react-16.8%2B-blue) ![Typescript](https://img.shields.io/badge/typescript-4.4%2B-blue) ![Swagger](https://img.shields.io/badge/swagger-3%2B-blue) 
 
-Mycoriza is a `javascript library / code generator` for integrating _Rest API_ to react applications.
+Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 
 * **Painless**: Mycoriza makes the Rest API integration ridiculously easy by providing a toolset to generate more 
 react-ish, _well documented_ network layer boilerplate. This helps the developers to spend there valuable time on more important problems 

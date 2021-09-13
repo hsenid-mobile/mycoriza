@@ -21,11 +21,11 @@ the failure of the network call.
 Some of those utility functions contains additional information related to the operation. To mine out this information,
 Mycoriza provides a set of utility functions as follows
 
-### `isInit(<state>)`
+### isInit 
 
 This function checks whether the NetworkState is in init state. Usage can be listed as follows.
 
-```typescript jsx
+```jsx
 function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
@@ -35,13 +35,13 @@ function MyComponent() {
     
     return null;
 }
-```
+``` 
 
-### `isPending(<state>)`
+### isPending
 
 This function checks whether the NetworkState is in pending state. Usually the loaders can be rendered in this state.
 
-```typescript jsx
+```jsx
 function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
@@ -53,13 +53,13 @@ function MyComponent() {
 }
 ```
 
-### `isSuccess(<state>)`
+### isSuccess
 
 This function check whether the NetworkState is in success state. This state contains the result in the `data` property.
 the data property is accessible only where the 
 It can be used as follows.
 
-```typescript jsx
+```jsx
 function MyComponent() {
     const [state] = useYoutGeneratedHook()
     
@@ -73,12 +73,12 @@ function MyComponent() {
 }
 ```
 
-### `isError(<state>)`
+### isError
 
 This function check whether the NetworkState is in success state. This state contains the error in the `error` property.
 It can be used as follows.
 
-```typescript jsx
+```jsx
 function MyComponent() {
     const [state] = useYoutGeneratedHook()
 

@@ -8,7 +8,7 @@ Throughout our usage of this framework, we have identified several patterns whic
 You can explicitly return the content based on the state. This allows more control over the component rendering as each
 content to be returned is explicit.
 
-```typescript jsx
+```jsx
 import {isError, isPending, isSuccess} from "mycoriza-runtime";
 
 function MyComponent() {
@@ -35,7 +35,7 @@ function MyComponent() {
 In cases where only one of the states makes sense, it can be used as follows. In here `isSuccess()` acts as a boolean 
 result generator.
 
-```typescript jsx
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 
 function MyComponent() {
@@ -52,7 +52,7 @@ function MyComponent() {
 In some cases the data should be fetched as soon as the component is loaded. We can use `useEffect` hook to emmulate this
 functionality.
 
-```typescript jsx
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 import {useEffect} from "react";
 
@@ -75,7 +75,7 @@ In some cases the stale data may affect the future of the application flow. For 
 product page may result a flashy view of the stale product before loading the correct page. To prevent such situations, 
 the cleanup function can be used to cleanup the state.
 
-```typescript jsx
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 import {useEffect} from "react";
 
@@ -102,7 +102,7 @@ In some cases, showing a loader for intermediate data fetching is unnecessary. F
 it is weird to see a loader while searching and filter a list in a list page. To handle such scenarios
 the network state can be locally cached.
 
-```typescript jsx
+```jsx
 import {isSuccess, isPending, isError} from "mycoriza-runtime";
 import {useEffect} from "react";
 
@@ -133,7 +133,7 @@ do not pass the content as props.
 
 - Following code is too coupled (Bad)
 
-```typescript jsx 
+```jsx 
 import {isSuccess} from "mycoriza-runtime";
 
 interface ComponentAProps {
@@ -153,8 +153,8 @@ function ComponentB() {
     }
 ```
 
-- Following code is independent.
-```typescript jsx
+- Following components are independent.
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 
 //This component is independent and can be used anyware it is needed.
@@ -180,7 +180,7 @@ In some cases we need to keep different results for the same API call simultaneo
 support for this. In the generated hooks, first parameter is an entity key, by adding a unique entity key, you can keep
 different results at the same time.
 
-```typescript jsx
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 import {useEffect} from "react";
 

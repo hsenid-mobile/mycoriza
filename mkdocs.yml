@@ -1,0 +1,15 @@
+site_name: Mycoriza Documentation
+theme:
+  name: readthedocs
+markdown_extensions:
+  - fenced_code
+repo_url: https://github.com/hsenid-mobile/mycoriza
+copyright: MIT
+nav:
+  - Overview: index.md
+  - Getting Started: getting-started.md
+  - Concepts: concepts.md
+  - Migrate an existing project: migration-guide.md
+  - CLI Usage: cli-usage.md
+  - API Response Handling: network-states.md
+  - Patterns and Best Practices: patterns-and-best-practices.md

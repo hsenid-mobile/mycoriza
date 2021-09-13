@@ -42,8 +42,8 @@ export {
 } from './engine'
 
 export { useAsNetworkState } from './extensions/useAsNetworkState'
-export { debounce } from './extensions/debounce'
 export { useAsPromise } from './extensions/useAsPromise'
+export { debounce } from './extensions/debounce'
 export { fetchOnLoad } from './extensions/fetchOnLoad'
 export { cacheTerminalResult } from './extensions/cacheTerminalResult'
 export { cleanUpOnUnload } from './extensions/cleanUpOnUnload'

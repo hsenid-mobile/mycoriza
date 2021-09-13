@@ -96,7 +96,7 @@ async function getUrlAndData() {
   let urlInput = await inquirer.prompt({
     type: 'input',
     name: 'specUrl',
-    message: 'What is the swagger OpenAPI specification url?'
+    message: 'What is the OpenAPI specification url?'
   });
 
   try {

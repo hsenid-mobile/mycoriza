@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "repository": {
+    "url": "https://github.com/hsenid-mobile/mycoriza"
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
   }

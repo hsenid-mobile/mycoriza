@@ -39,7 +39,7 @@ and natural react development experience.
 
 Every generated hook follows similar syntax much similar to the `useState` hook.
 
-```typescript jsx
+```jsx
 const [state, fetchOrUpdate, clear] = useGenertedMethod(/*entityKey*/);
 ```
 
