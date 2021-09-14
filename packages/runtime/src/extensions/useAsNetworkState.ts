@@ -16,6 +16,7 @@ import {ErrorState, MycorizaHookResultType, NetworkState, SuccessState} from "..
  *       //do on error
  *     }
  *   }, [state.state])
+ *   return null;
  * }
  * ```
  */

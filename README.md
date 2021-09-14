@@ -38,6 +38,4 @@ Necessary configurations will be requested during the first code generation.
 
 ## Guides
 
-* [Core Concepts](./docs/concepts.md)
-* [A Word About Netowrk State](./docs/network-states.md)
-* [Patterns and Best Practices](./docs/patterns-and-best-practices.md)
+To learn more, please refer [ddocumentation and guides](https://hsenid-mobile.github.io/mycoriza/)

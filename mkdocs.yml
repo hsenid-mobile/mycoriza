@@ -1,8 +1,6 @@
-site_name: Mycoriza Documentation
+site_name: Mycoriza
 theme:
-  name: readthedocs
-markdown_extensions:
-  - fenced_code
+  name: material
 repo_url: https://github.com/hsenid-mobile/mycoriza
 copyright: MIT
 nav:
@@ -13,3 +11,14 @@ nav:
   - CLI Usage: cli-usage.md
   - API Response Handling: network-states.md
   - Patterns and Best Practices: patterns-and-best-practices.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - admonition
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js
+  - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/plugins/autoloader/prism-autoloader.min.js
+#  - javascripts/config.js
+extra_css:
+  - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-okaidia.css
