@@ -358,6 +358,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#interoperability" class="md-nav__link">
+    Interoperability
+  </a>
+  
+    <nav class="md-nav" aria-label="Interoperability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useasnetworkstate-hook" class="md-nav__link">
+    useAsNetworkState hook
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useaspromise-hook" class="md-nav__link">
+    useAsPromise hook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -454,6 +481,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#interoperability" class="md-nav__link">
+    Interoperability
+  </a>
+  
+    <nav class="md-nav" aria-label="Interoperability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useasnetworkstate-hook" class="md-nav__link">
+    useAsNetworkState hook
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useaspromise-hook" class="md-nav__link">
+    useAsPromise hook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -538,6 +592,47 @@ It can be used as follows.</p>
     if (isError(state)) {
         return &lt;Error/&gt;
     }
+
+    return null;
+}
+</code></pre>
+<h2 id="interoperability">Interoperability</h2>
+<p>While the <code>NetworkStates</code>s are tempting, there might be instances where you still need to use <code>Promises</code>.
+Therefore, Mycoriza provides two additional hooks to support this interoperability.</p>
+<h3 id="useasnetworkstate-hook"><code>useAsNetworkState</code> hook</h3>
+<p>Features like <code>async-storage</code> and permissions in react-native uses <code>Promise</code>. To port those features to the 
+<code>NetworkState</code>, Mycoriza provides <code>useAsNetworkState</code> hook. This hook accepts a function which provides a promise,
+and returns the regular Mycoriza hook results. The hook can be used as below.</p>
+<pre><code class="language-jsx">    function MyComponent() {
+        const [state, execute] = useAsNetworkState(() =&gt; new Promise((resolve, reject) =&gt; { ... })
+
+        useEffect(() =&gt; {
+            if(isSuccess(state)) {
+              //do on success
+            } else if (isError(state)) {
+              //do on error
+            }
+        }, [state.state])
+
+        return null;
+    }
+</code></pre>
+<h3 id="useaspromise-hook"><code>useAsPromise</code> hook</h3>
+<p>When dealing with asynchronous behaviors, most of the libraries out there requires promises. In order to support
+this functionality, Mycoriza provides <code>useAsPromise</code> hook. This hook accepts a regular Mycoriza generated hook 
+result and returns a function which creates a <code>Promise</code>.</p>
+<p>Each time the result function is called, it creates a promise and upon network sate change to terminated state, 
+the promise completes. The hook can be used as below.</p>
+<pre><code class="language-jsx">function MyComponent() {
+    const fetchData = useAsPromise(useDataAsNetworkState());
+
+    useEffect(() =&gt; {
+        fetchData().then(data =&gt; {
+          //Do on data
+        }).catch(e =&gt; {
+          //Do on error
+        })
+    }, [])
 
     return null;
 }
