@@ -55,8 +55,8 @@ function MyComponent() {
 
 ### isSuccess
 
-This function check whether the NetworkState is in success state. This state contains the result in the `data` property.
-the data property is accessible only where the 
+This function check whether the NetworkState is in success state. This state contains the result in the 
+`data` property. 
 It can be used as follows.
 
 ```jsx
@@ -86,6 +86,58 @@ function MyComponent() {
         return <Error/>
     }
 
+    return null;
+}
+```
+
+## Interoperability
+
+While the `NetworkStates`s are tempting, there might be instances where you still need to use `Promises`.
+Therefore, Mycoriza provides two additional hooks to support this interoperability.
+
+### `useAsNetworkState` hook
+
+Features like `async-storage` and permissions in react-native uses `Promise`. To port those features to the 
+`NetworkState`, Mycoriza provides `useAsNetworkState` hook. This hook accepts a function which provides a promise,
+and returns the regular Mycoriza hook results. The hook can be used as below.
+
+```jsx
+    function MyComponent() {
+        const [state, execute] = useAsNetworkState(() => new Promise((resolve, reject) => { ... })
+      
+        useEffect(() => {
+            if(isSuccess(state)) {
+              //do on success
+            } else if (isError(state)) {
+              //do on error
+            }
+        }, [state.state])
+    
+        return null;
+    }
+```
+
+### `useAsPromise` hook
+
+When dealing with asynchronous behaviors, most of the libraries out there requires promises. In order to support
+this functionality, Mycoriza provides `useAsPromise` hook. This hook accepts a regular Mycoriza generated hook 
+result and returns a function which creates a `Promise`.
+
+Each time the result function is called, it creates a promise and upon network sate change to terminated state, 
+the promise completes. The hook can be used as below.
+
+```jsx
+function MyComponent() {
+    const fetchData = useAsPromise(useDataAsNetworkState());
+  
+    useEffect(() => {
+        fetchData().then(data => {
+          //Do on data
+        }).catch(e => {
+          //Do on error
+        })
+    }, [])
+    
     return null;
 }
 ```

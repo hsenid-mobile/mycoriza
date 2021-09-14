@@ -22,6 +22,8 @@ interface PromiseCallback<T> {
  *       //Do on error
  *     })
  *   }, [])
+ *
+ *   return null
  * }
  * ```
  */

@@ -131,9 +131,10 @@ As the network state adds additional wrapper over original data, naturally devel
 and pass through the props. This leads component coupling. If you feel like your component is an **independent component**,
 do not pass the content as props.
 
-- Following code is too coupled (Bad)
+!!! warning "Coupled code"
+    Following code is too coupled
 
-```jsx 
+```jsx
 import {isSuccess} from "mycoriza-runtime";
 
 interface ComponentAProps {
@@ -149,14 +150,16 @@ function ComponentB() {
     const [state] = useYoutGeneratedHook()
     return <>
         {isSuccess(state) && <ComponentA data={state.data}/> }
-        </>
-    }
+    </>
+}
 ```
 
-- Following components are independent.
+!!! success "Independent code"
+    Following components are independent.
+
 ```jsx
 import {isSuccess} from "mycoriza-runtime";
-
+        
 //This component is independent and can be used anyware it is needed.
 function ComponentA() {
     const [state] = useYoutGeneratedHook()
@@ -165,10 +168,8 @@ function ComponentA() {
 
 function ComponentB() {
     const [state] = useYoutGeneratedHook()
-    return <>
-        {isSuccess(state) && <ComponentA/> }
-        </>
-    }
+    return <>{isSuccess(state) && <ComponentA/> }</>
+}
 ```
 
 However, if you are developing a component which is not exposed outside the module and does not have any intention of
@@ -199,3 +200,4 @@ function MyComponent() {
     </div>;
 }
 ```
+
