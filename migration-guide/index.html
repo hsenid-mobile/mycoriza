@@ -14,7 +14,7 @@
     
     
       
-        <title>API Response Handling - Mycoriza</title>
+        <title>Migrate an existing project - Mycoriza</title>
       
     
     
@@ -62,11 +62,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#a-word-about-networkstate" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -93,7 +88,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              API Response Handling
+              Migrate an existing project
             
           </span>
         </div>
@@ -246,11 +241,19 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../migration-guide/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Migrate an existing project
       </a>
+      
     </li>
   
 
@@ -276,92 +279,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          API Response Handling
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../network-states/" class="md-nav__link">
         API Response Handling
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#network-state" class="md-nav__link">
-    Network State
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#typesafe-utilities" class="md-nav__link">
-    Typesafe Utilities
-  </a>
-  
-    <nav class="md-nav" aria-label="Typesafe Utilities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#isinit" class="md-nav__link">
-    isInit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ispending" class="md-nav__link">
-    isPending
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#issuccess" class="md-nav__link">
-    isSuccess
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#iserror" class="md-nav__link">
-    isError
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -388,160 +310,19 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#network-state" class="md-nav__link">
-    Network State
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#typesafe-utilities" class="md-nav__link">
-    Typesafe Utilities
-  </a>
-  
-    <nav class="md-nav" aria-label="Typesafe Utilities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#isinit" class="md-nav__link">
-    isInit
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ispending" class="md-nav__link">
-    isPending
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#issuccess" class="md-nav__link">
-    isSuccess
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#iserror" class="md-nav__link">
-    isError
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/hsenid-mobile/mycoriza/edit/master/docs/network-states.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/hsenid-mobile/mycoriza/edit/master/docs/migration-guide.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="a-word-about-networkstate">A word about <code>NetworkState</code></h1>
-<p>By nature, the network calls are asynchronous. Therefore, in most HTTP clients, the network call
-results are modeled after the promises. The promises work well with javascript, yet in react 
-components, promises makes confusions. Mycoriza prefer states to promise, as handling state is more natural.</p>
-<h2 id="network-state">Network State</h2>
-<p>Mycoriza introduces a new generic type <code>NetworkState&lt;T&gt;</code>. It follows predefined state flow as follows.</p>
-<p><img alt="Network State diagram" src="https://kroki.io/ditaa/svg/eNq9kj0OAiEQhfs5xVxgwwU2dhZ2RltigxOzDSbAGos5vDHIMvxtKR2Pj5nh8QAAu0tNv6WhI07TgRFPdgmIPGdVwiyq6QQoIfIARrw1yg783fHxTWYNtAdfyFPgYeXtuLz6quDIDYbJpg0nV8LAM9n7Yh_ZQF3BjOldwsAkcQNXnpRz_xW-rsaQ9_FrnHu6Bm6tqio3AeSt6izCpItExl6pRzd12I0lwAcHqpJr" /></p>
-<ul>
-<li><strong>Init</strong>: This state means that the network call is not yet initiated. </li>
-<li><strong>Pending</strong>: Upon initiating the call, the <code>NetworkState</code> moves to <code>Pending</code> state. Loaders can be rendered within this state</li>
-<li><strong>Success</strong>: <code>NetworkState</code> moves to this state upon a successful completion of the network call. This state contains a
-a property called <code>data</code> which contains the result of the execution.</li>
-<li><strong>Error</strong>: <code>NetworkState</code> moves to this state upon a failure of the network call. This state contains the metadata about 
-the failure of the network call.</li>
-</ul>
-<h2 id="typesafe-utilities">Typesafe Utilities</h2>
-<p>Some of those utility functions contains additional information related to the operation. To mine out this information,
-Mycoriza provides a set of utility functions as follows</p>
-<h3 id="isinit">isInit</h3>
-<p>This function checks whether the NetworkState is in init state. Usage can be listed as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    if (isInit(state)) {
-        return &lt;InitStateContent/&gt;
-    }
-
-    return null;
-}
-</code></pre>
-<h3 id="ispending">isPending</h3>
-<p>This function checks whether the NetworkState is in pending state. Usually the loaders can be rendered in this state.</p>
-<pre><code class="language-jsx">function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    if (isPending(state)) {
-        return &lt;Loader/&gt;
-    }
-
-    return null;
-}
-</code></pre>
-<h3 id="issuccess">isSuccess</h3>
-<p>This function check whether the NetworkState is in success state. This state contains the result in the 
-<code>data</code> property. 
-It can be used as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    // Following code fails as state is not confirmed to be in Success state.
-    console.log(state.data)
-    if (isSuccess(state)) {
-        return &lt;SuccessContent/&gt;
-    }
-
-    return null;
-}
-</code></pre>
-<h3 id="iserror">isError</h3>
-<p>This function check whether the NetworkState is in success state. This state contains the error in the <code>error</code> property.
-It can be used as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    if (isError(state)) {
-        return &lt;Error/&gt;
-    }
-
-    return null;
-}
-</code></pre>
+                  <h1>Migrate an existing project</h1>
+                
+                
                 
               
               
@@ -561,7 +342,7 @@ It can be used as follows.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../cli-usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CLI Usage" rel="prev">
+        <a href="../concepts/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Concepts" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -570,20 +351,20 @@ It can be used as follows.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              CLI Usage
+              Concepts
             </div>
           </div>
         </a>
       
       
         
-        <a href="../patterns-and-best-practices/" class="md-footer__link md-footer__link--next" aria-label="Next: Patterns and Best Practices" rel="next">
+        <a href="../cli-usage/" class="md-footer__link md-footer__link--next" aria-label="Next: CLI Usage" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Patterns and Best Practices
+              CLI Usage
             </div>
           </div>
           <div class="md-footer__button md-icon">
