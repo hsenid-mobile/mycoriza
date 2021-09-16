@@ -38,4 +38,4 @@ Necessary configurations will be requested during the first code generation.
 
 ## Guides
 
-To learn more, please refer [ddocumentation and guides](https://hsenid-mobile.github.io/mycoriza/)
+To learn more, please refer [documentation and guides](https://hsenid-mobile.github.io/mycoriza/)

@@ -8,7 +8,7 @@ export interface NetworkPendingAction<T> extends NetworkAction<T> {
   readonly type: string;
   readonly payload: {
     request: {
-      method: "get" | "post";
+      method: "get" | "post" | "put" | "delete";
       url: string;
       data?: any;
       headers?: any
@@ -232,37 +232,53 @@ export interface NetworkFamilyPendingAction<T> extends NetworkFamilyAction<T> {
   };
 }
 
+export function pendingKey(domain: string, entityKey: string) {
+  return `${domain}:${entityKey}`;
+}
+
+export function successKey(domain: string, entityKey: string) {
+  return `${domain}_SUCCESS:${entityKey}`;
+}
+
+export function errorKey(domain: string, entityKey: string) {
+  return `${domain}_FAIL:${entityKey}`;
+}
+
+export function resetKey(domain: string, entityKey: string) {
+  return `${domain}_RESET:${entityKey}`;
+}
+
 /**
  * Issues a get request for the given url.
  * @param domain unique key to identify the call
- * @param familyKey
+ * @param entityKey
  * @param url rest endpoint
  * @param params query and path parameters for the request.
  * @constructor
  */
 export function GET<Resp>(
   domain: string,
-  familyKey: string,
+  entityKey: string,
   url: string,
   params: Params = {}
 ): NetworkFamilyPendingAction<Resp> {
   return {
     type: undefined,
-    types: [`${domain}:${familyKey}`, `${domain}_SUCCESS:${familyKey}`, `${domain}_FAIL:${familyKey}`],
+    types: [pendingKey(domain, entityKey), successKey(domain, entityKey), errorKey(domain, entityKey)],
     payload: {
       request: {
         method: "get",
         url: createUrl(url, params),
       },
     },
-    family: familyKey
+    family: entityKey
   };
 }
 
 /**
  * Issues a post request for the given url.
  * @param domain unique key to identify the call
- * @param familyKey
+ * @param entityKey
  * @param url rest endpoint
  * @param body request body
  * @param params query and path parameters for the request.
@@ -270,14 +286,14 @@ export function GET<Resp>(
  */
 export function POST<Req, Resp>(
   domain: string,
-  familyKey: string,
+  entityKey: string,
   url: string,
   body: Req,
   params: Params = {}
 ): NetworkFamilyPendingAction<Resp> {
   return {
     type: undefined,
-    types: [`${domain}:${familyKey}`, `${domain}_SUCCESS:${familyKey}`, `${domain}_FAIL:${familyKey}`],
+    types: [pendingKey(domain, entityKey), successKey(domain, entityKey), errorKey(domain, entityKey)],
     payload: {
       request: {
         url: createUrl(url, params),
@@ -285,14 +301,14 @@ export function POST<Req, Resp>(
         data: body,
       },
     },
-    family: familyKey
+    family: entityKey
   };
 }
 
 /**
  * Issues a put request for the given url.
  * @param domain unique key to identify the call
- * @param familyKey
+ * @param entityKey
  * @param url rest endpoint
  * @param body request body
  * @param params query and path parameters for the request.
@@ -300,49 +316,49 @@ export function POST<Req, Resp>(
  */
 export function PUT<Req, Resp>(
   domain: string,
-  familyKey: string,
+  entityKey: string,
   url: string,
   body: Req,
   params: Params = {}
 ): NetworkFamilyPendingAction<Resp> {
   return {
     type: undefined,
-    types: [`${domain}:${familyKey}`, `${domain}_SUCCESS:${familyKey}`, `${domain}_FAIL:${familyKey}`],
+    types: [pendingKey(domain, entityKey), successKey(domain, entityKey), errorKey(domain, entityKey)],
     payload: {
       request: {
         url: createUrl(url, params),
-        method: "post",
+        method: "put",
         data: body,
       },
     },
-    family: familyKey
+    family: entityKey
   };
 }
 
 /**
  * Issues a dlete request for the given url.
  * @param domain unique key to identify the call
- * @param familyKey
+ * @param entityKey
  * @param url rest endpoint
  * @param params query and path parameters for the request.
  * @constructor
  */
 export function DELETE<Resp>(
   domain: string,
-  familyKey: string,
+  entityKey: string,
   url: string,
   params: Params = {}
 ): NetworkFamilyPendingAction<Resp> {
   return {
     type: undefined,
-    types: [`${domain}:${familyKey}`, `${domain}_SUCCESS:${familyKey}`, `${domain}_FAIL:${familyKey}`],
+    types: [pendingKey(domain, entityKey), successKey(domain, entityKey), errorKey(domain, entityKey)],
     payload: {
       request: {
         method: "delete",
         url: createUrl(url, params),
       },
     },
-    family: familyKey
+    family: entityKey
   };
 }
 
@@ -353,12 +369,12 @@ export interface NetworkFamilyResetAction<T> extends NetworkFamilyAction<T> {
 /**
  * Reset network state to init. Can be used as the cleanup.
  * @param domain unique key to identify the call
- * @param familyKey
+ * @param entityKey
  */
-export function reset<Resp>(domain: string, familyKey: string): NetworkFamilyResetAction<Resp> {
+export function reset<Resp>(domain: string, entityKey: string): NetworkFamilyResetAction<Resp> {
   return {
-    family: familyKey,
-    type: `${domain}_RESET:${familyKey}`
+    family: entityKey,
+    type: resetKey(domain, entityKey)
   }
 }
 
@@ -388,11 +404,11 @@ export function networkStateReducer<T>(domain: string): Reducer<NetworkStateFami
 
 /**
  * Unwraps network family to individual <code>NetworkState</code>
- * @param familyKey
+ * @param entityKey
  * @param state
  */
-export function resolveFamily<T>(familyKey: string, state: NetworkStateFamily<T>): NetworkState<T> {
-  return state[familyKey] || initState()
+export function resolveFamily<T>(entityKey: string, state: NetworkStateFamily<T>): NetworkState<T> {
+  return state[entityKey] || initState()
 }
 
 export type MycorizaHookPropsContent<T,  F extends (...args: any) => void> = {

@@ -11,7 +11,7 @@ const template = `
 /**
  * @module {{capitalizedDirName}}
  */
-import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily, resolveProps } from "mycoriza-runtime";
+import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
 import {useDispatch, useSelector} from "react-redux";
 import {MycorizaState} from "../index";
 {{#each imports}}
@@ -116,6 +116,51 @@ export function use{{capitalizedName}}(entityKey: string = "default"):
 }
 `
 
+const testTemplate = `
+/**
+ * @module test/{{capitalizedDirName}}
+ */
+import { TypedHookStub } from "mycoriza-runtime";
+import {MycorizaState} from "../index";
+{{#each imports}}
+import { {{this}} } from '../../models/{{this}}';
+{{/each}}
+
+/**
+ * Stub for {{capitalizedName}}. This can be used with <code>testStore</code>
+ * @example
+ * \`\`\`typescript
+ * import {render} from "@testing-library/react";
+ * import {testStore} from "mycoriza-runtime";
+ * import {rootState} from "./store/store"; //Fix the import
+ * import {Provider} from "react-redux";
+ * import { stubFor{{capitalizedName}} } from "./api/reducers/{{dirName}}/{{simpleName}}.test"; //Fix the import
+ *
+ * describe("MyComponent", () => {
+ *   it('should work as expected', function () {
+ *     let {{simpleName}}Stub = stubFor{{capitalizedName}}();
+ *
+ *     render(<Provider store={testStore({
+ *       rootReducer: rootState,
+ *       stubs:[{{simpleName}}Stub]})
+ *     } >
+ *       <MyComponent/>
+ *     </Provider>);
+ *
+ *     //Write your test code here.
+ *   });
+ * })
+ * \`\`\`
+ */
+export function stubFor{{capitalizedName}}(): TypedHookStub<MycorizaState<unknown>, {{returnType}}> {
+    return new TypedHookStub<MycorizaState<unknown>, {{returnType}}>("@mycoriza/{{dirName}}/{{simpleName}}", (state: MycorizaState<any>) => state.{{dirName}}.{{simpleName}})
+}
+
+it('Mock test for stubFor{{capitalizedName}}', () => {
+    //Mock test for {{capitalizedName}} stub.
+})
+`
+
 export interface HookInfo {
     name: string
     path: string
@@ -145,7 +190,8 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
     } : undefined
 
     let imports = new Set([shouldImport && typeName, requestBodyType?.shouldImport && requestBodyType?.typeName].filter(a => !!a).map(a => a.replace('[]', '')));
-    let content = Handlebars.compile(template)({
+
+    let context = {
         method: op.method.toUpperCase(),
         dirName: directory,
         capitalizedDirName: camelcase(directory, {pascalCase: true}),
@@ -173,12 +219,17 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
             parameterInfo && `params`
         ].filter(a => !!a),
         imports: imports
-    });
+    };
 
+    let content = Handlebars.compile(template)(context);
     if (fs.existsSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`)) {
         fs.unlinkSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`)
     }
+
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`, content)
+
+    let testContent = Handlebars.compile(testTemplate)(context);
+    fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.test.ts`, testContent)
 
     return {
         name: `use${camelcase(operation.operationId, {pascalCase: true})}`,

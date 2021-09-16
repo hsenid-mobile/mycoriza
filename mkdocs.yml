@@ -1,16 +1,29 @@
 site_name: Mycoriza
 theme:
   name: material
+  features:
+    - header.autohide
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
 repo_url: https://github.com/hsenid-mobile/mycoriza
+edit_uri: ""
 copyright: MIT
 nav:
   - Overview: index.md
   - Getting Started: getting-started.md
-  - Concepts: concepts.md
   - Migrate an existing project: migration-guide.md
-  - CLI Usage: cli-usage.md
+  - Concepts: concepts.md
   - API Response Handling: network-states.md
+  - CLI Usage: cli-usage.md
   - Patterns and Best Practices: patterns-and-best-practices.md
+#  - Testing components: how-to-test.md
 
 markdown_extensions:
   - pymdownx.highlight
@@ -22,3 +35,6 @@ extra_javascript:
 #  - javascripts/config.js
 extra_css:
   - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-okaidia.css
+
+extra:
+  generator: false

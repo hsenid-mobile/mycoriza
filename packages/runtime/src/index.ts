@@ -47,3 +47,6 @@ export { debounce } from './extensions/debounce'
 export { fetchOnLoad } from './extensions/fetchOnLoad'
 export { cacheTerminalResult } from './extensions/cacheTerminalResult'
 export { cleanUpOnUnload } from './extensions/cleanUpOnUnload'
+
+export {testStore, TypedHookStub} from './TestEnvironment'
+export type {HookStub} from './TestEnvironment'
