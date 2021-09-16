@@ -23,7 +23,7 @@ nav:
   - API Response Handling: network-states.md
   - CLI Usage: cli-usage.md
   - Patterns and Best Practices: patterns-and-best-practices.md
-#  - Testing components: how-to-test.md
+  - Testing components: how-to-test.md
 
 markdown_extensions:
   - pymdownx.highlight
