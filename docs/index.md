@@ -1,5 +1,5 @@
 <p align="center" style="margin-top: 5em">
-    <img src="./assets/logo.png" width="150"/>
+    <img src="./assets/logo2.png" width="150"/>
     <h1 style="text-align: center"><b>mycoriza</b></h1>
 </p>
 

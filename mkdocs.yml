@@ -1,7 +1,8 @@
 site_name: Mycoriza
 theme:
   name: material
-  logo: assets/logo-white.png
+  logo: assets/logo2-white.png
+  favicon: assets/logo2.png
   features:
     - header.autohide
     - navigation.sections
