@@ -6,7 +6,12 @@
     
      -- <cite>J. Dighton, in Encyclopedia of Microbiology (Third Edition), 2009</cite>
 
-# Mycoriza.
+
+
+<p align="center" style="margin-top: 5em">
+    <img src="./assets/logo.png" width="150"/>
+    <h1 style="text-align: center"><b>mycoriza</b></h1>
+</p>
 
 Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 
