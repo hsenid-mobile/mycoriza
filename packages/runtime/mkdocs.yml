@@ -1,0 +1,20 @@
+site_name: Mycoriza-Runtime
+theme:
+  name: material
+  features:
+    - header.autohide
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+repo_url: https://github.com/hsenid-mobile/mycoriza
+edit_uri: ""
+copyright: MIT
+
+nav:
+  Documentation: 'README.md'

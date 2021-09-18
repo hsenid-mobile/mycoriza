@@ -10,15 +10,13 @@
 
 Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 
-* **Painless**: Mycoriza makes the Rest API integration ridiculously easy by providing a toolset to generate more
-  react-ish, _well documented_ network layer boilerplate. This helps the developers to spend there valuable time on more important problems
-  than network integration.
+!!! card "Painless" 
+    _Mycoriza makes the Rest API integration ridiculously easy and helps the developers to spend there valuable time on more important problems
+    than network integration._
 
+!!! card "Explicit"
+    _Mycoriza prefers State based approach to Promise handling, which is natural to react._
 
-* **Explicit**: In react applications, classic way of handling the asynchronous behavior is often confusing and requires more
-  effort in maintaining. Mycoriza incorporates more explicit approach by modeling the promises as states, and provides
-  the necessary tools to mine information in typesafe manner.
-
-
-* **Safe**: Mycoriza ensures the type-safety through strong `typescript` support and integration-safety through easy
-  and typesafe API client generation.
+!!! card "Safe"
+    _Mycoriza ensures the type-safety through strong `typescript` support and integration-safety through easy
+    and typesafe API client generation._

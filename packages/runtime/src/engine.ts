@@ -1,9 +1,18 @@
+/**
+ * @module core
+ */
 import {Action, Reducer} from "redux";
 import format from "string-format";
 
+/**
+ * @ignore
+ */
 // @ts-ignore
 export interface NetworkAction<T> extends Action {}
 
+/**
+ * @ignore
+ */
 export interface NetworkPendingAction<T> extends NetworkAction<T> {
   readonly type: string;
   readonly payload: {
@@ -16,18 +25,30 @@ export interface NetworkPendingAction<T> extends NetworkAction<T> {
   };
 }
 
+/**
+ * @ignore
+ */
 export interface PathParams {
   [key: string]: any
 }
 
+/**
+ * @ignore
+ */
 export interface QueryParams {
   [key: string]: any
 }
 
+/**
+ * @ignore
+ */
 export interface Headers {
   [key: string]: any
 }
 
+/**
+ * @ignore
+ */
 export interface Params {
   path?: PathParams
   query?: QueryParams,
@@ -39,6 +60,9 @@ function createUrl(url: string, params: Params): string {
   return `${format(url, params.path ?? {})}${queryString ? `?${encodeURIComponent(queryString)}` : ""}`
 }
 
+/**
+ * @ignore
+ */
 export function isPendingAction<T>(
     action: NetworkAction<T>,
     domain: string
@@ -46,6 +70,9 @@ export function isPendingAction<T>(
   return action.type === domain;
 }
 
+/**
+ * @ignore
+ */
 export interface NetworkSuccessAction<T> extends NetworkAction<T> {
   readonly type: string;
   readonly payload: {
@@ -53,6 +80,9 @@ export interface NetworkSuccessAction<T> extends NetworkAction<T> {
   };
 }
 
+/**
+ * @ignore
+ */
 export function isSuccessAction<T>(
     action: NetworkAction<T>,
     domain: string
@@ -60,6 +90,9 @@ export function isSuccessAction<T>(
   return action.type === `${domain}_SUCCESS`;
 }
 
+/**
+ * @ignore
+ */
 export interface NetworkFailAction<T> extends NetworkAction<T> {
   readonly type: string;
   readonly error: {
@@ -67,6 +100,9 @@ export interface NetworkFailAction<T> extends NetworkAction<T> {
   };
 }
 
+/**
+ * @ignore
+ */
 export function isFailAction<T>(
     action: NetworkAction<T>,
     domain: string
@@ -165,14 +201,24 @@ export function isError<T>(state: NetworkState<T>): state is ErrorState<T> {
   return state.state === "error";
 }
 
+/**
+ * @ignore
+ * Resets the network state to init
+ */
 export interface NetworkResetAction<T> extends NetworkAction<T> {
   readonly type: string
 }
 
+/**
+ * @ignore
+ */
 export function isResetAction<T>(action: NetworkAction<T>, domain: string): action is NetworkResetAction<any> {
   return action.type == `${domain}_RESET`
 }
 
+/**
+ * @ignore
+ */
 export function error<T>(domain: string, error: any): NetworkFailAction<T> {
   return {
     type: domain,
@@ -216,11 +262,17 @@ function _networkStateReducer<T>(
   };
 }
 
+/**
+ * @ignore
+ */
 // @ts-ignore
 export interface NetworkFamilyAction<T> extends Action {
   readonly family: string
 }
 
+/**
+ * @ignore
+ */
 export interface NetworkFamilyPendingAction<T> extends NetworkFamilyAction<T> {
   readonly types: [string, string, string]
   readonly payload: {
@@ -232,18 +284,30 @@ export interface NetworkFamilyPendingAction<T> extends NetworkFamilyAction<T> {
   };
 }
 
+/**
+ * @ignore
+ */
 export function pendingKey(domain: string, entityKey: string) {
   return `${domain}:${entityKey}`;
 }
 
+/**
+ * @ignore
+ */
 export function successKey(domain: string, entityKey: string) {
   return `${domain}_SUCCESS:${entityKey}`;
 }
 
+/**
+ * @ignore
+ */
 export function errorKey(domain: string, entityKey: string) {
   return `${domain}_FAIL:${entityKey}`;
 }
 
+/**
+ * @ignore
+ */
 export function resetKey(domain: string, entityKey: string) {
   return `${domain}_RESET:${entityKey}`;
 }
@@ -255,6 +319,8 @@ export function resetKey(domain: string, entityKey: string) {
  * @param url rest endpoint
  * @param params query and path parameters for the request.
  * @constructor
+ *
+ * @ignore
  */
 export function GET<Resp>(
   domain: string,
@@ -283,6 +349,8 @@ export function GET<Resp>(
  * @param body request body
  * @param params query and path parameters for the request.
  * @constructor
+ *
+ * @ignore
  */
 export function POST<Req, Resp>(
   domain: string,
@@ -313,6 +381,8 @@ export function POST<Req, Resp>(
  * @param body request body
  * @param params query and path parameters for the request.
  * @constructor
+ *
+ * @ignore
  */
 export function PUT<Req, Resp>(
   domain: string,
@@ -342,6 +412,8 @@ export function PUT<Req, Resp>(
  * @param url rest endpoint
  * @param params query and path parameters for the request.
  * @constructor
+ *
+ * @ignore
  */
 export function DELETE<Resp>(
   domain: string,
@@ -362,11 +434,15 @@ export function DELETE<Resp>(
   };
 }
 
+/**
+ * @ignore
+ */
 export interface NetworkFamilyResetAction<T> extends NetworkFamilyAction<T> {
   readonly type: string;
 }
 
 /**
+ * @ignore
  * Reset network state to init. Can be used as the cleanup.
  * @param domain unique key to identify the call
  * @param entityKey
@@ -378,6 +454,9 @@ export function reset<Resp>(domain: string, entityKey: string): NetworkFamilyRes
   }
 }
 
+/**
+ * @ignore
+ */
 export interface NetworkStateFamily<T> {
   [k: string]: NetworkState<T>
 }
@@ -385,6 +464,8 @@ export interface NetworkStateFamily<T> {
 /**
  * Creates a redux reducer executing a network call.
  * @param domain unique key to identify the call
+ *
+ * @ignore
  */
 export function networkStateReducer<T>(domain: string): Reducer<NetworkStateFamily<T>, NetworkFamilyAction<T>> {
   let reducer = _networkStateReducer<T>(domain);
@@ -406,39 +487,28 @@ export function networkStateReducer<T>(domain: string): Reducer<NetworkStateFami
  * Unwraps network family to individual <code>NetworkState</code>
  * @param entityKey
  * @param state
+ * @ignore
  */
 export function resolveFamily<T>(entityKey: string, state: NetworkStateFamily<T>): NetworkState<T> {
   return state[entityKey] || initState()
 }
 
-export type MycorizaHookPropsContent<T,  F extends (...args: any) => void> = {
-  entityKey: string,
-  extend: MycorizaAspect<T, F>[]
-}
-
-export function resolveProps<T,  F extends (...args: any) => void>(props?: MycorizaPropsType<T, F>): MycorizaHookPropsContent<T, F> {
-  if (!props) {
-    return {
-      entityKey: 'default',
-      extend: []
-    }
-  } else if (typeof props === "string") {
-    return {
-      entityKey: props,
-      extend: []
-    }
-  } else return {
-    entityKey: props.entityKey ?? 'default',
-    extend: props.extend ?? []
-  };
-}
-
+/**
+ * @ignore
+ * Result type for the mycoriza hook
+ */
 export type MycorizaHookResultType<T,  F extends (...args: any) => void> = [NetworkState<T>, F, () => void]
 
+/**
+ * @ignore
+ */
 export type MycorizaAspect<T,  F extends (...args: any) => void> = {
   useLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F>
 }
 
+/**
+ * @ignore
+ */
 export function useAspects<T,  F extends (...args: any) => void>(data: MycorizaHookResultType<T, F>, ...extensions: MycorizaAspect<T, F>[]): MycorizaHookResultType<T, F>{
   return extensions.reduce((a, b) => ({
     useLogic(entry: MycorizaHookResultType<T, F>): MycorizaHookResultType<T, F> {
@@ -447,7 +517,3 @@ export function useAspects<T,  F extends (...args: any) => void>(data: MycorizaH
   })).useLogic(data)
 }
 
-export type MycorizaPropsType<T, F extends (...args: any) => void> = Partial<MycorizaHookPropsContent<T, F>> | string;
-
-export type MycorizaHookType<T,  F extends (...args: any) => void> =
-    (props: MycorizaPropsType<T, F>) => MycorizaHookResultType<T, F>

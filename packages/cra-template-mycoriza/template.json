@@ -19,11 +19,12 @@
     },
     "devDependencies": {
       "rimraf": "^3.0.2",
+      "mycoriza-cli": "^0.0.7",
       "typedoc": "^0.21.9",
       "typedoc-plugin-merge-modules": "^3.0.1"
     },
     "scripts": {
-      "updateApi": "npx mycoriza-cli generate:api && yarn updateDocs",
+      "updateApi": "mycoriza generate:api && yarn updateDocs",
       "updateDocs": "yarn rimraf ./docs/api && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ./src/api"
     }
   }

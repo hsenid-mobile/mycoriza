@@ -5,7 +5,7 @@
 >
 > -- <cite>J. Dighton, in Encyclopedia of Microbiology (Third Edition), 2009</cite>
 
-# Mycoriza ![React](https://img.shields.io/badge/react-16.8%2B-blue) ![Typescript](https://img.shields.io/badge/typescript-4.4%2B-blue) ![Swagger](https://img.shields.io/badge/swagger-3%2B-blue) 
+# Mycoriza ![React](https://img.shields.io/badge/react-16.8%2B-blue) ![Typescript](https://img.shields.io/badge/typescript-4.4%2B-blue) ![Swagger](https://img.shields.io/badge/swagger-3%2B-blue)
 
 Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 

@@ -1,0 +1,19 @@
+
+
+.md-typeset .admonition.card,
+.md-typeset details.card {
+    border-color: rgb(64, 81, 180);
+    width: 30%;
+    margin-right: 3.3%;
+    float: left;
+    min-height: 15em;
+}
+.md-typeset .card > .admonition-title,
+.md-typeset .card > summary {
+    background-color: rgba(64, 81, 180, 0.08);
+    border-color: rgb(64, 81, 180);
+}
+.md-typeset .card > .admonition-title::before,
+.md-typeset .card > summary::before {
+    background-color: rgb(64, 81, 180);
+}

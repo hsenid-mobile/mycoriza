@@ -1,0 +1,9 @@
+{
+  "exclude": "src/extensions/**",
+  "excludeNotDocumented": false,
+  "excludeExternals": false,
+  "pretty": true,
+  "name": "Mycoriza Runtime",
+  "out": "./docs"
+}
+

@@ -1,8 +1,10 @@
 site_name: Mycoriza
 theme:
   name: material
+  logo: assets/logo-white.png
   features:
     - header.autohide
+    - navigation.sections
   palette:
     - scheme: default
       toggle:
@@ -12,22 +14,28 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
+  icon:
+    admonition:
+      card: fontawesome/solid/sticky-note
 repo_url: https://github.com/hsenid-mobile/mycoriza
 edit_uri: ""
 copyright: MIT
-nav:
+pages:
   - Overview: index.md
-  - Getting Started: getting-started.md
-  - Migrate an existing project: migration-guide.md
-  - Concepts: concepts.md
-  - API Response Handling: network-states.md
-  - CLI Usage: cli-usage.md
-  - Patterns and Best Practices: patterns-and-best-practices.md
-  - Testing components: how-to-test.md
+  - Guides:
+    - Getting Started: getting-started.md
+    - Migrate an existing project: migration-guide.md
+    - API Response Handling: network-states.md
+    - Patterns and Best Practices: patterns-and-best-practices.md
+    - CLI Usage: cli-usage.md
+    - Testing Components: how-to-test.md
+  - Concepts:
+    - Basic Concepts: concepts.md
 
 markdown_extensions:
   - pymdownx.highlight
   - admonition
+  - attr_list
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js
@@ -35,6 +43,7 @@ extra_javascript:
 #  - javascripts/config.js
 extra_css:
   - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-okaidia.css
+  - stylesheets/extra.css
 
 extra:
   generator: false

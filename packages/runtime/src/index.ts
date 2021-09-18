@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 export type {
   NetworkState,
   NetworkPendingAction,
@@ -19,9 +22,6 @@ export type {
   QueryParams,
   MycorizaHookResultType,
   MycorizaAspect,
-  MycorizaHookPropsContent,
-  MycorizaPropsType,
-  MycorizaHookType
 } from './engine'
 
 export {
@@ -34,7 +34,6 @@ export {
   networkStateReducer,
   error,
   useAspects,
-  resolveProps,
   POST,
   GET,
   PUT,
