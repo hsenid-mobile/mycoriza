@@ -1,4 +1,6 @@
-
+.admonition.cite p:not(:first-child) {
+    font-size: 1.2em;
+}
 
 .md-typeset .admonition.card,
 .md-typeset details.card {
