@@ -1,6 +1,12 @@
-<p align="center" style="margin-top: 5em">
+---
+hide:
+    - navigation
+    - toc
+---
+
+<p align="center" style="">
     <img src="./assets/logo2.png" width="150"/>
-    <h1 style="text-align: center"><b>mycoriza</b></h1>
+    <h1 style="text-align: center; color: #7840b5"><b>mycoriza</b></h1>
 </p>
 
 !!! cite "Mycorrhizae"
@@ -14,7 +20,10 @@
 ## 
 Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 
-## Features
+<div align="center">
+    <a class="md-button md-button--primary" href="/getting-started/" >Getting Started</a>
+</div>
+
 !!! card "Painless" 
     _Mycoriza makes the Rest API integration ridiculously easy and helps the developers to spend there valuable time on more important problems
     than network integration._

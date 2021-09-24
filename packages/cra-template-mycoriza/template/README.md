@@ -1,6 +1,7 @@
 # Getting Started with Create React App + Mycoriza
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![create-react-app](https://img.shields.io/badge/botstrapped%20with-create--react--app-brightgreen)](https://github.com/facebook/create-react-app).
+[![mycoriza](https://img.shields.io/badge/enhanced%20with-mycoriza-7840b5)](https://hsenid-mobile.github.io/mycoriza/)
 
 ## Available Scripts
 

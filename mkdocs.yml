@@ -9,11 +9,12 @@ theme:
   palette:
     - scheme: default
       toggle:
-        icon: material/weather-night
+        icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - scheme: slate
+      primary: green
       toggle:
-        icon: material/weather-sunny
+        icon: material/toggle-switch
         name: Switch to light mode
   icon:
     admonition:
@@ -37,6 +38,7 @@ markdown_extensions:
   - pymdownx.highlight
   - admonition
   - attr_list
+  - meta
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js
