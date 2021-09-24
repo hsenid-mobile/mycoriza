@@ -55,9 +55,13 @@ export interface Params {
   headers?: Headers
 }
 
-function createUrl(url: string, params: Params): string {
+export function createUrl(url: string, params: Params): string {
   let queryString: string | undefined = !!params.query ? Object.entries(params.query).map(([key,value]) => `${key}=${encodeURIComponent(value)}`).join('&') : undefined
-  return `${format(url, params.path ?? {})}${queryString ? `?${encodeURIComponent(queryString)}` : ""}`
+  let path = {...params.path};
+  for (let pathKey in path) {
+    path[pathKey] = encodeURIComponent(path[pathKey])
+  }
+  return `${format(url, path ?? {})}${queryString ? `?${queryString}` : ""}`
 }
 
 /**
