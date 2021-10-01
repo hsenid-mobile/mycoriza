@@ -21,7 +21,7 @@
 }
 
 .quote {
-    background-color: lightgreen;
+    background-color: rgba(64, 238, 64, 0.35);
     padding: 20px;
     box-shadow: rgba(98, 98, 98, 0.15) 10px 10px 10px;
     border-radius: 2px;
