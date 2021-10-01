@@ -4,7 +4,7 @@
 
 .md-typeset .admonition.card,
 .md-typeset details.card {
-    border-color: rgb(64, 81, 180);
+    border-color: rgb(143, 237, 143);
     width: 30%;
     margin-right: 3.3%;
     float: left;
@@ -12,10 +12,28 @@
 }
 .md-typeset .card > .admonition-title,
 .md-typeset .card > summary {
-    background-color: rgba(64, 81, 180, 0.08);
-    border-color: rgb(64, 81, 180);
+    background-color: rgba(46, 232, 46, 0.4);
+    border-color: rgb(82, 231, 82);
 }
 .md-typeset .card > .admonition-title::before,
 .md-typeset .card > summary::before {
-    background-color: rgb(64, 81, 180);
+    background-color: rgb(82, 231, 82);
+}
+
+.quote {
+    background-color: lightgreen;
+    padding: 20px;
+    box-shadow: rgba(98, 98, 98, 0.15) 10px 10px 10px;
+    border-radius: 2px;
+}
+.quote-content::before {
+    content: "\201C";
+    font-size: 200%;
+    line-height: 50%;
+}
+
+.quote-end::before {
+    content: "\201D";
+    font-size: 200%;
+    line-height: 50%;
 }
