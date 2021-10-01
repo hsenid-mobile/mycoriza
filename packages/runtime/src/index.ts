@@ -33,7 +33,7 @@ export {
   resolveFamily,
   networkStateReducer,
   error,
-  useAspects,
+  // useAspects,
   POST,
   GET,
   PUT,
@@ -42,11 +42,12 @@ export {
 
 export { useAsNetworkState } from './extensions/useAsNetworkState'
 export { useAsPromise } from './extensions/useAsPromise'
-export { debounce } from './extensions/debounce'
-export { fetchOnLoad } from './extensions/fetchOnLoad'
-export { cacheTerminalResult } from './extensions/cacheTerminalResult'
-export { cleanUpOnUnload } from './extensions/cleanUpOnUnload'
 export { useAsNullable } from './extensions/useAsNullable'
+
+// export { debounce } from './extensions/debounce'
+// export { fetchOnLoad } from './extensions/fetchOnLoad'
+// export { cacheTerminalResult } from './extensions/cacheTerminalResult'
+// export { cleanUpOnUnload } from './extensions/cleanUpOnUnload'
 
 export {testStore, TypedHookStub} from './TestEnvironment'
 export type {HookStub} from './TestEnvironment'
