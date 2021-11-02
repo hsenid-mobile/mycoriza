@@ -1,13 +1,9 @@
 {
   "name": "cra-template-mycoriza",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "keywords": [
-    "react",
-    "create-react-app",
-    "template",
-    "typescript",
-    "swagger",
-    "boilerplate-generation"
+    "cra-template",
+    "react"
   ],
   "description": "The Mycoriza template for Create React App",
   "files": [

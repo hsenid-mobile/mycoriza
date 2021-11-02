@@ -9,19 +9,23 @@ hide:
     <h1 style="text-align: center; color: #7840b5"><b>mycoriza</b></h1>
 </p>
 
-!!! cite "Mycorrhizae"
-    _**Mycorrhizae** are a **symbiotic association between plant roots and fungi**.
+
+<div class="quote">
+    <div class="quote-content">
+    <i><b><i>Mycorrhizae</i></b> are a <b>symbiotic association between plant roots and fungi</b>.
     Their major role is to enhance nutrient and water uptake by the host plant
     by exploiting a larger volume of soil than roots alone can do. Mycorrhizae
-    come in a number of forms, dependent upon both host plant and fungal taxonomy._
-
+    come in a number of forms, dependent upon both host plant and fungal taxonomy."</i>
+</div>
+    <br/>
      -- <cite>J. Dighton, in Encyclopedia of Microbiology (Third Edition), 2009</cite>
+</div>
 
 ## 
 Mycoriza is a `typescript library / code generator` for integrating _Rest API_ to react applications.
 
 <div align="center">
-    <a class="md-button md-button--primary" href="/getting-started/" >Getting Started</a>
+    <a class="md-button md-button--primary" href="/mycoriza/getting-started/" >Getting Started</a>
 </div>
 
 !!! card "Painless" 

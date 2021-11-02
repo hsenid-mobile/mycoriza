@@ -5,6 +5,11 @@
     "url": "https://github.com/hsenid-mobile/mycoriza"
   },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "cra-templetize": "^0.0.1"
+  },
+  "workspaces": [ "packages/*" ],
+  "scripts": {
+    "prepare": "cra-templetize -i ./packages/mycoriza -o ./packages"
   }
 }

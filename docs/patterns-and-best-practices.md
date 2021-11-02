@@ -175,6 +175,12 @@ function ComponentB() {
 However, if you are developing a component which is not exposed outside the module and does not have any intention of
 reusing, first code is good.
 
+!!! Note
+    From `v0.0.8` onward a new helper hook is introduced to unwrap the network state.
+    refer [`useAsNullable` hook](/network-states/#useasnullable-hook) for the usage and information.
+
+
+
 ## Use `entityKey` to load multiple results for same api.
 
 In some cases we need to keep different results for the same API call simultaneously. Mycoriza provides the inbuilt 

@@ -141,3 +141,29 @@ function MyComponent() {
     return null;
 }
 ```
+
+### `useAsNullable` hook.
+
+`useAsNullable` hook is defined for a common but a specific case. Generally, a top level component
+in the component hierarchy handles the network status and the components in the success branch does 
+not have any interest in the failure cases. In such components, having the status checks is unnecessary.
+Therefore, the `useAsNullable` hook is defined to convert the `NetworkState` to nullable value. 
+
+With `useAsNullable` hook, the first parameter of the result is unwrapped. if the state is a success,
+the data in the state is returned; otherwise, `undefined` is returned. This hook can be used as below.
+
+```jsx
+
+function MyComponent() {
+    const [data, fetch, clear] = useAsNullable(useDataAsNetworkState());
+
+    useEffect(() => {
+        //Fetch Data.
+        fetch()
+    }, [])
+
+    return <>{!!data && <>{JSON.stringify(data)}</>}</>;
+}
+```
+
+
