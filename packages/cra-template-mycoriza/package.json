@@ -9,5 +9,8 @@
   "files": [
     "template",
     "template.json"
-  ]
+  ],
+  "resolutions": {
+    "babel-jest": "^26.6.0"
+  }
 }

@@ -59,5 +59,8 @@
     "openapi-types": "^9.1.0",
     "openapi-typescript-codegen": "^0.9.3",
     "xml-beautifier": "^0.5.0"
+  },
+  "resolutions": {
+    "babel-jest": "^26.6.0"
   }
 }

@@ -52,5 +52,8 @@
     "rimraf": "^3.0.2",
     "typedoc": "^0.21.9",
     "typedoc-plugin-merge-modules": "^3.0.2"
+  },
+  "resolutions": {
+    "babel-jest": "^26.6.0"
   }
 }
