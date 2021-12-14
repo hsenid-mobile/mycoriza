@@ -10,6 +10,8 @@
   },
   "workspaces": [ "packages/*" ],
   "scripts": {
-    "prepare": "cra-templetize -i ./packages/mycoriza -o ./packages"
+    "templatize:mycoriza": "cra-templetize -i ./packages/mycoriza -o ./packages",
+    "templatize:mycoriza-lib": "cra-templetize -i ./packages/mycoriza-lib -o ./packages",
+    "prepare": "yarn templatize:mycoriza && yarn templatize:mycoriza-lib"
   }
 }

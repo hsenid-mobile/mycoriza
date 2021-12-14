@@ -1,0 +1,13 @@
+{
+  "name": "cra-template-mycoriza-lib",
+  "version": "0.1.0",
+  "keywords": [
+    "cra-template",
+    "react"
+  ],
+  "description": "The Mycoriza template for Create React Library",
+  "files": [
+    "template",
+    "template.json"
+  ]
+}

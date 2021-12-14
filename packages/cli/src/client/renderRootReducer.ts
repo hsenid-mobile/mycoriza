@@ -17,6 +17,15 @@ export type MycorizaState<T> = {
 {{/each}}
 } & T
 
+export function mycorizaMapObject<T>(reducers: ReducersMapObject<T>): ReducersMapObject<MycorizaState<T>> {
+    return {
+        {{#each states}}
+            {{directory}}: {{directory}}Reducers,
+        {{/each}}
+        ...reducers
+    } as any
+}
+
 /**
  * @ignore
  * Generates a mycoriza generated state empowered redux state. 
@@ -29,12 +38,7 @@ export type MycorizaState<T> = {
  * @param reducers
  */
 export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
-    return combineReducers< MycorizaState<T>>({
-            {{#each states}}
-                {{directory}}: {{directory}}Reducers,
-            {{/each}}
-            ...reducers
-        } as any)
+    return combineReducers< MycorizaState<T>>(mycorizaMapObject(reducers))
 }
 
 /**

@@ -161,6 +161,13 @@ it('Mock test for stubFor{{capitalizedName}}', () => {
 })
 `
 
+const exportTemplate = `{{#if parameters}}
+export type { {{capitalizedName}}_Params } from '{{filePath}}';
+{{/if}}
+export { use{{capitalizedName}} } from '{{filePath}}';
+export { stubFor{{capitalizedName}} } from '{{filePath}}.test';
+`
+
 export interface HookInfo {
     name: string
     path: string
@@ -168,6 +175,7 @@ export interface HookInfo {
     key: string,
     url: string,
     method: string
+    exportContent: string
 }
 
 export function renderEntityReducer(op: OperationOb, outputDir: string, key: string, openApi: OpenAPIV3.Document<any>): HookInfo {
@@ -228,6 +236,11 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
 
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`, content)
 
+    let exportContent = Handlebars.compile(exportTemplate)({
+        ...context,
+        filePath: `${outputDir}/reducers/${directory}/${simpleName}`.replace('/src', '')
+    });
+
     let testContent = Handlebars.compile(testTemplate)(context);
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.test.ts`, testContent)
 
@@ -237,6 +250,7 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         propType: parameters?.props?.length ? `${camelcase(operation.operationId, {pascalCase: true})}_Params` : undefined,
         key: camelcase(key, {pascalCase: true}),
         url: op.path,
-        method: op.method.toUpperCase()
+        method: op.method.toUpperCase(),
+        exportContent
     }
 }

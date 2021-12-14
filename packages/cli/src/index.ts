@@ -25,7 +25,7 @@ const ui = new BottomBar({
 const storePath = './src/store';
 const apiPath = './src/api';
 
-export async function generateApi(complete: boolean = true) {
+export async function generateApi(complete: boolean = true): Promise<string> {
 
   let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
   json.mycoriza = json.mycoriza ?? {}
@@ -81,7 +81,7 @@ export async function generateApi(complete: boolean = true) {
   })
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
-  generateHooks(_data, output, mycoriza.devUrl, mycoriza.prodUrl)
+  let indexContent = generateHooks(_data, output, mycoriza.devUrl, mycoriza.prodUrl);
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
   if (complete) {
@@ -90,6 +90,23 @@ export async function generateApi(complete: boolean = true) {
 
   addTypedocConfig(_data)
   addTypedocReadme(_data, mycoriza)
+
+  return indexContent
+}
+
+const REGEX = /(export type \{ (?<type>\w+) \} from '\.\/(?<path>.*)')/
+
+export async function generateApiWithIndex() {
+  let indexContent = await generateApi();
+
+  let generatedTypes = fs.readFileSync('./src/api/index.ts').toString();
+  let typeIndexContent = generatedTypes.split('\n').filter(a => a.startsWith('export type'))
+    .map(line => {
+      let {groups: {type, path}} = line.match(REGEX);
+      return `export type { ${type} } from './api/${path}';`
+    }).join('\n');
+
+  fs.writeFileSync('./src/index.tsx', [typeIndexContent, indexContent, `export { store } from './store/store'`, `export type { MycorizaState } from './api/reducers/index'`].join('\n'));
 }
 
 async function getUrlAndData() {

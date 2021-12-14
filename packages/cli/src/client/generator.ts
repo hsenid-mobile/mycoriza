@@ -15,7 +15,7 @@ function groupBy<T>(xs: T[], f: (T) => string): { [k: string]: T[]} {
     }, {});
 }
 
-export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string, baseUrl: string, prodUrl: string) {
+export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string, baseUrl: string, prodUrl: string): string {
 
     const operations: OperationOb[] = []
 
@@ -43,11 +43,12 @@ export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: strin
     if (!fs.existsSync(`${outputDir}/reducers`)) {
         fs.mkdirSync(`${outputDir}/reducers`)
     }
-    Object.entries(grouped).flatMap<HookInfo>(([key, entities]) => {
+    let list = Object.entries(grouped).flatMap<HookInfo>(([key, entities]) => {
         renderScopedReducer(entities, outputDir, key)
         return entities.map(op => renderEntityReducer(op, outputDir, key, openApi))
     });
     addModuleToModels(outputDir)
+    return list.map(({exportContent}) => exportContent).join('')
 }
 
 function addModuleToModels(outputDir: string) {
