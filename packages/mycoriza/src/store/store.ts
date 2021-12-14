@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 import axiosMiddleware from "redux-axios-middleware";
-import {applyMiddleware, createStore} from 'redux'
+import {applyMiddleware, createStore, Middleware} from 'redux'
 import {mycorizaState, baseUrl} from "../api/reducers";
 
 export const axiosInstance = axios.create({
@@ -17,4 +17,6 @@ export interface RootState {}
 
 const rootState = mycorizaState({})
 
-export const store = createStore(rootState, applyMiddleware(backendConnectorMiddleware))
+export function store(...middlewares: Middleware[]) {
+    return createStore(rootState, applyMiddleware(backendConnectorMiddleware, ...middlewares));
+}
