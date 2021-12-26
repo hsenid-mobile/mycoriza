@@ -47,7 +47,7 @@
     "camelcase": "^6.2.0",
     "chalk": "^4.1.2",
     "cli-spinners": "^2.6.0",
-    "commander": "^8.0.0",
+    "commander": "8.3.0",
     "date-fns": "^2.23.0",
     "git-user-name": "^2.0.0",
     "handlebars": "^4.7.7",

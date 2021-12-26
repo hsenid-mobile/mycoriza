@@ -31,16 +31,18 @@ program
     .version(pkg.version)
     .command("add")
     .usage("[options]")
-    .action(() => {
-        addApi()
+    .action(async () => {
+        await addApi()
     })
 
 program
     .version(pkg.version)
     .command("remove")
     .usage("[options]")
-    .action(() => {
-        removeApi()
-    })
+    .action(async () => {
+        await removeApi()
+    });
 
-program.parse(process.argv).opts()
+(async function () {
+    await program.parseAsync()
+})()

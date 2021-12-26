@@ -60,7 +60,6 @@ export async function addApi() {
     name: 'id',
     message: 'Please enter an id for the API. The related sources will be generated in `${apiPath}/<api-id>` directory',
     async validate(input) {
-      console.log(input)
       if (/([_a-zA-Z])([_a-zA-Z0-9])+/.test(input)) return true
       return 'Invalid format. the id should be an alphanumeric name starting with a letter.'
     }
@@ -100,9 +99,7 @@ export async function removeApi() {
     choices: json.sources.map(({id}) => id)
   });
 
-  json.sources = json.sources.filter(({name}) => name !== choice)
-
-  console.log(json.sources, choice)
+  json.sources = json.sources.filter(({id}) => id !== choice)
 
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(json, null, '\t'))
 
@@ -136,7 +133,7 @@ async function generateSingleApi(source: MycorizaConfigSource, exportContents: E
   ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
 }
 
-export async function generateApi(lib: boolean): Promise<string> {
+export async function generateApi(lib: boolean) {
   if (!fs.existsSync(CONFIG_FILE)) {
     ui.log(chalk`{red ${get('x')} Cannot find mycoriza.config.json}`)
     return undefined
