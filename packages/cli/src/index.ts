@@ -15,6 +15,9 @@ import BottomBar from "bottom-bar";
 import {addTypedocConfig} from "./client/addTypedocConfig";
 import {dots} from 'cli-spinners'
 import {addTypedocReadme} from "./client/addTypedocReadme";
+import {ExportContent, MycorizaConfig, MycorizaConfigSource} from "./types";
+import {renderRootReducer} from "./client/renderRootReducer";
+import {renderIndex} from "./client/renderIndex";
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
@@ -25,88 +28,138 @@ const ui = new BottomBar({
 const storePath = './src/store';
 const apiPath = './src/api';
 
-export async function generateApi(complete: boolean = true): Promise<string> {
+const CONFIG_FILE = "mycoriza.config.json";
 
-  let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
-  json.mycoriza = json.mycoriza ?? {}
-  let mycoriza = json.mycoriza;
-
-  ui.log(chalk`{green ${get('heavy_check_mark')} Detect mycoriza configuration}`)
-  let _data: any;
-  if (!mycoriza.specUrl) {
-    let {data, url} = await getUrlAndData();
-    _data = data
-    mycoriza.specUrl = url
-  } else {
-    _data = await getOpenApiSpec(mycoriza.specUrl);
+export async function addApi() {
+  let json: MycorizaConfig = {
+    sources: []
   }
 
-  ui.log(chalk`{green ${get('heavy_check_mark')} Fetch specification}`)
-
-  if (mycoriza.devUrl === undefined) {
-    let serverUrl = _data.servers?.[0]?.url;
-    let {devBaseUrl} = await inquirer.prompt({
-      type: "input",
-      name: 'devBaseUrl',
-      message: 'What is the development base url?',
-      default: serverUrl
-    });
-
-    mycoriza.devUrl = devBaseUrl
-  }
-  if (mycoriza.prodUrl === undefined) {
-    let {prodBaseUrl} = await inquirer.prompt({
-      type: "input",
-      name: 'prodBaseUrl',
-      message: 'What is the production base url?'
-    });
-    mycoriza.prodUrl = prodBaseUrl
+  if (fs.existsSync(CONFIG_FILE)) {
+    json = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf-8"))
   }
 
-  fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
+  let {data, url} = await getUrlAndData();
 
-  let output = apiPath;
+  let serverUrl = data.servers?.[0]?.url;
+  let {devBaseUrl} = await inquirer.prompt({
+    type: "input",
+    name: 'devBaseUrl',
+    message: 'What is the development base url?',
+    default: serverUrl
+  });
 
-  rimraf.sync(output)
+  let {prodBaseUrl} = await inquirer.prompt({
+    type: "input",
+    name: 'prodBaseUrl',
+    message: 'What is the production base url?'
+  });
 
-  ui.log(chalk`{green ${get('heavy_check_mark')} Remove api directory}`)
+  let {id} = await inquirer.prompt({
+    type: "input",
+    name: 'id',
+    message: 'Please enter an id for the API. The related sources will be generated in `${apiPath}/<api-id>` directory',
+    async validate(input) {
+      console.log(input)
+      if (/([_a-zA-Z])([_a-zA-Z0-9])+/.test(input)) return true
+      return 'Invalid format. the id should be an alphanumeric name starting with a letter.'
+    }
+  });
+
+  json.sources.push({
+    id: id,
+    name: data.info.title,
+    devUrl: devBaseUrl,
+    prodUrl: prodBaseUrl,
+    specUrl: url
+  })
+
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(json, null, '\t'))
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Api Added}`)
+}
+
+export async function removeApi() {
+  if (!fs.existsSync(CONFIG_FILE)) {
+    ui.log(chalk`{red ${get('x')} Cannot find mycoriza.config.json}`)
+    return false
+  }
+
+  let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+
+  if (!json.sources.length) {
+    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured to be removed'}`)
+    return false
+  }
+
+  let {choice} = await inquirer.prompt({
+    type: "list",
+    name: 'choice',
+    message: 'What is the api you are going to remove?',
+    default: json.sources[0]?.id,
+    choices: json.sources.map(({id}) => id)
+  });
+
+  json.sources = json.sources.filter(({name}) => name !== choice)
+
+  console.log(json.sources, choice)
+
+  fs.writeFileSync(CONFIG_FILE, JSON.stringify(json, null, '\t'))
+
+  ui.log(chalk`{green ${get('heavy_check_mark')} Removed API '${choice}'}`)
+}
+
+async function generateSingleApi(source: MycorizaConfigSource, exportContents: ExportContent[]) {
+  let data = await getOpenApiSpec(source.specUrl);
+
+  const output = `${apiPath}/${source.id}`
 
   await generate({
-    input: _data,
+    input: data,
     output: output,
     exportCore: false,
     exportSchemas: false,
     exportServices: false,
     useUnionTypes: true
   })
-
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
-  let indexContent = generateHooks(_data, output, mycoriza.devUrl, mycoriza.prodUrl);
-
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
-  if (complete) {
-    ui.destroy()
+  for (let path of fs.readdirSync(`${output}/models`)) {
+    exportContents.push({
+      type: "type",
+      path: `${output}/models/${path}`,
+      exports: [path.replace('.ts', '')]
+    })
   }
 
-  addTypedocConfig(_data)
-  addTypedocReadme(_data, mycoriza)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
+  generateHooks(data, output, source, exportContents);
 
-  return indexContent
+  ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
 }
 
-const REGEX = /(export type \{ (?<type>\w+) \} from '\.\/(?<path>.*)')/
+export async function generateApi(lib: boolean): Promise<string> {
+  if (!fs.existsSync(CONFIG_FILE)) {
+    ui.log(chalk`{red ${get('x')} Cannot find mycoriza.config.json}`)
+    return undefined
+  }
 
-export async function generateApiWithIndex() {
-  let indexContent = await generateApi();
+  let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
 
-  let generatedTypes = fs.readFileSync('./src/api/index.ts').toString();
-  let typeIndexContent = generatedTypes.split('\n').filter(a => a.startsWith('export type'))
-    .map(line => {
-      let {groups: {type, path}} = line.match(REGEX);
-      return `export type { ${type} } from './api/${path}';`
-    }).join('\n');
+  if (!json.sources.length) {
+    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured.'}`)
+    return undefined
+  }
 
-  fs.writeFileSync('./src/index.tsx', [typeIndexContent, indexContent, `export { store } from './store/store'`, `export type { MycorizaState } from './api/reducers/index'`].join('\n'));
+  const exportContents: ExportContent[] = []
+
+  for (let source of json.sources) {
+    await generateSingleApi(source, exportContents)
+  }
+
+  renderRootReducer(apiPath, json)
+  addTypedocConfig(exportContents)
+  if (lib) {
+    renderIndex(exportContents)
+  }
 }
 
 async function getUrlAndData() {
@@ -129,136 +182,3 @@ async function getUrlAndData() {
     return getUrlAndData();
   }
 }
-
-export async function doEnhance() {
-  let _json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
-  let mycoriza = _json.mycoriza;
-
-  if (!!mycoriza) {
-    ui.log(chalk`{red Mycoriza is already initiated. Running this command again will break the existing configurations}`)
-    ui.destroy()
-    return;
-  }
-
-  let {data, url} = await getUrlAndData();
-
-  let serverUrl = data.servers?.[0]?.url;
-
-  let {devBaseUrl} = await inquirer.prompt({
-    type: "input",
-    name: 'devBaseUrl',
-    message: 'What is the development base url?',
-    default: serverUrl
-  });
-
-  let {prodBaseUrl} = await inquirer.prompt({
-    type: "input",
-    name: 'prodBaseUrl',
-    message: 'What is the production base url?'
-  });
-
-  let {path} = await inquirer.prompt({
-    type: 'fuzzypath' as any,
-    name: 'path',
-    message: 'Please select the entry point',
-    rootPath: '../example/src',
-    default: './src/index.tsx'
-  } as any);
-
-  let {packageManager} = await inquirer.prompt({
-    type: "list",
-    name: "packageManager",
-    message: 'What is the package manager in use?',
-    choices: ["npm", "yarn", "pnpm"]
-  });
-
-  ui.update(chalk`{blue Installing mycoriza-runtime, redux and redux-axios-middleware}`, dots)
-  execSync(await installPackage(packageManager, 'mycoriza-runtime', 'redux-axios-middleware', 'redux'), {
-    stdio: "ignore"
-  })
-
-  ui.update(chalk`{blue Installing mycoriza-cli, typedoc, typedoc-plugin-merge-modules and rimraf }`, dots)
-  execSync(await installPackageDev(packageManager, 'typedoc', 'rimraf', 'typedoc-plugin-merge-modules'), {
-    stdio: "ignore"
-  })
-
-  ui.log(chalk`{green ${get('heavy_check_mark')} Add dependencies}`)
-  ui.update(chalk`{blue Adding configurations to package json}`)
-  let json = JSON.parse(fs.readFileSync("package.json", 'utf8'));
-  json.mycoriza = {
-    specUrl: url,
-    storePath: storePath,
-    apiPath: apiPath,
-    devUrl: devBaseUrl,
-    prodUrl: prodBaseUrl
-  }
-  json.scripts.updateApi = `npx mycoriza-cli generate:api && ${await runCommand(packageManager, 'updateDocs')}`
-  json.scripts.updateDocs = `${await runCommand(packageManager, 'rimraf ./docs')} && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ${apiPath}`
-  fs.writeFileSync("package.json", JSON.stringify(json, null, '\t'))
-  ui.log(chalk`{green ${get('heavy_check_mark')} Update package.json with configurations}`)
-
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generating typedoc config}`)
-  addTypedocConfig(data)
-
-  ui.update(chalk`{blue Generating store setup}`)
-  generateStarterSetup({
-    setupDir: storePath,
-    output: apiPath,
-    devUrl: devBaseUrl,
-    prodUrl: prodBaseUrl
-  })
-  ui.log(chalk`{green ${get('heavy_check_mark')} Setup redux}`)
-
-  ui.update(chalk`{blue Generating API}`)
-  await generateApi(false)
-
-  ui.update(chalk`{blue }`)
-
-  ui.update(chalk`{blue Updating ${path} with redux store}`)
-  updateEntryPoint(path, storePath)
-  ui.log(chalk`{green ${get('heavy_check_mark')} Update entry point}`)
-
-  ui.update(chalk`{blue generating documentation}`)
-  execSync(await runCommand(packageManager, 'updateDocs'), {
-    stdio: "ignore"
-  })
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generate docs}`)
-
-  ui.update(chalk`{green completed}`)
-
-  ui.destroy()
-}
-
-async function installPackage(packageManager: string, ...packages: string[]) {
-  switch (packageManager) {
-    case "pnpm":
-      return `pnpm add ${packages.join(' ')}`
-    case "npm":
-      return `npm i ${packages.join(' ')}`
-    case "yarn":
-      return `yarn add ${packages.join(' ')}`
-  }
-}
-
-async function installPackageDev(packageManager: string,...packages: string[]) {
-  switch (packageManager) {
-    case "pnpm":
-      return `pnpm add -D ${packages.join(' ')}`
-    case "npm":
-      return `npm i -D ${packages.join(' ')}`
-    case "yarn":
-      return `yarn add -D ${packages.join(' ')}`
-  }
-}
-
-async function runCommand(packageManager: string, command: string) {
-  switch (packageManager) {
-    case "pnpm":
-      return `pnpm run ${command}`
-    case "npm":
-      return `npm run ${command}`
-    case "yarn":
-      return `yarn ${command}`
-  }
-}
-

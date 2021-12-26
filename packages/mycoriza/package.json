@@ -1,59 +1,59 @@
 {
-  "name": "mycoriza",
-  "version": "0.1.0",
-  "private": true,
-  "description": "The Mycoriza template for Create React App",
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/axios": "^0.14.0",
-    "@types/jest": "^26.0.24",
-    "@types/node": "^12.20.36",
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
-    "@types/react-redux": "^7.1.20",
-    "axios": "^0.24.0",
-    "mycoriza-runtime": "^0.0.8",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
-    "react-scripts": "^4.0.3",
-    "redux": "^4.1.2",
-    "redux-axios-middleware": "^4.0.1",
-    "typescript": "^4.4.4",
-    "web-vitals": "^1.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "updateApi": "mycoriza generate:api && yarn updateDocs",
-    "updateDocs": "yarn rimraf ./docs/api && ./node_modules/typedoc/bin/typedoc --options ./typedoc.json ./src/api"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "mycoriza-cli": "^0.0.8",
-    "rimraf": "^3.0.2",
-    "typedoc": "^0.21.9",
-    "typedoc-plugin-merge-modules": "^3.0.2"
-  },
-  "resolutions": {
-    "babel-jest": "^26.6.0"
-  }
+	"name": "mycoriza",
+	"version": "0.1.0",
+	"private": true,
+	"description": "The Mycoriza template for Create React App",
+	"dependencies": {
+		"@testing-library/jest-dom": "^5.15.0",
+		"@testing-library/react": "^11.2.7",
+		"@testing-library/user-event": "^12.8.3",
+		"@types/axios": "^0.14.0",
+		"@types/jest": "^26.0.24",
+		"@types/node": "^12.20.36",
+		"@types/react": "^17.0.33",
+		"@types/react-dom": "^17.0.10",
+		"@types/react-redux": "^7.1.20",
+		"axios": "^0.24.0",
+		"mycoriza-runtime": "^0.0.8",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-redux": "^7.2.6",
+		"react-scripts": "^4.0.3",
+		"redux": "^4.1.2",
+		"redux-axios-middleware": "^4.0.1",
+		"typescript": "4.4.4",
+		"web-vitals": "^1.1.2"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"updateApi": "mycoriza generate:api && yarn updateDocs",
+		"updateDocs": "yarn rimraf ./docs/api && yarn typedoc --options ./typedoc.json ./src/api"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"mycoriza-cli": "^0.0.8",
+		"rimraf": "^3.0.2",
+		"typedoc": "0.22.10",
+		"typedoc-plugin-merge-modules": "^3.0.2"
+	},
+	"resolutions": {
+		"babel-jest": "^26.6.0"
+	}
 }

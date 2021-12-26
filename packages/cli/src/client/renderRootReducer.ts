@@ -1,72 +1,43 @@
-import Handlebars from 'handlebars'
-import camelcase from "camelcase";
+import Handlebars from "handlebars";
 import fs from 'fs'
+import camelcase from "camelcase";
+import {MycorizaConfig} from "../types";
 
 const template = `
-import {combineReducers, ReducersMapObject} from 'redux'
-{{#each states}}
-import { {{typeName}}State, {{directory}}Reducers } from './{{directory}}';
+{{#each api}}
+import type { {{apiTypeId}}State } from './{{apiId}}/reducers'
+import { {{apiId}}Reducers } from './{{apiId}}/reducers'
 {{/each}}
+import {combineReducers, ReducersMapObject} from "redux";
 
-/**
- * @ignore
- */
 export type MycorizaState<T> = {
-{{#each states}}
-    {{directory}}: {{typeName}}State
+{{#each api}}
+    {{apiId}}: {{apiTypeId}}State
 {{/each}}
 } & T
 
 export function mycorizaMapObject<T>(reducers: ReducersMapObject<T>): ReducersMapObject<MycorizaState<T>> {
     return {
-        {{#each states}}
-            {{directory}}: {{directory}}Reducers,
+        {{#each api}}
+            {{apiId}}: {{apiId}}Reducers,
         {{/each}}
         ...reducers
     } as any
 }
 
-/**
- * @ignore
- * Generates a mycoriza generated state empowered redux state. 
- * 
- * Apart from the provided reduces, following reducers are injected.
-{{#each states}}
- * {@link {{directory}}Reducers}
-{{/each}}
- * 
- * @param reducers
- */
 export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
-    return combineReducers< MycorizaState<T>>(mycorizaMapObject(reducers))
-}
-
-/**
- * @ignore
- */
-export function baseUrl() {
-    return process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodUrl}}')
+    return combineReducers<MycorizaState<T>>(mycorizaMapObject(reducers))
 }
 `
 
-export function renderRootReducer(types: string[], outputDir: string, baseUrl: string, prodUrl: string): string {
+export function renderRootReducer(outputDir: string, config: MycorizaConfig) {
+  let content = Handlebars.compile(template)({
+    api: config.sources.map(({id}) => ({apiId: id, apiTypeId: camelcase(id, {pascalCase: true})}))
+  });
 
-    let content = Handlebars.compile(template)({
-        states: types.map(a => ({
-            typeName: camelcase(a, {pascalCase: true}),
-            directory: camelcase(a),
-        })),
-        baseUrl: baseUrl,
-        prodUrl: prodUrl
-    });
+  if (fs.existsSync(`${outputDir}/index.ts`)) {
+    fs.unlinkSync(`${outputDir}/index.ts`)
+  }
 
-    if (fs.existsSync(`${outputDir}/reducers/reducer.ts`)) {
-        fs.unlinkSync(`${outputDir}/reducers/reducer.ts`)
-    }
-    if (!fs.existsSync(`${outputDir}/reducers`)) {
-        fs.mkdirSync(`${outputDir}/reducers`)
-    }
-    fs.writeFileSync(`${outputDir}/reducers/index.ts`, content)
-
-    return content;
+  fs.writeFileSync(`${outputDir}/index.ts`, content)
 }

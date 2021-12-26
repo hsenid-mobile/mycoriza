@@ -5,7 +5,7 @@ const inquirer = require('inquirer')
 const fuzzyPathPlugin = require('inquirer-fuzzy-path')
 const path = require('path')
 
-const {doEnhance, generateApi, generateApiWithIndex} = require(path.resolve(__dirname, '../dist/index.js'))
+const {generateApi, addApi, removeApi} = require(path.resolve(__dirname, '../dist/index.js'))
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
@@ -24,15 +24,23 @@ program
     .command('generate:api:lib')
     .usage('[options]')
     .action(() => {
-        generateApiWithIndex()
+        generateApi(true)
     });
 
 program
     .version(pkg.version)
-    .command("enhance")
+    .command("add")
     .usage("[options]")
     .action(() => {
-        doEnhance()
+        addApi()
+    })
+
+program
+    .version(pkg.version)
+    .command("remove")
+    .usage("[options]")
+    .action(() => {
+        removeApi()
     })
 
 program.parse(process.argv).opts()

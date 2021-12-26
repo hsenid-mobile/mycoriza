@@ -6,6 +6,7 @@ import fs from "fs";
 import {OpenAPIV2, OpenAPIV3} from "openapi-types";
 import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV3.HttpMethods;
+import {ExportContent} from "../types";
 
 const template = `
 /**
@@ -13,7 +14,8 @@ const template = `
  */
 import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
 import {useDispatch, useSelector} from "react-redux";
-import {MycorizaState} from "../index";
+import {MycorizaState} from "../../../index";
+import {baseUrl} from '../config'
 {{#each imports}}
 import { {{this}} } from '../../models/{{this}}';
 {{/each}}
@@ -105,11 +107,11 @@ export function use{{capitalizedName}}(entityKey: string = "default"):
         }
         
         {{/if}}
-        dispatch({{method}}(domain, entityKey, "{{url}}", {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
+        dispatch({{method}}(domain, entityKey, \`\${baseUrl()}{{url}}\`, {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
     }
 
     return [
-        resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{dirName}}.{{simpleName}})),
+        resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{apiId}}.{{dirName}}.{{simpleName}})),
         execute,
         () => dispatch(reset(domain, entityKey))
     ]
@@ -121,7 +123,7 @@ const testTemplate = `
  * @module test/{{capitalizedDirName}}
  */
 import { TypedHookStub } from "mycoriza-runtime";
-import {MycorizaState} from "../index";
+import {MycorizaState} from "../../../index";
 {{#each imports}}
 import { {{this}} } from '../../models/{{this}}';
 {{/each}}
@@ -153,7 +155,7 @@ import { {{this}} } from '../../models/{{this}}';
  * \`\`\`
  */
 export function stubFor{{capitalizedName}}(): TypedHookStub<MycorizaState<unknown>, {{returnType}}> {
-    return new TypedHookStub<MycorizaState<unknown>, {{returnType}}>("@mycoriza/{{dirName}}/{{simpleName}}", (state: MycorizaState<any>) => state.{{dirName}}.{{simpleName}})
+    return new TypedHookStub<MycorizaState<unknown>, {{returnType}}>("@mycoriza/{{dirName}}/{{simpleName}}", (state: MycorizaState<any>) => state.{{apiId}}.{{dirName}}.{{simpleName}})
 }
 
 it('Mock test for stubFor{{capitalizedName}}', () => {
@@ -175,10 +177,9 @@ export interface HookInfo {
     key: string,
     url: string,
     method: string
-    exportContent: string
 }
 
-export function renderEntityReducer(op: OperationOb, outputDir: string, key: string, openApi: OpenAPIV3.Document<any>): HookInfo {
+export function renderEntityReducer(op: OperationOb, outputDir: string, key: string, openApi: OpenAPIV3.Document<any>, apiId: string, exportContents: ExportContent[]): HookInfo {
 
     let directory = camelcase(key);
 
@@ -226,7 +227,8 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
             requestBodyType && `${camelcase(requestBodyType.typeName)}`,
             parameterInfo && `params`
         ].filter(a => !!a),
-        imports: imports
+        imports: imports,
+        apiId: apiId
     };
 
     let content = Handlebars.compile(template)(context);
@@ -236,10 +238,19 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
 
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`, content)
 
-    let exportContent = Handlebars.compile(exportTemplate)({
-        ...context,
-        filePath: `${outputDir}/reducers/${directory}/${simpleName}`.replace('/src', '')
-    });
+    if (context.parameters) {
+        exportContents.push({
+            type: "type",
+            path: `${outputDir}/reducers/${directory}/${simpleName}.ts`,
+            exports: [`${context.capitalizedName}_Params`]
+        })
+    }
+
+    exportContents.push({
+        type: "object",
+        path: `${outputDir}/reducers/${directory}/${simpleName}.ts`,
+        exports: [`use${context.capitalizedName}`]
+    })
 
     let testContent = Handlebars.compile(testTemplate)(context);
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.test.ts`, testContent)
@@ -250,7 +261,6 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         propType: parameters?.props?.length ? `${camelcase(operation.operationId, {pascalCase: true})}_Params` : undefined,
         key: camelcase(key, {pascalCase: true}),
         url: op.path,
-        method: op.method.toUpperCase(),
-        exportContent
+        method: op.method.toUpperCase()
     }
 }

@@ -2,10 +2,9 @@
 import axios from 'axios'
 import axiosMiddleware from "redux-axios-middleware";
 import {applyMiddleware, createStore, Middleware} from 'redux'
-import {mycorizaState, baseUrl} from "../api/reducers";
+import {mycorizaState} from "../api";
 
 export const axiosInstance = axios.create({
-    baseURL: baseUrl(),
     responseType: "json"
 })
 
