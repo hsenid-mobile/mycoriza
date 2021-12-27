@@ -29,7 +29,7 @@ export function addTypedocConfig(exportContents: ExportContent[]) {
         entryPoints: exportContents
     });
 
-    if (!fs.existsSync("./typedoc.json")) {
+    if (fs.existsSync("./typedoc.json")) {
         fs.unlinkSync("./typedoc.json")
     }
     fs.writeFileSync("./typedoc.json", content)

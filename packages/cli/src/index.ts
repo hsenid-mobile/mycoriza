@@ -87,7 +87,7 @@ export async function removeApi() {
   let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
 
   if (!json.sources.length) {
-    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured to be removed'}`)
+    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured to be removed}`)
     return false
   }
 
@@ -127,10 +127,10 @@ async function generateSingleApi(source: MycorizaConfigSource, exportContents: E
     })
   }
 
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generate API}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate API}`)
   generateHooks(data, output, source, exportContents);
 
-  ui.log(chalk`{green ${get('heavy_check_mark')} Generate Hooks}`)
+  ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate Hooks}`)
 }
 
 export async function generateApi(lib: boolean) {
@@ -142,7 +142,7 @@ export async function generateApi(lib: boolean) {
   let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
 
   if (!json.sources.length) {
-    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured.'}`)
+    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured.}`)
     return undefined
   }
 
@@ -153,9 +153,13 @@ export async function generateApi(lib: boolean) {
   }
 
   renderRootReducer(apiPath, json)
+  ui.log(chalk`{green ${get('heavy_check_mark')} Root reducer generated.}`)
+
   addTypedocConfig(exportContents)
+  ui.log(chalk`{green ${get('heavy_check_mark')} typedoc.json generated.}`)
   if (lib) {
     renderIndex(exportContents)
+    ui.log(chalk`{green ${get('heavy_check_mark')} Index file generated.}`)
   }
 }
 

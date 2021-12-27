@@ -12,10 +12,17 @@ export {{#if type}}type {{/if}}{ {{#each exports}}{{#if @last}}{{value}}{{else}}
 export function renderIndex(exportContents: ExportContent[]) {
   let indexPath = './src/index.ts';
   let content = Handlebars.compile(template)({
-    exportContents: exportContents.map(({exports, type, path: p}) => ({
+    exportContents: exportContents.map(({exports, type, path: p}, index, arr) => ({
       type: type === 'type',
       path: `./${path.relative('./src', p).replace('.ts', '')}`,
-      exports: exports.map(value => ({value}))
+      exports: exports.map((value) => {
+        let count = 0
+        for (let i = 0; i < index; i++) {
+          if (arr[i].exports.includes(value)) count ++
+        }
+        if (count) return ({value: `${value} as ${value}${count}`})
+        return ({value});
+      })
     }))
   });
 
