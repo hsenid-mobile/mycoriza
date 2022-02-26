@@ -414,15 +414,17 @@ export function PUT<Req, Resp>(
  * @param domain unique key to identify the call
  * @param entityKey
  * @param url rest endpoint
+ * @param body
  * @param params query and path parameters for the request.
  * @constructor
  *
  * @ignore
  */
-export function DELETE<Resp>(
+export function DELETE<Req, Resp>(
   domain: string,
   entityKey: string,
   url: string,
+  body: Req,
   params: Params = {}
 ): NetworkFamilyPendingAction<Resp> {
   return {
@@ -432,6 +434,7 @@ export function DELETE<Resp>(
       request: {
         method: "delete",
         url: createUrl(url, params),
+        data: body,
       },
     },
     family: entityKey
