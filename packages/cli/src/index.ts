@@ -1,20 +1,14 @@
 import fs from "fs";
 import chalk from "chalk";
 import {getOpenApiSpec} from "./openApi/getSpec";
-import rimraf from "rimraf";
 import {generate} from "openapi-typescript-codegen";
 import {generateHooks} from "./client/generator";
 import inquirer from "inquirer";
 import fuzzyPathPlugin from "inquirer-fuzzy-path";
 import {OpenAPIV3} from "openapi-types";
-import {execSync} from "child_process";
 import {get} from "node-emoji";
-import {generateStarterSetup} from "./setup/generateStarterSetup";
-import {updateEntryPoint} from "./client/renderEntryPoint";
 import BottomBar from "bottom-bar";
 import {addTypedocConfig} from "./client/addTypedocConfig";
-import {dots} from 'cli-spinners'
-import {addTypedocReadme} from "./client/addTypedocReadme";
 import {ExportContent, MycorizaConfig, MycorizaConfigSource} from "./types";
 import {renderRootReducer} from "./client/renderRootReducer";
 import {renderIndex} from "./client/renderIndex";
@@ -24,11 +18,27 @@ inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 const ui = new BottomBar({
   format: "{value}"
 })
-
-const storePath = './src/store';
 const apiPath = './src/api';
 
 const CONFIG_FILE = "mycoriza.config.json";
+
+export async function listApis() {
+  if (!fs.existsSync(CONFIG_FILE)) {
+    ui.log(chalk`{red ${get('x')} Cannot find mycoriza.config.json}`)
+    return false
+  }
+
+  let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+
+  if (!json.sources.length) {
+    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured to be removed}`)
+    return false
+  }
+
+  json.sources.forEach(config => {
+    ui.log(chalk`{green ${get('heavy_check_mark')} ${config.name} (${config.id}) : ${config.specUrl} }`)
+  })
+}
 
 export async function addApi() {
   let json: MycorizaConfig = {

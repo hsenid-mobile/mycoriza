@@ -10,7 +10,8 @@
   },
   "workspaces": [ "packages/*" ],
   "scripts": {
-    "templatize:mycoriza": "cra-templetize -i ./packages/mycoriza -o ./packages"
+    "templatize:mycoriza": "cra-templetize -i ./packages/mycoriza -o ./packages",
+    "build:cli": "yarn lerna run build --scope=mycoriza-cli"
   },
   "resolutions": {
     "babel-jest": "^26.6.0",
