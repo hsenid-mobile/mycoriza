@@ -198,7 +198,7 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         importTypes: parameterInfo.importTypes
     } : undefined
 
-    let imports = new Set([shouldImport && typeName, requestBodyType?.shouldImport && requestBodyType?.typeName].filter(a => !!a).map(a => a.replace('[]', '')));
+    let imports = new Set([shouldImport && typeName, requestBodyType?.shouldImport && requestBodyType?.typeName, ...(parameters?.importTypes ?? [])].filter(a => !!a).map(a => a.replace('[]', '')));
 
     let context = {
         method: op.method.toUpperCase(),
