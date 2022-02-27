@@ -19,7 +19,7 @@ export const extractInlineRequestBody: OpenApiSpecModifier = context => doc => {
       let operationObject: OperationObject<unknown> = entry[HttpMethods[httpMethodsKey]];
       if (!!operationObject) {
         if (!!operationObject.requestBody && !isReferenceObject(operationObject.requestBody)) {
-          for (let [media, mediaConfig] of Object.entries(operationObject.requestBody.content)) {
+          for (let [media, mediaConfig] of Object.entries(operationObject.requestBody.content ?? {})) {
             if (!!mediaConfig.schema && !isReferenceObject(mediaConfig.schema)) {
               let name = camelcase(`${operationObject.operationId}RequestBody`, {pascalCase: true});
               addToComponents(name, mediaConfig.schema as SchemaObject)

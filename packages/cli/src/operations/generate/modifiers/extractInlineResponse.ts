@@ -21,7 +21,7 @@ export const extractInlineResponse: OpenApiSpecModifier = context => doc => {
         if (operationObject.responses) {
           for (let [responseCode, responseConfig] of Object.entries(operationObject.responses)) {
             if (!isReferenceObject(responseConfig)) {
-              for (let [media, mediaConfig] of Object.entries(responseConfig.content)) {
+              for (let [media, mediaConfig] of Object.entries(responseConfig.content ?? {})) {
                 if (!isReferenceObject(mediaConfig.schema)) {
                   let name = camelcase(`${operationObject.operationId}${responseCode.replace(/\*+/g, '')}Response`, {pascalCase: true});
                   addToComponents(name, mediaConfig.schema as SchemaObject)

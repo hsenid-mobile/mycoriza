@@ -45,7 +45,7 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
   ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate Hooks}`)
 }
 
-export async function generateContent(lib: boolean) {
+export async function generateContent(lib: boolean, allowedSources: string[]) {
   if (!fs.existsSync(CONFIG_FILE)) {
     ui.log(chalk`{red ${get('x')} Cannot find mycoriza.config.json}`)
     return undefined
@@ -53,14 +53,20 @@ export async function generateContent(lib: boolean) {
 
   let json: MycorizaConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
 
-  if (!json.sources.length) {
-    ui.log(chalk`{green ${get('heavy_check_mark')} There are no apis configured.}`)
+  let sources = json.sources;
+
+  if (!allowedSources.includes('all')) {
+    sources = sources.filter(({id}) => allowedSources.includes(id))
+  }
+
+  if (!sources.length) {
+    ui.log(chalk`{yellow ${get('exclamation')} There are no services configured ${allowedSources.includes('all') ? '' : `with id '${allowedSources.join(',')}'`}.}`)
     return undefined
   }
 
   const exportContents: ExportContent[] = []
 
-  for (let source of json.sources) {
+  for (let source of sources) {
     await generateSingleApi(source, json, exportContents)
   }
 
