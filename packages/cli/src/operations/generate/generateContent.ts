@@ -13,6 +13,8 @@ import {renderIndex} from "../../client/renderIndex";
 import {combinedModifiers} from "./modifiers";
 import {extractInlineRequestBody} from "./modifiers/extractInlineRequestBody";
 import {extractInlineResponse} from "./modifiers/extractInlineResponse";
+import simpleGit from "simple-git";
+import rmrf from 'rmrf'
 
 async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaConfig, exportContents: ExportContent[]) {
 
@@ -22,6 +24,8 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
   })(await getOpenApiSpec(source.specUrl))
 
   const output = `${apiPath}/${source.id}`
+
+  await rmrf(output)
 
   await generate({
     input: data,
@@ -43,6 +47,14 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
   generateHooks(data, output, source, exportContents);
 
   ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate Hooks}`)
+
+  if (config.addToGitOnUpdate !== false) {
+    try {
+      simpleGit().add(output)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 export async function generateContent(lib: boolean, allowedSources: string[]) {

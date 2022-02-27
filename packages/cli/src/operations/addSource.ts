@@ -4,6 +4,7 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import {get} from "node-emoji";
 import {CONFIG_FILE, ui, getUrlAndData} from "../util";
+import simpleGit from "simple-git";
 
 export async function addSource() {
   let json: MycorizaConfig = {
@@ -51,4 +52,13 @@ export async function addSource() {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(json, null, '\t'))
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Api Added}`)
+
+  if (json.addToGitOnUpdate !== false) {
+    try {
+      simpleGit().add(CONFIG_FILE)
+      ui.log(chalk`{green ${get('heavy_check_mark')} Add ${CONFIG_FILE} to git`)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }

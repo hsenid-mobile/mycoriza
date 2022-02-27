@@ -7,6 +7,7 @@ export interface MycorizaSourceConfig {
 }
 
 export interface MycorizaConfig {
+  addToGitOnUpdate?: boolean
   sources: MycorizaSourceConfig[]
 }
 

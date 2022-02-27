@@ -4,6 +4,7 @@ import {get} from "node-emoji";
 import {MycorizaConfig} from "../types";
 import inquirer from "inquirer";
 import {CONFIG_FILE, ui} from "../util";
+import simpleGit from "simple-git";
 
 export async function removeSource() {
   if (!fs.existsSync(CONFIG_FILE)) {
@@ -31,4 +32,13 @@ export async function removeSource() {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(json, null, '\t'))
 
   ui.log(chalk`{green ${get('heavy_check_mark')} Removed API '${choice}'}`)
+
+  if (json.addToGitOnUpdate !== false) {
+    try {
+      simpleGit().add(CONFIG_FILE)
+      ui.log(chalk`{green ${get('heavy_check_mark')} Add ${CONFIG_FILE} to git`)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
