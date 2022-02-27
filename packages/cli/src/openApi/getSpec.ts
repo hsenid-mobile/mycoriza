@@ -1,6 +1,7 @@
 import { get as httpsGet } from 'https'
 import { get as httpGet } from 'http'
 import RefParser from 'json-schema-ref-parser'
+import {OpenAPIV3} from "openapi-types";
 
 async function readSpecFromHttps(url: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
@@ -15,7 +16,7 @@ async function readSpecFromHttps(url: string): Promise<string> {
     })
 }
 
-export async function getOpenApiSpec(input: string) {
+export async function getOpenApiSpec(input: string): Promise<OpenAPIV3.Document> {
     let response = await readSpecFromHttps(input);
     return await (RefParser as any).bundle(JSON.parse(response) as any)
 }

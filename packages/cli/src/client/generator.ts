@@ -6,7 +6,7 @@ import {HookInfo, renderEntityReducer} from "./renderEntityReducer";
 import fs from "fs";
 import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV2.HttpMethods;
-import {ExportContent, MycorizaConfigSource} from "../types";
+import {ExportContent, MycorizaSourceConfig} from "../types";
 
 function groupBy<T>(xs: T[], f: (T) => string): { [k: string]: T[]} {
     return xs.reduce(function (rv, x) {
@@ -16,7 +16,7 @@ function groupBy<T>(xs: T[], f: (T) => string): { [k: string]: T[]} {
     }, {});
 }
 
-export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string, source: MycorizaConfigSource, exportContents: ExportContent[]) {
+export function generateHooks(openApi: OpenAPIV3.Document<any>, outputDir: string, source: MycorizaSourceConfig, exportContents: ExportContent[]) {
 
     const operations: OperationOb[] = []
 
