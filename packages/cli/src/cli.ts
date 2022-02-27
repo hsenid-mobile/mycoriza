@@ -1,5 +1,8 @@
-import {listApis, generateApi, removeApi, addApi} from './index'
 import {Command} from "commander";
+import {addSource} from "./operations/addSource";
+import {removeSource} from "./operations/removeSource";
+import {listSources} from "./operations/listSources";
+import {generateContent} from "./operations/generate/generateContent";
 
 let program = new Command();
 
@@ -14,7 +17,7 @@ program
   .description('Add api configuration to the mycoriza configuration')
   .usage("[options]")
   .action(async () => {
-    await addApi()
+    await addSource()
   })
 
 program
@@ -22,7 +25,7 @@ program
   .description('Remove an existing api configuration from the mycoriza configuration')
   .usage("[options]")
   .action(async () => {
-    await removeApi()
+    await removeSource()
   });
 
 program
@@ -30,25 +33,21 @@ program
   .description('List api configurations')
   .usage("[options]")
   .action(async () => {
-    try {
-      await listApis()
-    } catch (e) {
-      process.exit(1)
-    }
+    listSources()
   });
 
 program
   .command('generate:api')
   .usage('[options]')
   .action(async () => {
-    await generateApi(false)
+    await generateContent(false)
   });
 
 program
   .command('generate:api:lib')
   .usage('[options]')
   .action(async () => {
-    await generateApi(true)
+    await generateContent(true)
   });
 
 (async function () {

@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars'
 import camelcase from "camelcase";
 import fs from 'fs'
-import {MycorizaConfigSource} from "../types";
+import {MycorizaSourceConfig} from "../types";
 
 const template = `
 import {combineReducers, ReducersMapObject} from 'redux'
@@ -38,7 +38,7 @@ export function baseUrl() {
 }
 `
 
-export function renderApiReducer(types: string[], outputDir: string, source: MycorizaConfigSource): string {
+export function renderApiReducer(types: string[], outputDir: string, source: MycorizaSourceConfig): string {
 
     let content = Handlebars.compile(template)({
         states: types.map(a => ({

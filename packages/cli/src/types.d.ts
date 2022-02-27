@@ -1,4 +1,4 @@
-export interface MycorizaConfigSource {
+export interface MycorizaSourceConfig {
   id: string
   name: string
   specUrl: string
@@ -7,7 +7,7 @@ export interface MycorizaConfigSource {
 }
 
 export interface MycorizaConfig {
-  sources: MycorizaConfigSource[]
+  sources: MycorizaSourceConfig[]
 }
 
 export interface ExportContent {
