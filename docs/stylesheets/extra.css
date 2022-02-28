@@ -2,29 +2,51 @@
     font-size: 1.2em;
 }
 
+[data-md-color-scheme="slate"] .md-typeset .admonition.card,
+[data-md-color-scheme="slate"] .md-typeset details.card {
+    border-color: #4051b5;
+}
+
 .md-typeset .admonition.card,
 .md-typeset details.card {
-    border-color: rgb(143, 237, 143);
+    border-color: #4cae4f;
     width: 30%;
     margin-right: 3.3%;
     float: left;
     min-height: 15em;
 }
+
 .md-typeset .card > .admonition-title,
 .md-typeset .card > summary {
-    background-color: rgba(46, 232, 46, 0.4);
-    border-color: rgb(82, 231, 82);
+    background-color: #4cae4f;
+    border-color: #4cae4f;
 }
+
+[data-md-color-scheme="slate"] .md-typeset .card > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .card > summary {
+    background-color: #4051b5;
+    border-color: #4051b5;
+}
+
 .md-typeset .card > .admonition-title::before,
 .md-typeset .card > summary::before {
-    background-color: rgb(82, 231, 82);
+    background-color: #4cae4f;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .card > .admonition-title::before,
+[data-md-color-scheme="slate"] .md-typeset .card > summary::before {
+    background-color: #4051b5;
 }
 
 .quote {
-    background-color: rgba(64, 238, 64, 0.35);
+    background-color: #4cae4f;
     padding: 20px;
     box-shadow: rgba(98, 98, 98, 0.15) 10px 10px 10px;
     border-radius: 2px;
+}
+
+[data-md-color-scheme="slate"] .quote {
+    background-color: #4051b5;
 }
 .quote-content::before {
     content: "\201C";

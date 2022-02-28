@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
+    "clean": "rimraf ./dist",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -76,6 +77,7 @@
     "@types/string-format": "^2.0.0",
     "react-redux": "^7.2.5",
     "release": "^6.3.0",
+    "rimraf": "^3.0.2",
     "string-format": "^2.0.0"
   },
   "resolutions": {

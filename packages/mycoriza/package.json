@@ -27,6 +27,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
+		"clean": "rimraf ./build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"updateApi": "mycoriza generate:api && yarn updateDocs",
