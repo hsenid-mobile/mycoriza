@@ -39,6 +39,8 @@ markdown_extensions:
   - admonition
   - attr_list
   - meta
+  - pymdownx.tabbed
+  - pymdownx.superfences
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js
