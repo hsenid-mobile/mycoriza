@@ -49,7 +49,7 @@
 		]
 	},
 	"devDependencies": {
-		"mycoriza-cli": "^0.0.8",
+		"mycoriza-cli": "^0.1.0",
 		"rimraf": "^3.0.2",
 		"typedoc": "0.22.10",
 		"typedoc-plugin-merge-modules": "^3.0.2"
