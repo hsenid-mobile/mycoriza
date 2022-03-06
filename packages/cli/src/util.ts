@@ -14,19 +14,24 @@ export const apiPath = './src/api';
 
 export const CONFIG_FILE = "mycoriza.config.json";
 
-export async function getUrlAndData() {
-  let urlInput = await inquirer.prompt({
-    type: 'input',
-    name: 'specUrl',
-    message: 'What is the OpenAPI specification url?'
-  });
+export async function getUrlAndData(source?: string) {
+  let url = source
+
+  if (!url) {
+    let urlInput = await inquirer.prompt({
+      type: 'input',
+      name: 'specUrl',
+      message: 'What is the OpenAPI specification url?'
+    });
+    url = urlInput.specUrl
+  }
 
   try {
     ui.update(chalk`{blue Fetching OPENAPI config}`)
-    let data: OpenAPIV3.Document<any> = await getOpenApiSpec(urlInput.specUrl);
+    let data: OpenAPIV3.Document<any> = await getOpenApiSpec(url);
     ui.update(``)
     return {
-      url: urlInput.specUrl,
+      url,
       data
     }
   } catch (e) {

@@ -15,17 +15,22 @@ program.name('mycoriza')
 program
   .command("add")
   .description('Add api configuration to the mycoriza configuration')
+  .option('-s, --source <source>', 'Source of the swagger specification url')
+  .option('-d, --dev-url <devUrl>', 'Development url')
+  .option('-p, --prod-url <prodUrl>', 'Production url')
+  .option('--id <id>', 'ID of the source')
   .usage("[options]")
-  .action(async () => {
-    await addSource()
+  .action(async (data) => {
+    await addSource(data)
   })
 
 program
   .command("rm")
   .description('Remove an existing api configuration from the mycoriza configuration')
+  .argument('[source]', 'Source to be removed')
   .usage("[options]")
-  .action(async () => {
-    await removeSource()
+  .action(async (source) => {
+    await removeSource(source)
   });
 
 program
@@ -33,7 +38,7 @@ program
   .description('List api configurations')
   .usage("[options]")
   .action(async () => {
-    listSources()
+    await listSources()
   });
 
 program
