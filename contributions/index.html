@@ -14,7 +14,7 @@
     
     
       
-        <title>Patterns and Best Practices - Mycoriza</title>
+        <title>How to Contribute. - Mycoriza</title>
       
     
     
@@ -69,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#patterns-and-best-practices" class="md-skip">
+        <a href="#how-to-contribute" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Patterns and Best Practices
+              How to Contribute.
             
           </span>
         </div>
@@ -242,16 +242,14 @@
 
   
   
-    
-  
   
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
       <label class="md-nav__link" for="__nav_2">
         Guides
@@ -303,93 +301,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Patterns and Best Practices
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../patterns-and-best-practices/" class="md-nav__link">
         Patterns and Best Practices
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#conditional-returns-based-on-the-state" class="md-nav__link">
-    Conditional returns based on the state.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conditional-rendering-within-jsx" class="md-nav__link">
-    Conditional rendering within jsx.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#eager-fetching" class="md-nav__link">
-    Eager fetching.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cleanup-upon-exit" class="md-nav__link">
-    Cleanup upon exit.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hide-intermediate-pending-state" class="md-nav__link">
-    Hide intermediate pending state.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prefer-hook-for-each-necessary-component-over-pass-through-props" class="md-nav__link">
-    Prefer hook for each necessary component over pass-through-props.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-entitykey-to-load-multiple-results-for-same-api" class="md-nav__link">
-    Use entityKey to load multiple results for same api.
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -487,63 +403,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#conditional-returns-based-on-the-state" class="md-nav__link">
-    Conditional returns based on the state.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conditional-rendering-within-jsx" class="md-nav__link">
-    Conditional rendering within jsx.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#eager-fetching" class="md-nav__link">
-    Eager fetching.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cleanup-upon-exit" class="md-nav__link">
-    Cleanup upon exit.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hide-intermediate-pending-state" class="md-nav__link">
-    Hide intermediate pending state.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prefer-hook-for-each-necessary-component-over-pass-through-props" class="md-nav__link">
-    Prefer hook for each necessary component over pass-through-props.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-entitykey-to-load-multiple-results-for-same-api" class="md-nav__link">
-    Use entityKey to load multiple results for same api.
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -555,181 +414,7 @@
               
                 
                 
-                <h1 id="patterns-and-best-practices">Patterns and Best Practices.</h1>
-<p>Throughout our usage of this framework, we have identified several patterns which can be used with the networks state.</p>
-<h2 id="conditional-returns-based-on-the-state">Conditional returns based on the state.</h2>
-<p>You can explicitly return the content based on the state. This allows more control over the component rendering as each
-content to be returned is explicit.</p>
-<div class="highlight"><pre><span></span><code>import {isError, isPending, isSuccess} from &quot;mycoriza-runtime&quot;;
-
-function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    if (isInit(state)) {
-        return &lt;InitContent/&gt;
-    }
-
-    if (isPending(state)) {
-        return &lt;Loading/&gt;
-    }
-
-    if (isError(state)) {
-        return &lt;ErrorContent error={state.error}/&gt;
-    }
-
-    return &lt;SuccessContent data={state.data} /&gt;;
-}
-</code></pre></div>
-<h2 id="conditional-rendering-within-jsx">Conditional rendering within jsx.</h2>
-<p>In cases where only one of the states makes sense, it can be used as follows. In here <code>isSuccess()</code> acts as a boolean 
-result generator.</p>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-
-function MyComponent() {
-    const [state] = useYoutGeneratedHook()
-
-    return &lt;div&gt;
-        {isSuccess(state) &amp;&amp; &lt;SuccessContent data={state.data}/&gt;}
-    &lt;/div&gt;;
-}
-</code></pre></div>
-<h2 id="eager-fetching">Eager fetching.</h2>
-<p>In some cases the data should be fetched as soon as the component is loaded. We can use <code>useEffect</code> hook to emmulate this
-functionality.</p>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-import {useEffect} from &quot;react&quot;;
-
-function MyComponent() {
-    const [state, fetchData] = useYoutGeneratedHook()
-
-    useEffect(() =&gt; {
-        fetchData()
-    }, [])
-
-    return &lt;div&gt;
-        {isSuccess(state) &amp;&amp; &lt;SuccessContent data={state.data}/&gt;}
-    &lt;/div&gt;;
-}
-</code></pre></div>
-<h2 id="cleanup-upon-exit">Cleanup upon exit.</h2>
-<p>In some cases the stale data may affect the future of the application flow. For an example stale product in a 
-product page may result a flashy view of the stale product before loading the correct page. To prevent such situations, 
-the cleanup function can be used to cleanup the state.</p>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-import {useEffect} from &quot;react&quot;;
-
-function MyComponent() {
-    const [state, fetchData, clear] = useYoutGeneratedHook()
-
-    //Execute fetchData whenever you need.
-
-    useEffect(() =&gt; {
-        return clear;
-    }, [])
-
-    return &lt;div&gt;
-        {isSuccess(state) &amp;&amp; &lt;SuccessContent data={state.data}/&gt;}
-    &lt;/div&gt;;
-}
-</code></pre></div>
-<p>Upon component unload, above code will clear the relevant network state in the application.</p>
-<h2 id="hide-intermediate-pending-state">Hide intermediate pending state.</h2>
-<p>In some cases, showing a loader for intermediate data fetching is unnecessary. For an example
-it is weird to see a loader while searching and filter a list in a list page. To handle such scenarios
-the network state can be locally cached.</p>
-<div class="highlight"><pre><span></span><code>import {isSuccess, isPending, isError} from &quot;mycoriza-runtime&quot;;
-import {useEffect} from &quot;react&quot;;
-
-function MyComponent() {
-    const [networkState, fetchData, clear] = useYoutGeneratedHook()
-    const [state, setState] = useState&lt;NetworkState&lt;unknown&gt;&gt;(networkState)
-
-    //Execute fetchData whenever you need.
-
-    useEffect(() =&gt; {
-        if (!isPending(networkState)) {
-            setState(networkState)
-        }
-    }, [networkState]);
-
-    return &lt;div&gt;
-        {isSuccess(state) &amp;&amp; &lt;SuccessContent data={state.data}/&gt;}
-        {isError(state) &amp;&amp; &lt;Error error={state.error}/&gt;}
-    &lt;/div&gt;;
-}
-</code></pre></div>
-<h2 id="prefer-hook-for-each-necessary-component-over-pass-through-props">Prefer hook for each necessary component over pass-through-props.</h2>
-<p>As the network state adds additional wrapper over original data, naturally developers tend to unwrap the state 
-and pass through the props. This leads component coupling. If you feel like your component is an <strong>independent component</strong>,
-do not pass the content as props.</p>
-<div class="admonition warning">
-<p class="admonition-title">Coupled code</p>
-<p>Following code is too coupled</p>
-</div>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-
-interface ComponentAProps {
-    data: any
-}
-
-//This component contains a dependency and coupled with ComponentB.
-function ComponentA({data}: ComponentAProps) {
-    return &lt;&gt;{JSON.stringify(data)}&lt;/&gt;
-}
-
-function ComponentB() {
-    const [state] = useYoutGeneratedHook()
-    return &lt;&gt;
-        {isSuccess(state) &amp;&amp; &lt;ComponentA data={state.data}/&gt; }
-    &lt;/&gt;
-}
-</code></pre></div>
-<div class="admonition success">
-<p class="admonition-title">Independent code</p>
-<p>Following components are independent.</p>
-</div>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-
-//This component is independent and can be used anyware it is needed.
-function ComponentA() {
-    const [state] = useYoutGeneratedHook()
-    return &lt;&gt;{isSuccess(state) &amp;&amp; JSON.stringify(data)}&lt;/&gt;
-}
-
-function ComponentB() {
-    const [state] = useYoutGeneratedHook()
-    return &lt;&gt;{isSuccess(state) &amp;&amp; &lt;ComponentA/&gt; }&lt;/&gt;
-}
-</code></pre></div>
-<p>However, if you are developing a component which is not exposed outside the module and does not have any intention of
-reusing, first code is good.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>From <code>v0.0.8</code> onward a new helper hook is introduced to unwrap the network state.
-refer <a href="/network-states/#useasnullable-hook"><code>useAsNullable</code> hook</a> for the usage and information.</p>
-</div>
-<h2 id="use-entitykey-to-load-multiple-results-for-same-api">Use <code>entityKey</code> to load multiple results for same api.</h2>
-<p>In some cases we need to keep different results for the same API call simultaneously. Mycoriza provides the inbuilt 
-support for this. In the generated hooks, first parameter is an entity key, by adding a unique entity key, you can keep
-different results at the same time.</p>
-<div class="highlight"><pre><span></span><code>import {isSuccess} from &quot;mycoriza-runtime&quot;;
-import {useEffect} from &quot;react&quot;;
-
-function MyComponent() {
-    const [product1State, fetchProduct1] = useFetchProduct(&quot;product-id-1&quot;)
-    const [product2State, fetchProduct2] = useFetchProduct(&quot;product-id-2&quot;)
-
-    useEffect(() =&gt; {
-        fetchProduct1({id: &quot;product-id-1&quot;})
-        fetchProduct2({id: &quot;product-id-2&quot;})
-    }, [])
-
-    return &lt;div&gt;
-        {isSuccess(product1State) &amp;&amp; &lt;ProductView data={product1State.data}/&gt;}
-        {isSuccess(product2State) &amp;&amp; &lt;ProductView data={product2State.data}/&gt;}
-    &lt;/div&gt;;
-}
-</code></pre></div>
+                <h1 id="how-to-contribute">How to Contribute.</h1>
                 
               
               
@@ -745,41 +430,6 @@ function MyComponent() {
       
         
 <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../network-states/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Response Handling" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              API Response Handling
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../cli-usage/" class="md-footer__link md-footer__link--next" aria-label="Next: CLI Usage" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              CLI Usage
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

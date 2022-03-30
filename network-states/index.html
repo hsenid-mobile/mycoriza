@@ -641,7 +641,7 @@ the failure of the network call.</li>
 Mycoriza provides a set of utility functions as follows</p>
 <h3 id="isinit">isInit</h3>
 <p>This function checks whether the NetworkState is in init state. Usage can be listed as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
     if (isInit(state)) {
@@ -650,10 +650,10 @@ Mycoriza provides a set of utility functions as follows</p>
 
     return null;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="ispending">isPending</h3>
 <p>This function checks whether the NetworkState is in pending state. Usually the loaders can be rendered in this state.</p>
-<pre><code class="language-jsx">function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
     if (isPending(state)) {
@@ -662,12 +662,12 @@ Mycoriza provides a set of utility functions as follows</p>
 
     return null;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="issuccess">isSuccess</h3>
 <p>This function check whether the NetworkState is in success state. This state contains the result in the 
 <code>data</code> property. 
 It can be used as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
     // Following code fails as state is not confirmed to be in Success state.
@@ -678,11 +678,11 @@ It can be used as follows.</p>
 
     return null;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="iserror">isError</h3>
 <p>This function check whether the NetworkState is in success state. This state contains the error in the <code>error</code> property.
 It can be used as follows.</p>
-<pre><code class="language-jsx">function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const [state] = useYoutGeneratedHook()
 
     if (isError(state)) {
@@ -691,7 +691,7 @@ It can be used as follows.</p>
 
     return null;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="interoperability">Interoperability</h2>
 <p>While the <code>NetworkStates</code>s are tempting, there might be instances where you still need to use <code>Promises</code>.
 Therefore, Mycoriza provides two additional hooks to support this interoperability.</p>
@@ -699,7 +699,7 @@ Therefore, Mycoriza provides two additional hooks to support this interoperabili
 <p>Features like <code>async-storage</code> and permissions in react-native uses <code>Promise</code>. To port those features to the 
 <code>NetworkState</code>, Mycoriza provides <code>useAsNetworkState</code> hook. This hook accepts a function which provides a promise,
 and returns the regular Mycoriza hook results. The hook can be used as below.</p>
-<pre><code class="language-jsx">    function MyComponent() {
+<div class="highlight"><pre><span></span><code>    function MyComponent() {
         const [state, execute] = useAsNetworkState(() =&gt; new Promise((resolve, reject) =&gt; { ... })
 
         useEffect(() =&gt; {
@@ -712,14 +712,14 @@ and returns the regular Mycoriza hook results. The hook can be used as below.</p
 
         return null;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="useaspromise-hook"><code>useAsPromise</code> hook</h3>
 <p>When dealing with asynchronous behaviors, most of the libraries out there requires promises. In order to support
 this functionality, Mycoriza provides <code>useAsPromise</code> hook. This hook accepts a regular Mycoriza generated hook 
 result and returns a function which creates a <code>Promise</code>.</p>
 <p>Each time the result function is called, it creates a promise and upon network sate change to terminated state, 
 the promise completes. The hook can be used as below.</p>
-<pre><code class="language-jsx">function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const fetchData = useAsPromise(useDataAsNetworkState());
 
     useEffect(() =&gt; {
@@ -732,7 +732,7 @@ the promise completes. The hook can be used as below.</p>
 
     return null;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="useasnullable-hook"><code>useAsNullable</code> hook.</h3>
 <p><code>useAsNullable</code> hook is defined for a common but a specific case. Generally, a top level component
 in the component hierarchy handles the network status and the components in the success branch does 
@@ -740,8 +740,7 @@ not have any interest in the failure cases. In such components, having the statu
 Therefore, the <code>useAsNullable</code> hook is defined to convert the <code>NetworkState</code> to nullable value. </p>
 <p>With <code>useAsNullable</code> hook, the first parameter of the result is unwrapped. if the state is a success,
 the data in the state is returned; otherwise, <code>undefined</code> is returned. This hook can be used as below.</p>
-<pre><code class="language-jsx">
-function MyComponent() {
+<div class="highlight"><pre><span></span><code>function MyComponent() {
     const [data, fetch, clear] = useAsNullable(useDataAsNetworkState());
 
     useEffect(() =&gt; {
@@ -751,7 +750,7 @@ function MyComponent() {
 
     return &lt;&gt;{!!data &amp;&amp; &lt;&gt;{JSON.stringify(data)}&lt;/&gt;}&lt;/&gt;;
 }
-</code></pre>
+</code></pre></div>
                 
               
               
