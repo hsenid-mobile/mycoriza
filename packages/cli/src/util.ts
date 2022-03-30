@@ -28,7 +28,7 @@ export async function getUrlAndData(source?: string) {
 
   try {
     ui.update(chalk`{blue Fetching OPENAPI config}`)
-    let data: OpenAPIV3.Document<any> = await getOpenApiSpec(url);
+    let data: OpenAPIV3.Document<any> = await getOpenApiSpec(url, config);
     ui.update(``)
     return {
       url,

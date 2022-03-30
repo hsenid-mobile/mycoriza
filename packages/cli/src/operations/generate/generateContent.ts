@@ -21,7 +21,7 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
   let data: OpenAPIV3.Document = combinedModifiers(extractInlineRequestBody, extractInlineResponse)({
     sourceConfig: source,
     config
-  })(await getOpenApiSpec(source.specUrl))
+  })(await getOpenApiSpec(source.specUrl, config))
 
   const output = `${apiPath}/${source.id}`
 

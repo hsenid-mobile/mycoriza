@@ -8,6 +8,7 @@ export interface MycorizaSourceConfig {
 
 export interface MycorizaConfig {
   addToGitOnUpdate?: boolean
+  rejectUnauthorized?: boolean
   sources: MycorizaSourceConfig[]
 }
 
