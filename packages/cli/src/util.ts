@@ -4,6 +4,7 @@ import chalk from "chalk";
 import {OpenAPIV3} from "openapi-types";
 import {getOpenApiSpec} from "./openApi/getSpec";
 import fuzzyPathPlugin from "inquirer-fuzzy-path";
+import {MycorizaConfig} from "./types";
 
 inquirer.registerPrompt('fuzzypath', fuzzyPathPlugin)
 
@@ -14,7 +15,7 @@ export const apiPath = './src/api';
 
 export const CONFIG_FILE = "mycoriza.config.json";
 
-export async function getUrlAndData(source?: string) {
+export async function getUrlAndData(config: MycorizaConfig, source?: string) {
   let url = source
 
   if (!url) {
@@ -36,6 +37,6 @@ export async function getUrlAndData(source?: string) {
     }
   } catch (e) {
     ui.update(chalk.red("Could not fetch data for the given input. Please try again."))
-    return getUrlAndData();
+    return getUrlAndData(config, source);
   }
 }

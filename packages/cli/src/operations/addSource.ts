@@ -22,7 +22,7 @@ export async function addSource(config: SourceConfig) {
     json = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf-8"))
   }
 
-  let {data, url} = await getUrlAndData(config.source);
+  let {data, url} = await getUrlAndData(json, config.source);
 
   let serverUrl = data.servers?.[0]?.url;
   let devBaseUrl = config.devUrl
