@@ -1,6 +1,6 @@
 {
   "name": "mycoriza-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simple and zero-opinion typescript starter template for building cross-platform command line applications.",
   "author": "Tiran Wijesekara",
   "private": false,
