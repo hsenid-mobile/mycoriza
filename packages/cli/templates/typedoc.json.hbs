@@ -1,0 +1,18 @@
+{
+  "excludeNotDocumented": false,
+  "excludeExternals": false,
+  "pretty": true,
+  "name": "Mycoriza generated typedoc",
+  "out": "./docs/api",
+  "entryPoints": [
+    {{#each entryPoints}}
+        {{#if @last}}
+    "{{path}}"
+        {{else}}
+    "{{path}}",
+        {{/if}}
+    {{/each}}
+  ],
+  "entryPointStrategy": "Resolve",
+  "tsconfig": "./tsconfig.json"
+}

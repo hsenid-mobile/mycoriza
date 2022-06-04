@@ -1,174 +1,12 @@
 import {OperationOb} from "./types";
 import camelcase from "camelcase";
 import {extractParameters, extractRequestBodyType, extractReturnType} from "./util";
-import Handlebars from "handlebars";
 import fs from "fs";
 import {OpenAPIV2, OpenAPIV3} from "openapi-types";
+import {ExportContent} from "../types";
 import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV3.HttpMethods;
-import {ExportContent} from "../types";
-
-const template = `
-/**
- * @module {{capitalizedDirName}}
- */
-import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
-import {useDispatch, useSelector} from "react-redux";
-import {MycorizaState} from "../../../index";
-import {baseUrl} from '../config'
-{{#each imports}}
-import { {{this}} } from '../../models/{{this}}';
-{{/each}}
-
-/**
- * @ignore
- */
-const domain = "@mycoriza/{{dirName}}/{{simpleName}}"
-
-{{#if parameters}}
-export type {{capitalizedName}}_Params = {
-    {{#each parameters.props}}
-        /**
-         * {{description}}
-         */
-        {{name}}{{#unless mandatory}}?{{/unless}}: {{type}}
-    {{/each}}
-}
-
-{{/if}}
-/**
-    {{#if description}}
- * {{description}}
-    {{/if}}
- *
- * Returns a stateful value confirms to NetworkState, a function to issue network requests and clean up function.
- * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
- *
- * @example
- * ${"```"}typescript
- * ...
- * function {{capitalizedName}}Example() {
- *     const [{{simpleName}}State, {{simpleName}}, clean{{capitalizedName}}State] = use{{capitalizedName}}()
- *
- *     //To cleanup the entity upon unload
- *     useEffect(() => clean{{capitalizedName}}State);
- *
- *     //Callback function
- *     function on{{capitalizedName}}({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
- *       {{simpleName}}({{#each executionParamsForSample}}{{this}}{{#unless @last}},{{/unless}}{{/each}})
- *     }
- *
- *     //Do on pending
- *     if (isPending({{simpleName}}State)) {
- *         return <>pending</>
- *     }
- *
- *     //Do on success
- *     if (isSuccess({{simpleName}}State)) {
- *         return <>{JSON.stringify({{simpleName}}State.data)}</>
- *     }
- *
- *     //Do on error
- *     if (isError({{simpleName}}State)) {
- *         return <>An error occurred {JSON.stringify({{simpleName}}State.error)}</>
- *     }
- * }
- * ${"```"}
- * @param entityKey Unique key it isolate each response.
- */
-export function use{{capitalizedName}}(entityKey: string = "default"): 
-    MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
-    let dispatch = useDispatch();
-
-    /**
-     * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
-     *
-     {{#if requestBody}}
-     * @param { {{requestBody.typeName}} } {{requestBody.simpleName}} {{requestBody.description}}
-     {{/if}}
-     */
-    function execute({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
-        {{#if parameters}}
-        let parameters = {
-            {{#if parameters.query.length}}
-            query: {
-                {{#each parameters.query}}
-                ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
-                {{/each}}
-            },
-            {{/if}}
-            {{#if parameters.path.length}}
-                path: {
-                    {{#each parameters.path}}
-                    ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
-                    {{/each}}
-                },
-            {{/if}}
-        }
-        
-        {{/if}}
-        dispatch({{method}}(domain, entityKey, \`\${baseUrl()}{{url}}\`, {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
-    }
-
-    return [
-        resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{apiId}}.{{dirName}}.{{simpleName}})),
-        execute,
-        () => dispatch(reset(domain, entityKey))
-    ]
-}
-`
-
-const testTemplate = `
-/**
- * @module test/{{capitalizedDirName}}
- */
-import { TypedHookStub } from "mycoriza-runtime";
-import {MycorizaState} from "../../../index";
-{{#each imports}}
-import { {{this}} } from '../../models/{{this}}';
-{{/each}}
-
-/**
- * Stub for {{capitalizedName}}. This can be used with <code>testStore</code>
- * @example
- * \`\`\`typescript
- * import {render} from "@testing-library/react";
- * import {testStore} from "mycoriza-runtime";
- * import {rootState} from "./store/store"; //Fix the import
- * import {Provider} from "react-redux";
- * import { stubFor{{capitalizedName}} } from "./api/reducers/{{dirName}}/{{simpleName}}.test"; //Fix the import
- *
- * describe("MyComponent", () => {
- *   it('should work as expected', function () {
- *     let {{simpleName}}Stub = stubFor{{capitalizedName}}();
- *
- *     render(<Provider store={testStore({
- *       rootReducer: rootState,
- *       stubs:[{{simpleName}}Stub]})
- *     } >
- *       <MyComponent/>
- *     </Provider>);
- *
- *     //Write your test code here.
- *   });
- * })
- * \`\`\`
- */
-export function stubFor{{capitalizedName}}(): TypedHookStub<MycorizaState<unknown>, {{returnType}}> {
-    return new TypedHookStub<MycorizaState<unknown>, {{returnType}}>("@mycoriza/{{dirName}}/{{simpleName}}", (state: MycorizaState<any>) => state.{{apiId}}.{{dirName}}.{{simpleName}})
-}
-
-it('Mock test for stubFor{{capitalizedName}}', () => {
-    //Mock test for {{capitalizedName}} stub.
-})
-`
-
-const exportTemplate = `{{#if parameters}}
-export type { {{capitalizedName}}_Params } from '{{filePath}}';
-{{/if}}
-export { use{{capitalizedName}} } from '{{filePath}}';
-export { stubFor{{capitalizedName}} } from '{{filePath}}.test';
-`
+import {applyTemplate} from "../resolveTemplate";
 
 export interface HookInfo {
     name: string
@@ -177,6 +15,10 @@ export interface HookInfo {
     key: string,
     url: string,
     method: string
+}
+
+function getTestContent(context: any) {
+    return applyTemplate(`src/api/$source/reducers/$scope/$reducer.test.ts.hbs`, context);
 }
 
 export function renderEntityReducer(op: OperationOb, outputDir: string, key: string, openApi: OpenAPIV3.Document<any>, apiId: string, exportContents: ExportContent[]): HookInfo {
@@ -231,7 +73,8 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         apiId: apiId
     };
 
-    let content = Handlebars.compile(template)(context);
+    let content = applyTemplate('src/api/$source/reducers/$scope/$reducer.ts.hbs', context)
+    //Handlebars.compile(template)(context);
     if (fs.existsSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`)) {
         fs.unlinkSync(`${outputDir}/reducers/${directory}/${simpleName}.ts`)
     }
@@ -252,7 +95,7 @@ export function renderEntityReducer(op: OperationOb, outputDir: string, key: str
         exports: [`use${context.capitalizedName}`]
     })
 
-    let testContent = Handlebars.compile(testTemplate)(context);
+    let testContent = getTestContent(context);
     fs.writeFileSync(`${outputDir}/reducers/${directory}/${simpleName}.test.ts`, testContent)
 
     return {

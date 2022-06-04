@@ -1,28 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Handlebars from "handlebars";
-
-const template=`
-import axios from 'axios'
-import axiosMiddleware from "redux-axios-middleware";
-import {applyMiddleware, createStore} from 'redux'
-import {mycorizaState, MycorizaState} from "{{generatedPath}}/reducers";
-
-export const axiosInstance = axios.create({
-    baseURL: process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodBaseUrl}}'),
-    responseType: "json"
-})
-
-const backendConnectorMiddleware = axiosMiddleware(
-    axiosInstance
-)
-
-export interface RootState {}
-
-const rootState = mycorizaState({})
-
-export const store = createStore(rootState, applyMiddleware(backendConnectorMiddleware))
-`
+import {applyTemplate} from "../resolveTemplate";
 
 export interface StarterSetupProps {
     output: string
@@ -36,11 +14,12 @@ export function generateStarterSetup({setupDir, output, devUrl, prodUrl}: Starte
         fs.mkdirSync(`${setupDir}`)
     }
 
-    let content = Handlebars.compile(template)({
+    let context = {
         generatedPath: path.relative(setupDir, output),
         baseUrl: devUrl,
         prodBaseUrl: prodUrl
-    });
+    };
+    let content = applyTemplate('src/store/store.ts.hbs', context);
 
     fs.writeFileSync(`${setupDir}/store.ts`, content)
 }

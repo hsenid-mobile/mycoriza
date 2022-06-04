@@ -1,0 +1,108 @@
+
+/**
+ * @module {{capitalizedDirName}}
+ */
+import { NetworkStateFamily, MycorizaHookResultType, {{method}}, reset, resolveFamily } from "mycoriza-runtime";
+import {useDispatch, useSelector} from "react-redux";
+import {MycorizaState} from "../../../index";
+import {baseUrl} from '../config'
+{{#each imports}}
+import { {{this}} } from '../../models/{{this}}';
+{{/each}}
+
+/**
+ * @ignore
+ */
+const domain = "@mycoriza/{{dirName}}/{{simpleName}}"
+
+{{#if parameters}}
+export type {{capitalizedName}}_Params = {
+  {{#each parameters.props}}
+  /**
+   * {{description}}
+   */
+  {{name}}{{#unless mandatory}}?{{/unless}}: {{type}}
+    {{/each}}
+}
+
+{{/if}}
+/**
+ {{#if description}}
+ * {{description}}
+    {{/if}}
+ *
+ * Returns a stateful value confirms to NetworkState, a function to issue network requests and clean up function.
+ * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
+ *
+ * @example
+ * ${"```"}typescript
+ * ...
+ * function {{capitalizedName}}Example() {
+ *     const [{{simpleName}}State, {{simpleName}}, clean{{capitalizedName}}State] = use{{capitalizedName}}()
+ *
+ *     //To cleanup the entity upon unload
+ *     useEffect(() => clean{{capitalizedName}}State);
+ *
+ *     //Callback function
+ *     function on{{capitalizedName}}({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
+ *       {{simpleName}}({{#each executionParamsForSample}}{{this}}{{#unless @last}},{{/unless}}{{/each}})
+ *     }
+ *
+ *     //Do on pending
+ *     if (isPending({{simpleName}}State)) {
+ *         return <>pending</>
+ *     }
+ *
+ *     //Do on success
+ *     if (isSuccess({{simpleName}}State)) {
+ *         return <>{JSON.stringify({{simpleName}}State.data)}</>
+ *     }
+ *
+ *     //Do on error
+ *     if (isError({{simpleName}}State)) {
+ *         return <>An error occurred {JSON.stringify({{simpleName}}State.error)}</>
+ *     }
+ * }
+ * ${"```"}
+ * @param entityKey Unique key it isolate each response.
+ */
+export function use{{capitalizedName}}(entityKey: string = "default"):
+  MycorizaHookResultType<{{returnType}}, ({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) => void> {
+  let dispatch = useDispatch();
+
+  /**
+   * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
+   *
+   {{#if requestBody}}
+   * @param { {{requestBody.typeName}} } {{requestBody.simpleName}} {{requestBody.description}}
+     {{/if}}
+   */
+  function execute({{#each executionParamsWithType}}{{this}}{{#unless @last}},{{/unless}}{{/each}}) {
+  {{#if parameters}}
+  let parameters = {
+    {{#if parameters.query.length}}
+    query: {
+      {{#each parameters.query}}
+      ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
+  {{/each}}
+},
+  {{/if}}
+  {{#if parameters.path.length}}
+  path: {
+    {{#each parameters.path}}
+  ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
+    {{/each}}
+  },
+  {{/if}}
+}
+
+  {{/if}}
+    dispatch({{method}}(domain, entityKey, `\${baseUrl()}{{url}}\`, {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
+    }
+
+    return [
+        resolveFamily(entityKey, useSelector<MycorizaState<any>, NetworkStateFamily<{{returnType}}>>(state => state.{{apiId}}.{{dirName}}.{{simpleName}})),
+        execute,
+        () => dispatch(reset(domain, entityKey))
+    ]
+}

@@ -1,0 +1,3 @@
+{{#each exportContents}}
+export {{#if type}}type {{/if}}{ {{#each exports}}{{#if @last}}{{value}}{{else}}{{value}},{{/if}}{{/each}} } from '{{path}}';
+{{/each}}

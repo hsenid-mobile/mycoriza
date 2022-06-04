@@ -1,0 +1,24 @@
+{{#each api}}
+import type { {{apiTypeId}}State } from './{{apiId}}/reducers'
+import { {{apiId}}Reducers } from './{{apiId}}/reducers'
+{{/each}}
+import {combineReducers, ReducersMapObject} from "redux";
+
+export type MycorizaState<T> = {
+  {{#each api}}
+      {{apiId}}: {{apiTypeId}}State
+  {{/each}}
+} & T
+
+export function mycorizaMapObject<T>(reducers: ReducersMapObject<T>): ReducersMapObject<MycorizaState<T>> {
+  return {
+  {{#each api}}
+      {{apiId}}: {{apiId}}Reducers,
+  {{/each}}
+...reducers
+} as any
+}
+
+export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
+  return combineReducers<MycorizaState<T>>(mycorizaMapObject(reducers))
+}

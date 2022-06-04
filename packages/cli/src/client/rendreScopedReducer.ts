@@ -1,42 +1,10 @@
 import {OperationOb} from "./types";
 import camelcase from "camelcase";
-import Handlebars from 'handlebars'
 import fs from "fs";
 import {OpenAPIV3} from "openapi-types";
 import {extractReturnType} from "./util";
 import OperationObject = OpenAPIV3.OperationObject;
-
-const template = `
-/**
- * @ignore
- */
-import {NetworkStateFamily, networkStateReducer} from "mycoriza-runtime";
-import {combineReducers} from "redux";
-{{#each imports}}
-import { {{this}} } from '../../models/{{this}}';
-{{/each}}
-
-/**
- * @ignore
- */
-export interface {{typeName}}State {
-    {{#each ops}}
-    {{simpleName}}: NetworkStateFamily<{{typeName}}>
-    {{/each}}
-}
-
-/**
- * @ignore
- * Combined reducer for the {{typeName}} scope
- *
- * Following scopes are available. Related hooks are available alongside the reducers.
- */
-export const {{directory}}Reducers = combineReducers<{{typeName}}State>({
-{{#each ops}}
-    {{simpleName}}: networkStateReducer<{{typeName}}>("{{domain}}"),
-{{/each}}
-})
-`
+import {applyTemplate} from "../resolveTemplate";
 
 export function renderScopedReducer(operations: OperationOb[], outputDir: string, key: string) {
 
@@ -55,12 +23,13 @@ export function renderScopedReducer(operations: OperationOb[], outputDir: string
     }).filter(a => !!a);
 
 
-    let content = Handlebars.compile(template)({
+    let context = {
         typeName: camelcase(key, {pascalCase: true}),
         directory: directory,
         ops: ops,
         imports: new Set(ops.filter(a => a.shouldImport).map(a => a.typeName).map(a => a.replace('[]', '')))
-    });
+    };
+    let content = applyTemplate('src/api/$source/reducers/$scope/index.ts.hbs', context);
 
     if (fs.existsSync(`${outputDir}/reducers/${directory}/index.ts`)) {
         fs.unlinkSync(`${outputDir}/reducers/${directory}/index.ts`)

@@ -1,0 +1,30 @@
+
+/**
+ * @ignore
+ */
+import {NetworkStateFamily, networkStateReducer} from "mycoriza-runtime";
+import {combineReducers} from "redux";
+{{#each imports}}
+import { {{this}} } from '../../models/{{this}}';
+{{/each}}
+
+/**
+ * @ignore
+ */
+export interface {{typeName}}State {
+  {{#each ops}}
+  {{simpleName}}: NetworkStateFamily<{{typeName}}>
+    {{/each}}
+}
+
+/**
+ * @ignore
+ * Combined reducer for the {{typeName}} scope
+ *
+ * Following scopes are available. Related hooks are available alongside the reducers.
+ */
+export const {{directory}}Reducers = combineReducers<{{typeName}}State>({
+{{#each ops}}
+    {{simpleName}}: networkStateReducer<{{typeName}}>("{{domain}}"),
+{{/each}}
+})

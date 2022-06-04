@@ -1,17 +1,11 @@
 import {ExportContent} from "../types";
-import Handlebars from "handlebars";
 import fs from 'fs'
 import path from 'path'
-
-const template = `
-{{#each exportContents}}
-export {{#if type}}type {{/if}}{ {{#each exports}}{{#if @last}}{{value}}{{else}}{{value}},{{/if}}{{/each}} } from '{{path}}'; 
-{{/each}}
-`
+import {applyTemplate} from "../resolveTemplate";
 
 export function renderIndex(exportContents: ExportContent[]) {
   let indexPath = './src/index.ts';
-  let content = Handlebars.compile(template)({
+  let context = {
     exportContents: exportContents.map(({exports, type, path: p}, index, arr) => ({
       type: type === 'type',
       path: `./${path.relative('./src', p).replace('.ts', '')}`,
@@ -24,7 +18,9 @@ export function renderIndex(exportContents: ExportContent[]) {
         return ({value});
       })
     }))
-  });
+  };
+
+  let content = applyTemplate('src/index.ts.hbs', context);
 
   if (fs.existsSync(indexPath)) {
     fs.unlinkSync(indexPath)

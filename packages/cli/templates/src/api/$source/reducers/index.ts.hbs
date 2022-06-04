@@ -1,0 +1,24 @@
+
+import {combineReducers, ReducersMapObject} from 'redux'
+{{#each states}}
+import { {{typeName}}State, {{directory}}Reducers } from './{{directory}}';
+{{/each}}
+
+/**
+ * @ignore
+ */
+export type {{apiTypeId}}State = {
+  {{#each states}}
+      {{directory}}: {{typeName}}State
+  {{/each}}
+}
+
+/**
+ * @ignore
+ */
+export const {{apiId}}Reducers = combineReducers<{{apiTypeId}}State>({
+{{#each states}}
+  {{directory}}: {{directory}}Reducers,
+{{/each}}
+})
+

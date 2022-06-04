@@ -1,46 +1,23 @@
-import Handlebars from 'handlebars'
 import camelcase from "camelcase";
 import fs from 'fs'
 import {MycorizaSourceConfig} from "../types";
+import {applyTemplate} from "../resolveTemplate";
 
-const template = `
-import {combineReducers, ReducersMapObject} from 'redux'
-{{#each states}}
-import { {{typeName}}State, {{directory}}Reducers } from './{{directory}}';
-{{/each}}
-
-/**
- * @ignore
- */
-export type {{apiTypeId}}State = {
-{{#each states}}
-    {{directory}}: {{typeName}}State
-{{/each}}
+function getUrlConfigContent(types: string[], source: MycorizaSourceConfig) {
+    let context = {
+        states: types.map(a => ({
+            typeName: camelcase(a, {pascalCase: true}),
+            directory: camelcase(a),
+        })),
+        baseUrl: source.devUrl,
+        prodUrl: source.prodUrl
+    };
+    return applyTemplate(`src/api/$source/reducers/config.ts.hbs`, context);
 }
-
-/**
- * @ignore
- */
-export const {{apiId}}Reducers = combineReducers<{{apiTypeId}}State>({
-{{#each states}}
-  {{directory}}: {{directory}}Reducers,
-{{/each}}
-})
-
-`
-
-const urlConfigTemplate = `
-/**
- * @ignore
- */
-export function baseUrl() {
-    return process.env.API_URL ?? (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? '{{baseUrl}}' : '{{prodUrl}}')
-}
-`
 
 export function renderApiReducer(types: string[], outputDir: string, source: MycorizaSourceConfig): string {
 
-    let content = Handlebars.compile(template)({
+    let context = {
         states: types.map(a => ({
             typeName: camelcase(a, {pascalCase: true}),
             directory: camelcase(a),
@@ -49,7 +26,9 @@ export function renderApiReducer(types: string[], outputDir: string, source: Myc
         prodUrl: source.prodUrl,
         apiId: source.id,
         apiTypeId: camelcase(source.id, {pascalCase: true})
-    });
+    };
+    let content = applyTemplate(`src/api/$source/reducers/index.ts.hbs`, context);
+    //Handlebars.compile(template)(context);
 
     if (fs.existsSync(`${outputDir}/reducers/reducer.ts`)) {
         fs.unlinkSync(`${outputDir}/reducers/reducer.ts`)
@@ -59,14 +38,7 @@ export function renderApiReducer(types: string[], outputDir: string, source: Myc
     }
     fs.writeFileSync(`${outputDir}/reducers/index.ts`, content)
 
-    let urlConfigContent = Handlebars.compile(urlConfigTemplate)({
-        states: types.map(a => ({
-            typeName: camelcase(a, {pascalCase: true}),
-            directory: camelcase(a),
-        })),
-        baseUrl: source.devUrl,
-        prodUrl: source.prodUrl
-    });
+    let urlConfigContent = getUrlConfigContent(types, source);
     fs.writeFileSync(`${outputDir}/reducers/config.ts`, urlConfigContent)
 
     return content;

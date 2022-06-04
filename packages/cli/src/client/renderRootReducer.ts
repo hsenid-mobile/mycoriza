@@ -1,39 +1,15 @@
-import Handlebars from "handlebars";
 import fs from 'fs'
 import camelcase from "camelcase";
 import {MycorizaConfig} from "../types";
+import {applyTemplate} from "../resolveTemplate";
 
-const template = `
-{{#each api}}
-import type { {{apiTypeId}}State } from './{{apiId}}/reducers'
-import { {{apiId}}Reducers } from './{{apiId}}/reducers'
-{{/each}}
-import {combineReducers, ReducersMapObject} from "redux";
-
-export type MycorizaState<T> = {
-{{#each api}}
-    {{apiId}}: {{apiTypeId}}State
-{{/each}}
-} & T
-
-export function mycorizaMapObject<T>(reducers: ReducersMapObject<T>): ReducersMapObject<MycorizaState<T>> {
-    return {
-        {{#each api}}
-            {{apiId}}: {{apiId}}Reducers,
-        {{/each}}
-        ...reducers
-    } as any
-}
-
-export function mycorizaState<T>(reducers: ReducersMapObject<T>) {
-    return combineReducers<MycorizaState<T>>(mycorizaMapObject(reducers))
-}
-`
 
 export function renderRootReducer(outputDir: string, config: MycorizaConfig) {
-  let content = Handlebars.compile(template)({
+  let context = {
     api: config.sources.map(({id}) => ({apiId: id, apiTypeId: camelcase(id, {pascalCase: true})}))
-  });
+  };
+  let content = applyTemplate('src/api/index.ts.hbs', context);
+  //Handlebars.compile(template)(context);
 
   if (fs.existsSync(`${outputDir}/index.ts`)) {
     fs.unlinkSync(`${outputDir}/index.ts`)

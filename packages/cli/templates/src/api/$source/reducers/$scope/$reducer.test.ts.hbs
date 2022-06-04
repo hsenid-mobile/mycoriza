@@ -1,0 +1,42 @@
+/**
+ * @module test/{{capitalizedDirName}}
+ */
+import { TypedHookStub } from "mycoriza-runtime";
+import {MycorizaState} from "../../../index";
+{{#each imports}}
+import { {{this}} } from '../../models/{{this}}';
+{{/each}}
+
+/**
+ * Stub for {{capitalizedName}}. This can be used with <code>testStore</code>
+ * @example
+ * ```typescript
+ * import {render} from "@testing-library/react";
+ * import {testStore} from "mycoriza-runtime";
+ * import {rootState} from "./store/store"; //Fix the import
+ * import {Provider} from "react-redux";
+ * import { stubFor{{capitalizedName}} } from "./api/reducers/{{dirName}}/{{simpleName}}.test"; //Fix the import
+ *
+ * describe("MyComponent", () => {
+ *   it('should work as expected', function () {
+ *     let {{simpleName}}Stub = stubFor{{capitalizedName}}();
+ *
+ *     render(<Provider store={testStore({
+ *       rootReducer: rootState,
+ *       stubs:[{{simpleName}}Stub]})
+ *     } >
+ *       <MyComponent/>
+ *     </Provider>);
+ *
+ *     //Write your test code here.
+ *   });
+ * })
+ * ```
+ */
+export function stubFor{{capitalizedName}}(): TypedHookStub<MycorizaState<unknown>, {{returnType}}> {
+  return new TypedHookStub<MycorizaState<unknown>, {{returnType}}>("@mycoriza/{{dirName}}/{{simpleName}}", (state: MycorizaState<any>) => state.{{apiId}}.{{dirName}}.{{simpleName}})
+}
+
+it('Mock test for stubFor{{capitalizedName}}', () => {
+  //Mock test for {{capitalizedName}} stub.
+})
