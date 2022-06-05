@@ -3,7 +3,8 @@ export interface MycorizaSourceConfig {
   name: string
   specUrl: string
   devUrl: string
-  prodUrl: string
+  prodUrl: string,
+  regex?: string
 }
 
 export interface MycorizaConfig {

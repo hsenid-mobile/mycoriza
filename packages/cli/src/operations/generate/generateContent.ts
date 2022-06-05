@@ -15,13 +15,16 @@ import {extractInlineRequestBody} from "./modifiers/extractInlineRequestBody";
 import {extractInlineResponse} from "./modifiers/extractInlineResponse";
 import simpleGit from "simple-git";
 import rmrf from 'rmrf'
+import {filterByRegex} from "./modifiers/filterByRegex";
 
 async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaConfig, exportContents: ExportContent[]) {
 
-  let data: OpenAPIV3.Document = combinedModifiers(extractInlineRequestBody, extractInlineResponse)({
+  let unfilteredData: OpenAPIV3.Document = combinedModifiers(extractInlineRequestBody, extractInlineResponse)({
     sourceConfig: source,
     config
   })(await getOpenApiSpec(source.specUrl, config))
+
+  let data = filterByRegex(source.regex, unfilteredData);
 
   const output = `${apiPath}/${source.id}`
 
