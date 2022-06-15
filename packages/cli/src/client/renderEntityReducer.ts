@@ -3,7 +3,7 @@ import camelcase from "camelcase";
 import {extractParameters, extractRequestBodyType, extractReturnType} from "./util";
 import fs from "fs";
 import {OpenAPIV2, OpenAPIV3} from "openapi-types";
-import {ExportContent} from "../types";
+import {ExportContent, MycorizaConfig} from "../types";
 import OperationObject = OpenAPIV2.OperationObject;
 import HttpMethods = OpenAPIV3.HttpMethods;
 import {applyTemplate} from "../resolveTemplate";
@@ -21,13 +21,28 @@ function getTestContent(context: any) {
     return applyTemplate(`src/api/$source/reducers/$scope/$reducer.test.ts.hbs`, context);
 }
 
-export function renderEntityReducer(op: OperationOb, outputDir: string, key: string, openApi: OpenAPIV3.Document<any>, apiId: string, exportContents: ExportContent[]): HookInfo {
+export function renderEntityReducer(
+  op: OperationOb,
+  outputDir: string,
+  key: string,
+  openApi: OpenAPIV3.Document<any>,
+  apiId: string,
+  exportContents: ExportContent[],
+  cfg: MycorizaConfig): HookInfo {
 
     let directory = camelcase(key);
 
     let operation: OperationObject<any> = op.operation
     let {shouldImport, typeName} = extractReturnType(operation) ?? {shouldImport: false, typeName: "unknown"}
     let requestBodyType = extractRequestBodyType(operation, openApi);
+
+    if (op.method.toUpperCase() === 'POST' && !requestBodyType && !!cfg.emptyBodyTypeOnPost) {
+        requestBodyType = {
+            typeName: cfg.emptyBodyTypeOnPost,
+            shouldImport: false,
+            description: "Body for POST requests"
+        };
+    }
 
     let simpleName = camelcase(operation.operationId);
 

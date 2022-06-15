@@ -47,7 +47,7 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
   }
 
   ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate API}`)
-  generateHooks(data, output, source, exportContents);
+  generateHooks(data, output, source, exportContents, config);
 
   ui.log(chalk`{green ${get('heavy_check_mark')} [${source.id}] Generate Hooks}`)
 

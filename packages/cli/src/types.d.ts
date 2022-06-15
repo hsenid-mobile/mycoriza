@@ -10,6 +10,7 @@ export interface MycorizaSourceConfig {
 export interface MycorizaConfig {
   addToGitOnUpdate?: boolean
   rejectUnauthorized?: boolean
+  emptyBodyTypeOnPost?: "unknown" | "object" | "array" | "string" | "number" | "boolean" | "null" | "undefined"
   sources: MycorizaSourceConfig[]
 }
 
