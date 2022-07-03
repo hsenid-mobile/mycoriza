@@ -1,6 +1,6 @@
 {
   "name": "mycoriza-runtime",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Runtime of mycoriza react-network integration layer.",
   "author": "tiranuom",
   "private": false,
