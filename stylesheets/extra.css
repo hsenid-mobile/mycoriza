@@ -4,7 +4,7 @@
 
 [data-md-color-scheme="slate"] .md-typeset .admonition.card,
 [data-md-color-scheme="slate"] .md-typeset details.card {
-    border-color: #4051b5;
+    border-color: #7840b5;
 }
 
 .md-typeset .admonition.card,
@@ -24,8 +24,8 @@
 
 [data-md-color-scheme="slate"] .md-typeset .card > .admonition-title,
 [data-md-color-scheme="slate"] .md-typeset .card > summary {
-    background-color: #4051b5;
-    border-color: #4051b5;
+    background-color: #7840b5;
+    border-color: #7840b5;
 }
 
 .md-typeset .card > .admonition-title::before,
@@ -35,7 +35,7 @@
 
 [data-md-color-scheme="slate"] .md-typeset .card > .admonition-title::before,
 [data-md-color-scheme="slate"] .md-typeset .card > summary::before {
-    background-color: #4051b5;
+    background-color: #7840b5;
 }
 
 .quote {
@@ -46,7 +46,7 @@
 }
 
 [data-md-color-scheme="slate"] .quote {
-    background-color: #4051b5;
+    background-color: #7840b5;
 }
 .quote-content::before {
     content: "\201C";
