@@ -224,16 +224,16 @@ export function isResetAction<T>(action: NetworkAction<T>, domain: string): acti
  * @ignore
  */
 export function error<T>(domain: string, error: any): NetworkFailAction<T> {
-  return {
+  return Object.freeze({
     type: domain,
     error
-  }
+  })
 }
 
 function initState<T>(): NetworkState<T> {
-  return {
+  return Object.freeze({
     state: "init",
-  };
+  });
 }
 
 function _networkStateReducer<T>(
@@ -241,22 +241,22 @@ function _networkStateReducer<T>(
 ): Reducer<NetworkState<T>, NetworkAction<T>> {
   return (state = initState(), action) => {
     if (isPendingAction(action, domain)) {
-      let newState: PendingState<T> = {
+      let newState: PendingState<T> = Object.freeze({
         state: "pending",
-      };
+      });
       return newState;
     } else if (isSuccessAction(action, domain)) {
-      let newState: SuccessState<T> = {
+      let newState: SuccessState<T> = Object.freeze({
         state: "success",
         data: action.payload.data as T,
-      };
+      });
       return newState;
     } else if (isFailAction(action, domain)) {
-      let newState: ErrorState<T> = {
+      let newState: ErrorState<T> = Object.freeze({
         state: "error",
         error: action.error,
         statusCode: (action.error as any)?.response?.status?.toString()
-      };
+      });
       return newState;
     } else if (isResetAction(action, domain)) {
       return initState()

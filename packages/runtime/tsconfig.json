@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
