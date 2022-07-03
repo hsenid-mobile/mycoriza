@@ -26,8 +26,9 @@
   "scripts": {
     "dev": "./dist/cli.js enhance",
     "build": "tsc",
+    "postbuild": "cp -r ./src/templates ./dist/templates",
     "clean": "rimraf ./dist",
-    "test": "npm run build && ava --verbose",
+    "test": "npm run build && jest",
     "bundle": "npm run build && pkg . --out-dir ./exec/",
     "prepublish": "npm run build"
   },

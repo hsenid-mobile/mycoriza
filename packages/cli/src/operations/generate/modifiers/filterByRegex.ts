@@ -39,7 +39,6 @@ export function filterByRegex(regex: string, openApi: OpenAPIV3.Document<any>): 
 
     return {
         ...openApi,
-        paths: filteredPaths,
-        components
+        paths: filteredPaths
     };
 }

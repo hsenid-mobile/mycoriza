@@ -35,7 +35,7 @@ export type {{capitalizedName}}_Params = {
  * Upon function execution, a <code>{{method}}</code> call will be issued to <code>{{url}}</code>
  *
  * @example
- * ${"```"}typescript
+ * ```typescript
  * ...
  * function {{capitalizedName}}Example() {
  *     const [{{simpleName}}State, {{simpleName}}, clean{{capitalizedName}}State] = use{{capitalizedName}}()
@@ -63,7 +63,7 @@ export type {{capitalizedName}}_Params = {
  *         return <>An error occurred {JSON.stringify({{simpleName}}State.error)}</>
  *     }
  * }
- * ${"```"}
+ * ```
  * @param entityKey Unique key it isolate each response.
  */
 export function use{{capitalizedName}}(entityKey: string = "default"):
@@ -83,21 +83,21 @@ export function use{{capitalizedName}}(entityKey: string = "default"):
     {{#if parameters.query.length}}
     query: {
       {{#each parameters.query}}
-      ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
+      ...(params['{{name}}'] ? { '{{name}}': params['{{name}}'] } : {}),
   {{/each}}
 },
   {{/if}}
   {{#if parameters.path.length}}
   path: {
     {{#each parameters.path}}
-  ...(params.{{name}} ? { {{name}}: params.{{name}} } : {}),
+  ...(params['{{name}}'] ? { '{{name}}': params['{{name}}'] } : {}),
     {{/each}}
   },
   {{/if}}
 }
 
   {{/if}}
-    dispatch({{method}}(domain, entityKey, `\${baseUrl()}{{url}}\`, {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
+    dispatch({{method}}(domain, entityKey, `${baseUrl()}{{url}}`, {{#each executionParams}}{{this}}{{#unless @last}},{{/unless}}{{/each}}))
     }
 
     return [

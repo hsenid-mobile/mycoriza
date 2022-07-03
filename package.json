@@ -10,6 +10,7 @@
   },
   "workspaces": [ "packages/*" ],
   "scripts": {
+    "build": "yarn lerna run build",
     "templatize:mycoriza": "cra-templetize -i ./packages/mycoriza -o ./packages",
     "build:cli": "yarn lerna run build --scope=mycoriza-cli"
   },

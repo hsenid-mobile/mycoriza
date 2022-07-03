@@ -24,7 +24,8 @@ async function generateSingleApi(source: MycorizaSourceConfig, config: MycorizaC
     config
   })(await getOpenApiSpec(source.specUrl, config))
 
-  let data = filterByRegex(source.regex, unfilteredData);
+  let data = unfilteredData
+  filterByRegex(source.regex, await getOpenApiSpec(source.specUrl, config));
 
   const output = `${apiPath}/${source.id}`
 

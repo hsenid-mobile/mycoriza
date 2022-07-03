@@ -206,6 +206,7 @@ const TYPE_MAPPING = {
     "integer": "number"
 }
 
-function transformTypes(tpe: string): string {
+function transformTypes(tpe: string | undefined): string {
+    if (!tpe) return "any"
     return TYPE_MAPPING[tpe] ?? tpe;
 }
