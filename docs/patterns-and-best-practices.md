@@ -211,7 +211,7 @@ function MyComponent() {
 
 Javascript introduced `async`/`await` syntax to write the asynchronous logics in more readable manner. Under the hood,
 it uses javascript promises. The [`useAsPromise` hook](/network-states/#useaspromise-hook) can be used to make the NetworkHooks
-more compatible with asynchronous programming.
+more compatible with asynchronous programming by converting Natwork State and fetcher function to a promise function.
 
 ```jsx
 import {useEffect} from "react";
