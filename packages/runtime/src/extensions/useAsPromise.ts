@@ -41,8 +41,8 @@ export function useAsPromise<T, F extends (...args: any) => void>(data: Mycoriza
     }
   }, [state.state])
 
-  return args => new Promise<T>((resolve, reject) => {
-    fun(args)
+  return (...args: Parameters<F>) => new Promise<T>((resolve, reject) => {
+    fun.apply(null, args)
     setCallback({ resolve, reject })
   })
 }
