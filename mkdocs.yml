@@ -7,6 +7,7 @@ theme:
     - header.autohide
     - navigation.sections
   palette:
+    - primary: deep purple
     - scheme: default
       toggle:
         icon: material/toggle-switch-off-outline
@@ -16,13 +17,13 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
-  icon:
-    admonition:
-      card: fontawesome/solid/sticky-note
+#  icon:
+#    admonition:
+#      card: fontawesome/solid/sticky-note
 repo_url: https://github.com/hsenid-mobile/mycoriza
 edit_uri: ""
 copyright: MIT
-pages:
+nav:
   - Overview: index.md
   - Guides:
     - Getting Started: getting-started.md

@@ -1,6 +1,8 @@
 {
   "name": "cra-template-mycoriza",
   "version": "0.1.4",
+  "repository": "hsenid-moile/mycoriza",
+  "homepage": "https://hsenid-mobile.github.io/mycoriza/",
   "keywords": [
     "cra-template",
     "react"

@@ -4,6 +4,8 @@
   "description": "A simple and zero-opinion typescript starter template for building cross-platform command line applications.",
   "author": "Tiran Wijesekara",
   "private": false,
+  "repository": "hsenid-moile/mycoriza",
+  "homepage": "https://hsenid-mobile.github.io/mycoriza/",
   "keywords": [
     "typescript",
     "cli",

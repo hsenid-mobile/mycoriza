@@ -3,7 +3,7 @@
 
 Throughout our usage of this framework, we have identified several patterns which can be used with the networks state.
 
-## Conditional returns based on the state.
+## Conditional rendering based on the state.
 
 You can explicitly return the content based on the state. This allows more control over the component rendering as each
 content to be returned is explicit.
@@ -163,7 +163,7 @@ import {isSuccess} from "mycoriza-runtime";
 //This component is independent and can be used anyware it is needed.
 function ComponentA() {
     const [state] = useYoutGeneratedHook()
-    return <>{isSuccess(state) && JSON.stringify(data)}</>
+    return <>{isSuccess(state) && JSON.stringify(state.data)}</>
 }
 
 function ComponentB() {
@@ -207,3 +207,31 @@ function MyComponent() {
 }
 ```
 
+## Asynchronous programming.
+
+Javascript introduced `async`/`await` syntax to write the asynchronous logics in more readable manner. Under the hood,
+it uses javascript promises. The [`useAsPromise` hook](/network-states/#useaspromise-hook) can be used to make the NetworkHooks
+more compatible with asynchronous programming.
+
+```jsx
+import {useEffect} from "react";
+import {useAsPromise} from "mycoriza-runtime";
+
+function MyComponent() {
+    const updateProduct = useAsPromise(useUpdateProduct())
+    
+    async function update(data: any) {
+        //TODO process data;
+        
+        let result = await updateProduct(data)
+        
+        //TODO do something with result
+        
+    }
+    
+    return <>
+        {/* ... */}
+        <button onClick={() => update({/* data goes here */})}>Update</button>
+    </>
+}
+```
