@@ -779,7 +779,7 @@ function MyComponent() {
 <h2 id="asynchronous-programming">Asynchronous programming.</h2>
 <p>Javascript introduced <code>async</code>/<code>await</code> syntax to write the asynchronous logics in more readable manner. Under the hood,
 it uses javascript promises. The <a href="/network-states/#useaspromise-hook"><code>useAsPromise</code> hook</a> can be used to make the NetworkHooks
-more compatible with asynchronous programming.</p>
+more compatible with asynchronous programming by converting Natwork State and fetcher function to a promise function.</p>
 <div class="highlight"><pre><span></span><code>import {useEffect} from &quot;react&quot;;
 import {useAsPromise} from &quot;mycoriza-runtime&quot;;
 
